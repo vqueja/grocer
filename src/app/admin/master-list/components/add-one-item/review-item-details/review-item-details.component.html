@@ -1,0 +1,92 @@
+<div class="formContainer">
+  <div class="fieldContainer">
+    <form class="form-horizontal" [formGroup]="itemReviewForm">
+      <fieldset class="fieldset">
+        <div class="form-group inputs">
+          <label class="col-md-3 control-label" for="store">Store </label>
+          <div class="col-md-6 input-element">
+            <input id="store" placeholder="Store" name="itemName" formControlName="store" class="form-control input-md" disabled type="text" >
+          </div>
+        </div>
+        <div class="form-group inputs">
+          <label class="col-md-3 control-label" for="itemName">Item Name </label>
+          <div class="col-md-6 input-element">
+            <input id="itemName" placeholder="Item Name" name="itemName" formControlName="itemName" class="form-control input-md" disabled type="text" >
+          </div>
+        </div>
+        <div class="form-group inputs">
+          <label class="col-md-3 control-label" for="itemCode">Code </label>
+          <div class="col-md-6 input-element">
+            <input id="itemCode" placeholder="Item Code | Barcode" name="code" formControlName="code" class="form-control input-md" disabled type="text" >
+          </div>
+        </div>
+        <div class="form-group inputs">
+          <label class="col-md-3 control-label" for="price">Price </label>
+          <div class="col-md-6 input-element">
+            <div class="input-group mb-3">
+              <input formControlName="price" placeholder="Item Price" id="price" name="price" class="form-control input-md" disabled type="text" >
+            </div>
+          </div>
+        </div>
+        <div class="form-group inputs">
+          <label class="col-md-3 control-label" for="customBrand">Brand </label>
+          <div class="col-md-6 input-element">
+            <div class="input-group mb-3">
+              <input disabled class="form-control input-md" type="text" id="customBrand" name="customBrand" class="form-control input-md" formControlName="customBrand">
+            </div>
+          </div>
+        </div>
+        <div class="form-group inputs">
+          <label class="col-md-3 control-label" for="category1">Category 1 </label>
+          <div class="col-md-6 input-element">
+            <div class="input-group mb-3">
+              <input disabled type="text" class="form-control input-md" id="cat1" formControlName="cat1">
+            </div>
+          </div>
+        </div>
+        <div class="form-group inputs">
+          <label class="col-md-3 control-label" for="category2">Category 2 </label>
+          <div class="col-md-6 input-element">
+            <div class="input-group mb-3">
+              <input disabled type="text" class="form-control input-md" id="cat2" formControlName="cat2">
+            </div>
+          </div>
+        </div>
+        <div class="form-group inputs">
+          <label class="col-md-3 control-label" for="category3">Category 3 </label>
+          <div class="col-md-6 input-element">
+            <div class="input-group mb-3">
+              <input disabled type="text" class="form-control input-md" id="cat3" formControlName="cat3">
+            </div>
+          </div>
+        </div>
+        <div class="form-group inputs">
+          <label class="col-md-3 control-label" for="isWeighted">Weighted </label>
+          <div class="col-md-6 input-element">
+            <div class="input-group mb-3">
+              <input disabled type="text" id="isWeighted" class="form-control input-md" formControlName="isWeighted">
+            </div>
+          </div>
+        </div>
+        <div class="form-group inputs">
+          <label class="col-md-3 control-label" for="enabled">Enabled </label>
+          <div class="col-md-6 input-element">
+            <div class="input-group mb-3">
+              <input disabled type="text" id="isEnabled" class="form-control input-md" formControlName="isEnabled">
+            </div>
+          </div>
+        </div>
+      </fieldset>
+    <div class="row">
+      <div class="col-md-12">
+        <div class="input-btn-group nav-but-grp cancel-save">
+          <button class="btn btn-default btnPrevSave" (click)="onBackBtn()"><span class="glyphicon glyphicon glyphicon-chevron-left"></span> Previous</button>
+          <button class="btn btn-danger btnPrevSave" (click)="saveItem()">Save
+            <span class="glyphicon glyphicon glyphicon-chevron-right"></span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+</div>

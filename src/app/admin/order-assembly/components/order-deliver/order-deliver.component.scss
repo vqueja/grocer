@@ -1,0 +1,43 @@
+@import "../../../../shared/scss/custom_themes/default/default";
+
+.breadcrumb {
+  a {
+    color: #666;
+  }
+}
+
+.margin-bottom-5, .panel, .well {
+  margin-bottom: 5px;
+}
+
+.well {
+  padding: 10px 15px;
+}
+
+.gray {
+  color: #666;
+}
+
+.red {
+  color: red;
+}
+
+.status {
+  color: red;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.unavailable {
+  color: red;
+  text-decoration: line-through;
+}
+
+.amount-due {
+  color: #BA1B1D;
+  font-size: 18px;
+}
+
+.reminder {
+  color: #002bb8
+}

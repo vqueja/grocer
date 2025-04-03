@@ -1,0 +1,120 @@
+<ng-container *ngIf="!isCartSummary; else elseBlock">
+  <div class="row row-cart cart-page">
+    <div class="col-md-2 col-sm-2 col-xs-3 padding-right-0">
+      <img
+        class="item-image-thumbnails img-responsive"
+        [src]="getItemImageUrl(cartItem.item.imageKey)"
+        (error)="onImageError($event)">
+    </div>
+    <div class="col-md-10 col-sm-10 col-xs-9 padding-left-0">
+      <div class="col-md-5 col-sm-6 col-xs-12 ">
+        <a class="cart-item-name" (click)="selectItem()">{{cartItem.item.name}}</a><br>
+        <small *ngIf="cartItem.isRequest" (click)="selectItem()">
+          <span *ngIf="requestItemData.priceRange">
+            <span class="text-muted">Price Range:</span>
+            ₱{{requestItemData.priceRange}}<br>
+          </span>
+          <span *ngIf="requestItemData.priceSpecific">
+            <span class="text-muted">Specific Price:</span>
+            ₱{{requestItemData.priceSpecific | number:'1.2-2' }}<br>
+          </span>
+          <span class="text-muted">Description:</span>{{requestItemData.description}}<br>
+          <span class="text-muted">Instructions:</span>{{requestItemData.instructions}}<br>
+        </small>
+        <ng-container *ngIf="!cartItem.isRequest">
+          <span>₱{{cartItem.item.price | number:'1.2-2'}}</span><br>
+          <span class="small" (click)="selectItem()">
+            <ng-container *ngIf="cartItem.instructions; else elseInstructions">
+              <a class="text-success"><i class="glyphicon glyphicon-check"></i>&nbsp;Instructions added</a>
+            </ng-container>
+            <ng-template #elseInstructions>
+              <a class="text-muted"><i class="glyphicon glyphicon-edit"></i>&nbsp;Add instructions</a>
+            </ng-template>
+            <br>
+            <ng-container *ngIf="cartItem.subOption == 1; else elseSubstitute">
+              <a class="text-success"><i class="glyphicon glyphicon-check"></i>&nbsp;Substitute added</a>
+            </ng-container>
+            <ng-template #elseSubstitute>
+              <a class="text-muted"><i class="glyphicon glyphicon-edit"></i>&nbsp;Select substitute</a>
+            </ng-template>
+          </span>
+        </ng-container>
+      </div>
+      <div class="col-xs-3 hidden-lg hidden-md hidden-sm ">
+        <button type="button" class="btn btn-sm btn-default item-delete" (click)="removeCartItem()">
+          <span class="glyphicon glyphicon-trash"></span>
+        </button>
+      </div>
+      <div class="col-md-4 col-sm-3 col-xs-9  text-right">
+        <div class="quantity">
+          <div class="input-group">
+            <span class="input-group-btn">
+              <button class="btn btn-sm btn-default" type="button"
+                (click)="decrementQuantity()" [disabled]="quantity == MIN_VALUE">
+                <span class="glyphicon glyphicon-minus"></span>
+              </button>
+            </span>
+            <input type="number" class="text-center form-control input-sm"
+              [min]="MIN_VALUE" [max]="MAX_VALUE" step="1"
+              [value]="quantity" [formControl]="quantityControl"
+              (blur)='checkIfValid($event)' (keypress)='keyPress($event)'/>
+            <span class="input-group-btn">
+              <button class="btn btn-sm btn-success" type="button"
+                (click)="incrementQuantity()" [disabled]="quantity == MAX_VALUE">
+                <span class="glyphicon glyphicon-plus"></span>
+              </button>
+            </span>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-2 col-sm-2 col-xs-12 ">
+        <span class="hidden-xs">
+          <strong class="pull-right">₱{{cartItem.total | number:'1.2-2'}}</strong>
+        </span>
+        <span class="hidden-lg hidden-md hidden-sm">
+          Item Total<strong class="pull-right">₱{{cartItem.total | number:'1.2-2'}}</strong>
+        </span>
+      </div>
+      <div class="col-md-1 col-sm-1 hidden-xs ">
+        <button type="button" class="btn btn-sm btn-default item-delete" (click)="removeCartItem()">
+          <span class="glyphicon glyphicon-trash"></span>
+        </button>
+      </div>
+    </div>
+  </div>
+</ng-container>
+<ng-template #elseBlock>
+  <div class="row row-cart cart-summary">
+    <div class="col-xs-2">
+      <img
+        class="item-image-thumbnails img-responsive"
+        [src]="getItemImageUrl(cartItem.item.imageKey)"
+        (error)="onImageError($event)">
+    </div>
+    <div class="col-xs-4 small item-name">
+      <span class="cart-item-name">{{cartItem.item.name}}</span><br>
+      ₱{{cartItem.item.price | number:'1.2-2'}}
+    </div>
+    <div class="col-xs-3">
+      <div class="input-group">
+        <span class="input-group-btn">
+          <button type="button" class="btn btn-default btn-xs" (click)="decrementQuantity()" [disabled]="quantity == MIN_VALUE">
+            <span class="glyphicon glyphicon-minus"> </span>
+          </button>
+        </span>
+        <input type="number" class="text-center form-control"
+          [min]="MIN_VALUE" [max]="MAX_VALUE" step="1"
+          [value]="quantity" [formControl]="quantityControl"
+          (blur)='checkIfValid($event)' (keypress)='keyPress($event)'/>
+         <span class="input-group-btn">
+           <button type="button" class="btn btn-success btn-xs"  (click)="incrementQuantity()" [disabled]="quantity == MAX_VALUE">
+             <span class="glyphicon glyphicon-plus"></span>
+           </button>
+         </span>
+      </div>
+    </div>
+    <div class="col-xs-3 small text-right">
+      ₱{{cartItem.total | number:'1.2-2'}}
+    </div>
+  </div>
+</ng-template>

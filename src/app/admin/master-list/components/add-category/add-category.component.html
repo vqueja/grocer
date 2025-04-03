@@ -1,0 +1,18 @@
+<div #loader class="loader" [hidden]="bCategoriesAdded" id="loader">
+    <span class="loader-text">Loading....</span>
+</div>
+<div>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item text-primary" aria-current="page">Master Lists/Add Categories</li>
+    </ol>
+  </nav>
+
+  <div class="csv-upload">
+    <input #csvInput type="file" id="myFile" accept=".csv" (change)="enableAddBtn(csvInput)">
+  </div>
+  <div class="create-cancel">
+    <button class="btn btn-danger" (click)="convertFile(csvInput)" [disabled]="bHasFile">Add Categories</button><button class="btn btn-danger">Cancel</button>
+  </div>
+
+</div>

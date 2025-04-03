@@ -1,0 +1,256 @@
+@import "../../../../shared/scss/custom_themes/default/default";
+
+.breadcrumb {
+  margin-bottom: 10px;
+  a {
+    color: #666;
+  }
+}
+
+.item-list {
+  p {
+    margin-bottom: 0;
+  }
+  div.row:nth-of-type(odd) {
+    background-color: #f9f9f9;
+    &.replacement-item {
+      background-color: #ffd5d5;
+    }
+  }
+  div.row {
+    border-top: 1px solid #ff4d7d;
+    padding: 5px 0;
+    &.replacement-item {
+      background-color: #ffeaea;
+    }
+  }
+  // .item-img {
+  //   width: 100px;
+  //   float: right;
+  //   margin: 5px;
+  //   border: 1px solid #15bb6a;
+  // }
+  div.input-group {
+    width: 130px;
+    float: left;
+  }
+  .form-group {
+    margin-bottom: 3px;
+  }
+  .control-label {
+    width: 55px;
+    vertical-align: top;
+    font-weight: 400;
+  }
+  .final-price {
+    width: 130px;
+    display: inline-block;
+  }
+  .item-quantity {
+    display: inline-block;
+    margin-bottom: -6px;
+  }
+  .item-img-container {
+    float: left;
+    margin: 5px 10px 5px 0;
+    width: 100px;
+    height: 170px;
+    text-align: center;
+    line-height: 170px;
+    background-color: $white;
+    position: relative;
+    // border: 1px solid #15bb6a;
+    .item-img {
+      max-width: 100px;
+      max-height: 160px;
+      vertical-align: middle;
+      display: inline-block;
+    }
+    i {
+      position: absolute;
+      right: 5px;
+      top: 5px;
+      font-size: 20px;
+    }
+  }
+  .instructions {
+    background-color: #fdefd0;
+    padding: 3px;
+    margin-top: 5px;
+    b {
+      color: #666;
+    }
+    span {
+      text-transform: uppercase;
+      font-weight: bold;
+      font-size: 12px;
+    }
+  }
+  .item-info {
+    text-transform: capitalize;
+    font-size: 80%;
+  }
+  .replaced-item {
+    background-color: #ffd700;
+    padding: 3px 5px;
+    margin: -4px -5px 3px;
+  }
+}
+
+.padding-left-0 {
+  padding-left: 0;
+}
+
+.padding-right-0 {
+  padding-right: 0;
+}
+
+.margin-bottom-5 {
+  margin-bottom: 5px;
+}
+
+.margin-top-5 {
+  margin-top: 5px;
+}
+
+.unavailable {
+  color: red;
+  text-decoration: line-through;
+}
+
+.container-fluid, .panel {
+  .col-xs-12 {
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+}
+
+.col-12 {
+  width: 100%;
+  float: left;
+}
+
+.col-6 {
+  width: 50%;
+  float: left;
+}
+
+.panel {
+  margin-bottom: 10px;
+  .panel-body {
+    padding: 5px 15px;
+    hr {
+      margin: 0;
+    }
+  }
+}
+
+.replaced {
+  height: 50px;
+  overflow: hidden;
+}
+
+.replacement {
+  .search-result {
+    height: calc(100vh - 150px);
+    overflow: hidden auto;
+    div.row:nth-of-type(odd) {
+      background-color: #f9f9f9;
+    }
+  }
+}
+
+.substitute, .replacement {
+  div.row {
+    border-top: 1px solid #ddd;
+    position: relative;
+    .image{
+      text-align: center;
+      float: left;
+      width: 25%;
+      margin: 5px;
+      padding: 5px;
+      background-color: $white;
+      .img-responsive {
+        height: 60px;
+        margin: 0 auto;
+      }
+    }
+    .details {
+      padding: 5px 10px;
+      float: left;
+      max-width: 70%;
+      button {
+        position: absolute;
+        right: 30px;
+        bottom: 5px;
+      }
+    }
+  }
+}
+
+.substitute {
+  background-color: #ffd5d5;
+  padding: 5px;
+  margin-bottom: 15px;
+  border-radius: 5px;
+  div.row {
+    border-top: 0;
+  }
+  p {
+    padding: 0 5px;
+    font-weight: bold;
+    font-size: 16px;
+    margin-bottom: 5px;
+  }
+}
+
+.sticky {
+  position: fixed;
+  top: 50px;
+  left: 0;
+  z-index: 10;
+  width: 100%;
+  padding: 10px 15px 0;
+  background: $white;
+}
+@media screen and (min-width: 768px) {
+  .sticky {
+    top: 0;
+    left: 51px;
+  }
+}
+
+.sticky + .container-fluid {
+  padding-top: 151px;
+}
+
+input[type='number'] {
+    -moz-appearance:textfield;
+}
+/* Webkit browsers like Safari and Chrome */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+.error-message {
+  font-size: 11px;
+  text-align: left;
+}
+
+.discrepancy.well {
+  color: #ffffff;
+  background-color: #dc3545;
+  padding: 10px;
+  margin-bottom: 5px;
+  font-size: 85%;
+  a {
+    text-decoration: underline;
+  }
+  ul {
+    padding-inline-start: 15px;
+    margin: 0;
+  }
+}

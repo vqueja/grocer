@@ -1,0 +1,103 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/user','profile']" (click)="onCancelClick()">Profile</a></li>
+    <li class="breadcrumb-item text-primary" aria-current="page">Edit</li>
+  </ol>
+</nav>
+
+<form class="form-horizontal" [formGroup]="profileEditForm" (ngSubmit)="onSubmit()">
+  <fieldset>
+    <div class="form-group" *ngIf="!isPBU">
+      <label class="col-md-3 control-label" for="email">Email</label>
+      <div class="col-md-6">
+        <input id="email" name="email" formControlName="email" class="form-control input-md" required="" type="text">
+        <div class="error-message" *ngIf="profileEditForm.get('email').errors && profileEditForm.get('email').touched">
+          <p>{{profileEditForm.get('email').errors.msg || 'Please enter a valid email address'}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3 control-label" for="lastName">Last Name</label>
+      <div class="col-md-6">
+        <input id="lastName" name="lastName" formControlName="lastName" class="form-control input-md" required="" type="text">
+        <div class="error-message" *ngIf="profileEditForm.get('lastName').errors && profileEditForm.get('lastName').touched">
+          <p>{{profileEditForm.get('lastName').errors.msg || 'Please enter your last name'}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3 control-label" for="firstName">First Name</label>
+      <div class="col-md-6">
+        <input id="firstName" name="firstName" formControlName="firstName" class="form-control input-md" required="" type="text">
+        <div class="error-message" *ngIf="profileEditForm.get('firstName').errors && profileEditForm.get('firstName').touched">
+          <p>{{profileEditForm.get('firstName').errors.msg || 'Please enter your first name'}}</p>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="form-inline">
+        <label class="col-md-3 control-label" for="birthdate">Date of Birth</label>
+        <div class="col-md-6 birthdate">
+          <select class="form-control" name="month" formControlName="month">
+            <option value="" disabled selected hidden>Month</option>
+            <option value="01">January</option>
+            <option value="02">February</option>
+            <option value="03">March</option>
+            <option value="04">April</option>
+            <option value="05">May</option>
+            <option value="06">June</option>
+            <option value="07">July</option>
+            <option value="08">August</option>
+            <option value="09">September</option>
+            <option value="10">October</option>
+            <option value="11">November</option>
+            <option value="12">December</option>
+          </select>
+          <input class="form-control" type="number" name="day" formControlName="day" placeholder="Day">
+          <input class="form-control" type="number" name="year" formControlName="year" placeholder="Year">
+          <div class="error-message" *ngIf="(profileEditForm.get('month').errors || profileEditForm.get('day').errors || profileEditForm.get('year').errors
+            || profileEditForm.hasError('invalidDate')) && (profileEditForm.get('day').touched || profileEditForm.get('year').touched
+            || profileEditForm.get('month').touched)">
+            <p>{{ 'Please enter a valid date of birth'}}</p>
+          </div>
+
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <div class="form-inline">
+        <label class="col-md-3 control-label" for="mobileNumber">Mobile Number</label>
+        <div class="col-md-6 mobileNumber">
+          <select name="prefix" formControlName="prefix" class="form-control">
+            <option value="+63">+63</option>
+          </select>
+          <input id="mobileNumber" name="mobileNumber" formControlName="mobileNumber" class="form-control input-md" required="" type="text">
+          <div class="error-message" *ngIf="profileEditForm.get('mobileNumber').errors && profileEditForm.get('mobileNumber').touched">
+            <p>{{profileEditForm.get('mobileNumber').errors.msg || 'Please enter a valid mobile number'}}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3 control-label" for="gender">Gender</label>
+      <div class="col-md-6">
+        <label class="radio-inline" for="male">
+          <input type="radio" name="gender" id="male" value="M" formControlName="gender">
+          Male
+        </label>
+        <label class="radio-inline" for="female">
+          <input type="radio" name="gender" id="female" value="F" formControlName="gender">
+          Female
+        </label>
+      </div>
+    </div>
+    <br>
+    <div class="form-group">
+      <label class="col-md-3 control-label" for="save"></label>
+      <div class="col-md-6">
+        <button id="save" name="save" class="btn btn-primary">Save Changes</button>
+        <button id="cancel" name="cancel" class="btn btn-default" type="button" (click)="onCancelClick()">Cancel</button>
+      </div>
+    </div>
+  </fieldset>
+</form>

@@ -1,0 +1,47 @@
+<div class="popup">
+  <div class="modal fade" bsModal #popupModal="bs-modal" tabindex="-1"
+    role="dialog" aria-labelledby="dialog-static-name" [config]="config"
+    (onHidden)="popupClosed()">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div *ngIf="pageSetting" class="modal-body text-center">
+          <div class="modal-body-header">
+            <button *ngIf="!pageSetting.isConfirmButton" type="button"
+              class="close pull-right" aria-label="Close" (click)="popupModal.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="embed-responsive">
+            <object
+              class="embed-responsive-item"
+              type="text/html"
+              (load)="cd.detach()"
+              [data]="contentUrl">
+            </object>
+          </div>
+          <div *ngIf="pageSetting.isConfirmButton">
+            <br>
+            <p *ngIf="pageSetting.isCheckbox" class="checkbox-container">
+              <span class="checkbox">
+                <label>
+                  <input type="checkbox" [(ngModel)]="isChecked" (click)="cd.reattach()">
+                  <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                </label>
+              </span>
+              <span class="text">
+                <strong>{{pageSetting.checkboxText}}</strong>
+                <br>
+                <em class="small text-muted">Check the box to continue.</em>
+              </span>
+            </p>
+             <p>
+              <button type="button" class="btn btn-primary btn-lg" (click)="popupModal.hide()" [disabled]="!isChecked">
+                {{ confirmButtonText }}
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,35 @@
+<div *ngFor="let item of cartItems$ | async; trackBy: trackByFn">
+  <app-cart-item
+    [cartItem]="item"
+    [isCartSummary]="isCartSummary"
+    [storeLogo]="(partnerStore$ | async).logo"
+    (onOpenModalEmit)="openItemDialog($event)">
+  </app-cart-item>
+</div>
+
+<modal #itemDetailsModal [closeOnOutsideClick]="false">
+  <ng-template #modalBody>
+    <app-item-details-dialog
+      [item]="selectedItem$ | async"
+      [categories]="categories$ | async"
+      [isAuthenticated] = "isAuthenticated$ | async"
+      [userLists]="userLists$ | async"
+      [cartItems]="cartItems$ | async"
+      [partnerStore]="partnerStore$ | async"
+      [modalContainer]="itemDetailsModal"
+      (onCloseModalEmit)="closeItemDialog()"
+      (onClose)="closeItemDialog()">
+    </app-item-details-dialog>
+  </ng-template>
+</modal>
+
+<modal #itemRequestModal [closeOnOutsideClick]="false">
+  <ng-template #modalBody>
+    <app-item-request
+      [requestItem]="requestItem"
+      [partnerStore]="partnerStore$ | async"
+      (onCloseModalEmit)="closeItemRequest()"
+      (onClose)="closeItemRequest()">
+    </app-item-request>
+  </ng-template>
+</modal>

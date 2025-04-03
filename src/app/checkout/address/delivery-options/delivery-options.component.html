@@ -1,0 +1,127 @@
+<br />
+<div class="calendar">
+  <div class="row">
+    <div class="col-custom"></div>
+    <div *ngFor="let timeslot of timeSlotsData" class="col-custom">
+      {{ timeslot.date | date:'MMM dd' }}<br>
+      <small class="hidden-xs">{{ timeslot.date | date:'EEEE' }}</small>
+      <small class="hidden-lg hidden-md hidden-sm">{{ timeslot.date | date:'EEE' }}</small>
+    </div>
+  </div>
+  <ng-container *ngIf="timeSlotsData.length">
+    <div *ngFor="let slot of timeSlotHours; let row = index;" class="row">
+      <div class="col-custom">
+        <span class="hidden-xs">{{ globals.TIMESLOT_LABELS[row] }}</span>
+        <span class="hidden-lg hidden-md hidden-sm">{{ globals.TIMESLOT_LABELS_SHORT[row] }}</span>
+      </div>
+      <div *ngFor="let timeslots of timeSlotsData; let col = index" class="col-custom">
+        <!-- NOTE: ngx-bootstrap radio button -->
+        <ng-container [ngSwitch]="timeSlotTable[row][col]">
+          <ng-container *ngSwitchCase="CLOSE">
+            <label
+              [(ngModel)]="selectedTimeSlot"
+              [btnRadio]="[row, col]"
+              class="btn-primary btn btn-block"
+              disabled>
+              <span class="hidden-xs">Closed</span>
+              <span class="hidden-sm hidden-md hidden-lg hidden-xl glyphicon glyphicon-ban-circle"></span>
+            </label>
+          </ng-container>
+          <ng-container *ngSwitchCase="FULL">
+            <label
+              [(ngModel)]="selectedTimeSlot"
+              [btnRadio]="[row, col]"
+              class="btn-primary btn btn-block"
+              disabled>
+              <span class="hidden-xs">FULL</span>
+              <span class="hidden-sm hidden-md hidden-lg hidden-xl glyphicon glyphicon-remove-circle"></span>
+            </label>
+          </ng-container>
+          <ng-container *ngSwitchCase="OPEN">
+            <ng-container *ngIf="selectedTimeSlot[0] == row && selectedTimeSlot[1] == col; else elseBlock">
+              <label
+                [(ngModel)]="selectedTimeSlot"
+                [btnRadio]="[row, col]"
+                class="btn-success-selected btn btn-block">
+                <span class="glyphicon glyphicon-ok"></span>
+              </label>
+            </ng-container>
+            <ng-template #elseBlock>
+              <label
+                [(ngModel)]="selectedTimeSlot"
+                [btnRadio]="[row, col]"
+                class="btn-default btn btn-block">
+                <span class="hidden-xs">Open</span>
+                <span class="hidden-sm hidden-md hidden-lg hidden-xl glyphicon glyphicon-plus-sign"></span>
+              </label>
+            </ng-template>
+          </ng-container>
+        </ng-container>
+        <!-- <ng-container *ngIf="isClosedSlot(col,row); else elseBlock1">
+          <label
+            #radioButtons
+
+            [(ngModel)]="selectedTimeSlot"
+            [btnRadio]="[col,row]"
+            class="btn-warning btn btn-block"
+            disabled>
+            <span class="hidden-xs">Closed</span>
+            <span class="hidden-sm hidden-md hidden-lg hidden-xl glyphicon glyphicon-ban-circle"></span>
+          </label>
+        </ng-container>
+        <ng-template #elseBlock1>
+          <ng-container *ngIf="selectedTimeSlot[0] == col && selectedTimeSlot[1] == row; else elseBlock2">
+            <label
+              #radioButtons
+              [ngClass]="['btn-success-selected','btn','btn-block']"
+              [(ngModel)]="selectedTimeSlot"
+              [btnRadio]="[col,row]">
+              <span class="glyphicon glyphicon-ok"></span>
+            </label>
+          </ng-container>
+        </ng-template >
+        <ng-template #elseBlock2>
+          <ng-container *ngIf="timeslots.range[row].booked < timeslots.range[row].max; else elseBlock3">
+            <label
+              #radioButtons
+              [ngClass]="['btn-default','btn','btn-block']"
+              [(ngModel)]="selectedTimeSlot"
+              [btnRadio]="[col,row]">
+              <span class="hidden-xs">Open</span>
+              <span class="hidden-sm hidden-md hidden-lg hidden-xl glyphicon glyphicon-plus-sign"></span>
+            </label>
+          </ng-container>
+        </ng-template>
+        <ng-template #elseBlock3>
+          <label
+            #radioButtons
+            [ngClass]="['btn-primary','btn','btn-block']"
+            [(ngModel)]="selectedTimeSlot"
+            [btnRadio]="[col,row]"
+            disabled>
+            <span class="hidden-xs">FULL</span>
+            <span class="hidden-sm hidden-md hidden-lg hidden-xl glyphicon glyphicon-remove-circle"></span>
+          </label>
+        </ng-template > -->
+      </div>
+    </div>
+  </ng-container>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <div class="input-btn-group nav-but-grp pull-right">
+      <button
+        class="btn btn-default"
+        (click)="onBackBtn()">
+        <span class="glyphicon glyphicon glyphicon-chevron-left"></span>
+        Previous
+      </button>
+      <button
+        class="btn btn-primary"
+        [disabled]="isStoreClose"
+        (click)="checkoutToPayment()">
+        Proceed to Payment
+      </button>
+    </div>
+  </div>
+</div>

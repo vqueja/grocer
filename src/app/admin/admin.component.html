@@ -1,0 +1,92 @@
+<div class="admin bg-dark">
+  <nav class="navbar hidden-xs">
+    <div class="container-fluid">
+      <div class="navbar-header">
+        <a class="navbar-brand" [routerLink]="['/admin/home']" >
+          <img class="logo" src="/assets/OMG.png">
+          <span>Dashboard</span>
+        </a>
+      </div>
+      <ul class="nav navbar-nav">
+        <li>
+          <a [routerLink]="['/admin/users/profile/', userData.id]">
+            <i class="fa fa-user admin-profile"></i><b > {{ userData.username }}</b>
+          </a>
+        </li>
+        <li><a (click)="logout()">Logout <i class="fa fa-sign-out fa-lg"></i></a></li>
+      </ul>
+    </div>
+    <div class="sidebar ">
+      <ul *ngIf="userMenu.length" class="nav nav-stacked">
+        <ng-container *ngFor="let menuItem of userMenu">
+          <ng-container *ngIf="menuItem.subItems; else elseMenu">
+            <li>
+              <span class="btn">
+                <i class="{{menuItem.icon ? menuItem.icon : defaultIcon}}"></i>
+              </span>
+              <div>
+                <span>{{menuItem.name}}</span>
+                <p *ngFor="let subItem of menuItem.subItems" [routerLink]="subItem.routerLink">
+                  {{subItem.name}}
+                </p>
+              </div>
+            </li>
+          </ng-container>
+          <ng-template #elseMenu>
+            <li [routerLink]="menuItem.routerLink" routerLinkActive="active">
+              <span class="btn">
+                <i class="{{menuItem.icon ? menuItem.icon : defaultIcon}}"></i>
+              </span>
+              <div>
+                <p>{{menuItem.name}}</p>
+              </div>
+            </li>
+          </ng-template>
+        </ng-container>
+      </ul>
+    </div>
+  </nav>
+  <nav class="navbar navbar-fixed-top hidden-sm hidden-md hidden-lg hidden-xl">
+    <div class="navbar-header">
+      <a class="navbar-brand" [routerLink]="['/admin/home']" >
+        <img class="logo" src="/assets/OMG.png">
+        <span>Dashboard</span>
+      </a>
+      <button type="button" class="navbar-toggle collapsed" (click)="isCollapsed = !isCollapsed" #mobileMenu >
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+    </div>
+    <div class="collapse navbar-collapse" [attr.aria-expanded]="!isCollapsed" [ngClass]="{collapse: isCollapsed}">
+      <ul class="nav" (click)="isCollapsed = true">
+        <li>
+          <a class="text-white" [routerLink]="['/admin/users/profile/', userData.id]">
+            Signed in as <strong>{{ userData.username }}</strong>
+          </a>
+        </li>
+        <hr>
+        <ng-container *ngIf="userMenu.length">
+          <ng-container *ngFor="let menuItem of userMenu">
+            <ng-container *ngIf="menuItem.subItems; else elseMobileSubItems">
+              <li *ngFor="let subItem of menuItem.subItems">
+                <a [routerLink]=subItem.routerLink>{{subItem.name}}</a>
+              </li>
+            </ng-container>
+            <ng-template #elseMobileSubItems>
+              <li>
+                <a [routerLink]=menuItem.routerLink>{{menuItem.name}}</a>
+              </li>
+            </ng-template>
+          </ng-container>
+          <li><a (click)="logout()">Logout</a></li>
+        </ng-container>
+      </ul>
+    </div>
+  </nav>
+  <div class="container">
+    <router-outlet></router-outlet>
+    <footer></footer>
+  </div>
+</div>

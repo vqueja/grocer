@@ -1,0 +1,36 @@
+<div class="pageLabel">
+  <nav class="nav-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Admin Tools</li>
+      <li class="breadcrumb-item text-primary" aria-current="page">Settings</li>
+    </ol>
+  </nav>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <button type="button" (click)="saveSettings()" class="btn btn-primary" [disabled]="bDisableSave">Save Changes</button>
+    <!-- <button type="button" (click)="refresh()" class="btn btn-default">Refresh</button> -->
+  </div>
+</div>
+<hr>
+<table class="settings table table-hover table-striped table-bordered">
+  <!-- <thead>
+    <tr>
+      <th></th>
+
+    </tr>
+  </thead> -->
+  <tbody>
+    <tr *ngFor="let setting of settingsContainer; let i = index;">
+      <td class="text-left">{{ setting.name }}</td>
+      <td class="text-left">
+        <div class="input-group">
+          <span class="input-group-btn"><button type="button" class="btn btn-default" disabled>&#8369;
+          </button></span>
+          <input #settingsValue type="number" min="0.00" max="999.00" step="0.01" class="settingsInput form-control" value="{{ setting.value | number:'1.2-2'}}" (keyup)="updateSettingValue($event, i)"/>
+        </div>
+      </td>
+      <!-- <td class="text-right"><input #settingsValue value="{{ setting.value | number:'1.2-2'}}"/></td> -->
+    </tr>
+  </tbody>
+</table>

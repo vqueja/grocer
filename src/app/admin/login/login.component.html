@@ -1,0 +1,39 @@
+<div class="bg">
+  <div class="container">
+    <div id="content" class="col-sm-12">
+      <div class="col-md-5 col-centered">
+        <div class="panel panel-default entry">
+          <div class="panel-body text-center">
+            <div class="logo">
+              <img src="assets/OMG.png">
+              <div>Dashboard</div>
+            </div>
+            <form class="login-form" [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+              <fieldset class="input-container">
+                <div class="input-item">
+                  <input type="text" class="user-input-email user-input" name="" placeholder="Enter Username" formControlName="username" autocomplete="off">
+                  <div *ngIf="loginForm.get('username').errors && loginForm.get('username').touched">
+                    <span class="error-icon text-danger">!</span>
+                    <p class="error-message text-danger">{{loginForm.get('username').errors.msg || 'Please enter your username'}}</p>
+                  </div>
+                </div>
+                <div class="input-item">
+                  <input type="password" class="user-input-password user-input" name="password" placeholder="Enter Password" formControlName="password"
+                    autocomplete="off">
+                  <div *ngIf="loginForm.get('password').errors && loginForm.get('password').touched">
+                    <span class="error-icon text-danger">!</span>
+                    <p class="error-message text-danger">{{loginForm.get('password').errors.msg || 'Password must be at least 6 characters'}}</p>
+                  </div>
+                </div>
+              </fieldset>
+              <fieldset class="login-button-container">
+                <button type="submit" class="btn btn-primary login-button">Log in</button>
+              </fieldset>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

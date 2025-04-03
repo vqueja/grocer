@@ -1,0 +1,63 @@
+@import "../../../shared/scss/custom_themes/default/default";
+
+.panel-default {
+  padding: 10px 0;
+  margin: 10px 0;
+
+  hr{
+    margin: 10px 0;
+  }
+  h5 {
+    color: #666666;
+    margin-bottom: 0px;
+    font-weight: normal;
+  }
+  h4 {
+    // color: #ff5847;
+    font-weight: 500;
+  }
+  .long-text {
+    max-width: 210px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .order-list {
+    max-height: 150px;
+    overflow-y: auto;
+    margin-bottom: 5px;
+  }
+  .save-list {
+    height: 25px;
+  }
+}
+.line-through{
+  text-decoration: line-through;
+  font-size: 85%;
+}
+.text-red {
+  color: red;
+}
+/* width */
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+/* Handle */
+
+::-webkit-scrollbar-thumb {
+  background: #aaa;
+}
+
+/* Handle on hover */
+
+::-webkit-scrollbar-thumb:hover {
+  background: #888;
+}

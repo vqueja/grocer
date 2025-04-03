@@ -1,0 +1,65 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/admin/users']">Users</a></li>
+    <li class="breadcrumb-item text-primary" aria-current="page">{{ operation }}</li>
+  </ol>
+</nav>
+<form class="form-inline small" [formGroup]="addEditUserForm">
+  <div class="row">
+    <div class="col-sm-12">
+      <ng-container *ngIf="operation === 'Add'">
+        <button class="btn btn-primary" (click)="onSubmit('Add1')">Save and Edit</button>
+        <button class="btn btn-primary" (click)="onSubmit('Add2')">Save and Create New User</button>
+      </ng-container>
+      <ng-container *ngIf="operation === 'Edit'">
+        <button class="btn btn-primary" (click)="onSubmit('Add1')">Save Changes</button>
+        <button class="btn btn-default" (click)="resetPassword()">Reset Password</button>
+        <button *ngIf="userData" class="btn btn-default" (click)="setUserStatus()">{{ userData.enabled ? 'Disable': 'Enable' }}</button>
+      </ng-container>
+    </div>
+  </div>
+  <hr>
+  <div *ngIf="activeUser.partner_id == 1" class="row">
+    <div class="col-sm-12">
+      <label>Partner:</label>
+      <select class="form-control" formControlName="partner" name="partner" (change)="filterRolesList($event.target.value)">
+        <option *ngIf="operation === 'Add'" value="0" disabled selected hidden>Partner</option>
+        <option *ngFor="let partner of partnerList" [value]="partner.id">{{ partner.name }}</option>
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <label for="username">Username:</label>
+      <input *ngIf="operation === 'Add'" type="text" formControlName="username" class="form-control" placeholder="Username">
+      <span *ngIf="operation === 'Edit' && userData" class="display-text">{{ userData.username }}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <label for="name">Name:</label>
+      <input type="text" formControlName="name" class="form-control" placeholder="Name">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <label for="email">Email:</label>
+      <input type="text" formControlName="email" class="form-control" placeholder="Email">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <label>Role:</label>
+      <select class="form-control" formControlName="role" name="role">
+        <option value="0" [selected]="operation === 'Add'" disabled hidden>Role</option>
+        <option *ngFor="let role of filteredRoles" [value]="role.id">{{ role.name }}</option>
+      </select>
+    </div>
+  </div>
+  <div *ngIf="operation === 'Edit' && userData" class="row">
+    <div class="col-sm-12">
+      <label for="email">Status:</label>
+      <span class="display-text">{{ userData.enabled ? 'Enabled': 'Disabled' }}</span>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,175 @@
+<div class="">
+
+<!-- <div #loader class="loader" [hidden]="bSavingItem" id="loader">
+    <span class="loader-text">Saving changes....</span>
+</div> -->
+<div class="pageLabel">
+  <nav class="nav-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Admin Tools</li>
+      <li class="breadcrumb-item"><a [routerLink]="['/admin/manage-items']">Manage Items</a></li>
+      <li class="breadcrumb-item text-primary" aria-current="page">Edit Item</li>
+    </ol>
+  </nav>
+</div>
+<div class="row">
+  <div class="col-sm-12">
+    <button class="btn btn-primary" type="button" (click)="saveChanges()">Save Changes</button>
+    <button class="btn btn-default" type="button" (click)="onCancelClick()">Cancel</button>
+  </div>    
+</div>
+<hr>
+<form class="form-inline content row" [formGroup]="itemEditForm">
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">  
+    <div class="row small">
+      <div *ngIf="isEOSUser" class="col-sm-12 form-group">
+        <label class="control-label" for="stores">Store</label>
+        <select class="form-control min-width-200" formControlName="store" name="store" (change)="changeStore($event)" >
+          <option [value]="0" selected>Master Item</option>
+          <option *ngFor="let partner of partnerStoreList" [value]="partner.id">{{ partner.name }}</option>
+        </select>
+      </div>
+      <div *ngIf="isEOSUser" class="col-sm-12 form-group">
+        <label class="control-label" for="stores">Add item to</label>
+        <select class="form-control min-width-200" formControlName="addStore" name="addStore" (change)="changeAddStore($event)" >
+          <option [value]="0" selected>None</option>
+          <option *ngFor="let partner of addStoreList" [value]="partner.id">{{ partner.name }}</option>
+        </select>
+      </div>
+      <div class="col-sm-12 form-group">
+        <label class="control-label" for="itemName">Name</label>
+        <input name="itemName" formControlName="itemName" class="form-control min-width-200 width-300" type="text" placeholder="Item Name">
+        <div class="error-message" *ngIf="itemEditForm.get('itemName').errors && itemEditForm.get('itemName').touched">
+          <p>{{itemEditForm.get('itemName').errors.required ? 'Required field' : 'Maximum 300 characters'}}</p>
+        </div>
+      </div>
+      <div class="col-sm-12 form-group">
+        <label class="control-label" for="itemName">Custom Name</label>
+        <input name="itemName" formControlName="customName" class="form-control min-width-200 width-300" type="text" placeholder="Custom Item Name">
+        <div class="error-message" *ngIf="itemEditForm.get('customName').errors && itemEditForm.get('customName').touched">
+          <p>Maximum 300 characters</p>
+        </div>
+      </div>
+      <div class="col-sm-12 form-group">
+        <label class="control-label" for="itemCode">Code</label>
+        <input name="itemCode" formControlName="itemCode" class="form-control min-width-200" type="text" placeholder="Item Code">
+        <div class="error-message" *ngIf="itemEditForm.get('itemCode').errors && itemEditForm.get('itemCode').touched">
+          <p>{{itemEditForm.get('itemCode').errors.required ? 'Required field' : 'Maximum 20 characters'}}</p>
+        </div>
+      </div>
+      <div class="col-sm-12 form-group">
+        <label class="control-label" for="brand">Brand</label>
+        <input name="brand" formControlName="brand" class="form-control min-width-200" list="brands-list" placeholder="Brand Name">
+        <datalist id="brands-list">
+          <option *ngFor="let brand of brands" [value]="brand">
+        </datalist>
+        <div class="error-message" *ngIf="itemEditForm.get('brand').errors && itemEditForm.get('brand').touched">
+          <p>Maximum 50 characters</p>
+        </div>
+      </div>
+      <div *ngIf="isEOSUser" class="col-sm-12 form-group">
+        <label class="control-label" for="slug">Slug</label>
+        <input name="slug" formControlName="slug" class="form-control width-300" type="text" placeholder="Slug">
+        <div class="error-message" *ngIf="itemEditForm.get('slug').errors && itemEditForm.get('slug').touched">
+          <p>Maximum 255 characters</p>
+        </div>
+      </div>      
+      <div *ngIf="isEOSUser" class="col-sm-12 form-group">
+        <label class="control-label" for="weighted">Weighted</label>
+        <label class="radio-inline">
+          <input type="radio" formControlName="weighted" [value]="1"> Yes
+        </label>
+        <label class="radio-inline">
+          <input type="radio" formControlName="weighted" [value]="0"> No
+        </label>
+      </div>
+      <div class="col-sm-12 form-group">
+        <label class="control-label" for="price">Price</label>
+        <input name="price" formControlName="price" class="form-control min-width-200 text-right" type="number" placeholder="0.00">
+        <div class="error-message" *ngIf="itemEditForm.get('price').errors && itemEditForm.get('price').touched">
+          <p>Required field</p>
+        </div>
+      </div>
+      <div class="col-sm-12 form-group">
+        <label class="control-label" for="enabled">Status</label>
+        <label class="radio-inline">
+          <input type="radio" formControlName="enabled" [value]="1"> Enabled
+        </label>
+        <label class="radio-inline">
+          <input type="radio" formControlName="enabled" [value]="0"> Disabled
+        </label>
+      </div>
+      <div class="col-sm-12 form-group">
+        <label class="control-label" for="category1">Category 1</label>
+        <select  class="form-control min-width-200" formControlName="category1" (change)="changeCategory1($event)">
+          <option [value]="-1" selected hidden>Select category</option>
+          <option [value]="0">None</option>
+          <option *ngFor="let c of category1List" [value]="c.id">{{c.name}}</option>
+        </select>
+      </div>
+      <div class="col-sm-12 form-group">
+        <label class="control-label" for="category2">Category 2</label>
+        <select  class="form-control min-width-200" formControlName="category2" (change)="changeCategory2($event)">
+          <option [value]="-1" selected hidden>Select category</option>
+          <option [value]="0">None</option>
+          <option *ngFor="let c of category2List" [value]="c.id">{{c.name}}</option>
+        </select>
+      </div>
+      <div class="col-sm-12 form-group">
+        <label class="control-label" for="category3">Category 3</label>
+        <select class="form-control min-width-200" formControlName="category3">
+          <option [value]="-1" selected hidden>Select category</option>
+          <option [value]="0">None</option>
+          <option *ngFor="let c of category3List" [value]="c.id">{{c.name}}</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <div class="col-xs-12 col-sm-12 col-md-6 col-lg-6">
+    <div class="row small">
+      <div class="col-sm-12 form-group item-image">
+        <label class="control-label" for="image">Image</label>
+        <div *ngIf="itemData">
+          <p>
+            <img #itemImage class="img-thumb" [src]="itemData.imageUrl" (error)="onImageError($event)">
+          </p>
+        </div>
+      </div> 
+      <div *ngIf="isEOSUser" class="col-sm-12 form-group file-input">
+        <label class="control-label" for="file">Upload image</label>
+        <input #fileUpload formControlName="file" accept=".jpg"
+          type="file" class="form-control min-width-200" placeholder="Filename">
+      </div>
+    </div>
+    <ng-container *ngIf="isStoreItem">
+      <hr>
+      <p class="small">
+        <strong>Price History</strong>
+        <small>(Latest 10 updates)</small>
+      </p>
+      <table class="table table-hover table-striped small">
+        <thead>
+          <tr>
+            <th>Date Updated</th>
+            <th>By</th>
+            <th>Old Price</th>
+            <th>New Price</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let record of priceHistory;">
+            <td>{{ record.date }}</td>
+            <td>{{ record.updatedBy }}</td>
+            <td class="text-right">{{ record.originalPrice | number:'1.2-2' }}</td>
+            <td class="text-right">{{ record.currentPrice | number:'1.2-2' }}</td>
+          </tr>
+          <tr *ngIf="!priceHistory.length">
+            <td colspan="4" class="text-center">No logs</td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+  </div>
+</form>
+
+</div>

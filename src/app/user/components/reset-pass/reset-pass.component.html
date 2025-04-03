@@ -1,0 +1,53 @@
+<div *ngIf="token && !isValid; else elseBlock" class="container">
+  <br><br><br>
+  <p>The link has already expired. Please request another one.</p>
+</div>
+<ng-template #elseBlock>
+  <ng-container *ngIf="!token; else elseBlock2">
+    <nav aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a [routerLink]="['/user','profile']">Profile</a></li>
+        <li class="breadcrumb-item text-primary" aria-current="page">Reset Password</li>
+      </ol>
+    </nav>
+  </ng-container>
+  <ng-template #elseBlock2>
+    <h3>Reset Password</h3>
+    <br>
+  </ng-template>
+  <div>
+    <form [formGroup]="resetForm" (ngSubmit)="onSubmit()" #formDir="ngForm">
+      <div class="row">
+          <div class="col-md-5 col-sm-6 col-xs-8 form-group">
+          <input type="password" class="form-control" formControlName="old_password" name="old_password" required placeholder="Enter Current Password">
+          <div class="error-message" *ngIf="resetForm.get('old_password').errors && resetForm.get('old_password').touched" >
+            <p>{{resetForm.get('old_password').errors.msg || 'Please enter current password'}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-md-5 col-sm-6 col-xs-8 form-group">
+          <input type="password" class="form-control" formControlName="password" name="password" required placeholder="Enter New Password">
+          <div class="error-message" *ngIf="resetForm.get('password').errors && resetForm.get('password').touched" >
+            <p>{{resetForm.get('password').errors.msg || 'Password must be at least 6 characters'}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-5 col-sm-6 col-xs-8 form-group">
+          <input type="password" class="form-control"  formControlName="verify" name="verify" required placeholder="Confirm New Password">
+          <div class="error-message" *ngIf="(resetForm.get('verify').errors || resetForm.hasError('mismatchedPasswords')) && resetForm.get('verify').touched">
+            <p>{{'Password must match'}}</p>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-4">
+          <button type="submit" class="btn btn-primary">Confirm</button>
+          <button type="button" class="btn btn-default" (click)="formDir.resetForm({})">Clear</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</ng-template>

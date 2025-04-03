@@ -1,0 +1,10 @@
+<div class="cart-empty">
+  <div class="empty-cart-icon"></div>
+  <div class="empty-cart-message">Your Shopping Cart is empty</div>
+  <div>
+    <button class="btn btn-default" [routerLink]="returnUrl">Go back to Shopping</button>
+    <button *ngIf="isAuthenticated" class="btn btn-default" routerLink="/user/lists">
+      Add Items from List
+    </button>
+  </div>
+</div>

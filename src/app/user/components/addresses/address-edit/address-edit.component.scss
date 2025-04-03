@@ -1,0 +1,17 @@
+.breadcrumb {
+  a {
+    color: #666;
+  }
+}
+
+.note {
+  color: #898989;
+  font-style: italic;
+}
+
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+select.ng-invalid.ng-touched {
+  border: 1px solid red;
+}

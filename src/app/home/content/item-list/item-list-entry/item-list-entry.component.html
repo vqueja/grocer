@@ -1,0 +1,63 @@
+<a itemprop="url" (click)="selectItem()">
+  <img itemprop="image" class="product-thumb" alt="{{item.name}}" [src]="getItemImageUrl(item.imageKey)" (load)="onImageLoaded()"
+    (error)="onImageError()">
+  <div class="product-productMetaInfo">
+    <div itemprop="name" class="product-name">{{ item.name }}</div>
+    <!-- <h2 class="product-product">{{ item.brandName }}</h2> -->
+    <div itemprop="offers" itemscope itemtype="https://schema.org/Offer" class="product-price">
+      <span>
+        <!-- Discounted price -->
+        <span itemprop="price" class="product-discountedPrice">₱{{ (item.price != ' -' ? item.price: '0.00') | number:'1.2-2'}}</span>
+        <!-- Original price -->
+        <!--<span class="product-strike"> react-text: 485 Rs.  /react-text  react-text: 486 1699 /react-text </span>-->
+      </span>
+      <!--Percentage off -->
+      <!--<span class="product-discountPercentage">(40% OFF)</span>-->
+    </div>
+    <ng-container *ngIf="!isSubstitute; else elseSubstitute">
+      <ng-container *ngIf="cartItem && cartItem.quantity != 0; else elseAddCart">
+        <div class="row">
+          <div class="col-md-12 quantity-in-cart">
+            <div class="input-group btn-block" (click)="inputQuantity($event)">
+                <span class="input-group-btn">
+                  <button class="btn-left btn btn-default" (click)="decrementQuantity($event)"
+                    [disabled]="itemQuantity == MIN_VALUE" type="button">
+                    <span class="glyphicon glyphicon-minus"></span>
+                  </button>
+                </span>
+                <input type="number" class="form-control text-center"
+                  [min]="MIN_VALUE" [max]="MAX_VALUE" step="1"
+                  [value]="itemQuantity" [formControl]="quantityControl"
+                  (blur)="checkIfValid($event)" (keypress)="keyPress($event)" />
+                <span class="input-group-btn">
+                  <button class="btn btn-success" type="button"(click)="incrementQuantity($event)"
+                    [disabled]="itemQuantity == MAX_VALUE" type="button">
+                    <span class="glyphicon glyphicon-plus"></span>
+                  </button>
+                </span>
+              <!-- </div> -->
+            </div>
+          </div>
+        </div>
+      </ng-container>
+      <ng-template #elseAddCart>
+        <button class="btn btn-default btn-block" (click)="addToCart($event)"
+           title="Add item to cart">
+           <span class="glyphicon glyphicon-shopping-cart"></span>&nbsp;Add to cart
+         </button>
+      </ng-template>
+    </ng-container>
+    <ng-template #elseSubstitute>
+      <button class="btn btn-default btn-block" title="Select item as substitute">
+        <span class="glyphicon glyphicon-save"></span>&nbsp;Select substitute
+      </button>
+    </ng-template>
+  </div>
+</a>
+<!-- <ng-container *ngIf="bShowToolTip; else withIMG">
+  <span class="itemname_noimg"> {{ item.name }} </span>
+</ng-container>
+<ng-template #withIMG>
+  <span class="itemname"> {{ item.name }} </span>
+</ng-template>
+</div> -->

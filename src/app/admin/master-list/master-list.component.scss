@@ -1,0 +1,33 @@
+@import "../../shared/scss/custom_themes/default/default";
+
+.dashboard {
+  margin-top: 0;
+}
+.pageLabel {
+  flex-wrap: wrap;
+}
+.nav-breadcrumb {
+  display: inline-flex;
+}
+.breadcrumb {
+  margin-left: 10px;
+  width: calc(100vw - 285px);
+}
+
+@media screen and (max-width: 767px) and (orientation: portrait) {
+  .formContainer {
+      align-content: center;
+      text-align: justify;
+      padding-left: 0px;
+      padding-top: 60px;
+  }
+}
+
+@media screen and (max-width: 767px) and (orientation: landscape) {
+  .formContainer {
+      align-content: center;
+      text-align: justify;
+      padding-left: 0px;
+      padding-top: 60px;
+  }
+}

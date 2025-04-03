@@ -1,0 +1,345 @@
+/* You can add global styles to this file, and also import other style files */
+
+@font-face {
+  // font-family: "Whitney-semi-bold";
+  // src: url("assets/WhitneyHTF-SemiBold.woff") format("woff")
+  font-family: "Helvetica Neue", "Roboto", Helvetica, Arial, sans-serif;
+}
+
+@font-face {
+  // font-family: "Whitney";
+  // src: url("assets/WhitneyHTF-Book.woff") format("woff")
+  font-family: "Helvetica Neue", "Roboto", Helvetica, Arial, sans-serif;
+}
+
+// bootstrap fonts
+$icon-font-path: "../node_modules/bootstrap-sass/assets/fonts/bootstrap/";
+@import "app/shared/scss/themes";
+// @import "app/shared/scss/custom_themes/default_variables";
+@import url('https://fonts.googleapis.com/css?family=Roboto&display=swap');
+@import "app/shared/scss/custom_bootstrap";
+
+html {
+  overflow-y: scroll;
+}
+
+body {
+  font-size: 15px;
+  line-height: 1.5;
+  -webkit-font-smoothing: subpixel-antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  // background: #ff2679;
+  background: #fff;
+  padding-top: 45px;
+}
+@media screen and (max-width: 767px) {
+  body {
+    // padding-top: 50px;
+    // background: url('/assets/con.png')#fff 30px -169px;
+  }
+}
+
+section {
+  background: #ffffff;
+}
+
+.col-centered {
+  float: none;
+  margin: 0 auto;
+  opacity: 0.9;
+}
+
+.row-base {
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-pack: start;
+  -ms-flex-pack: start;
+  justify-content: flex-start;
+  -webkit-box-align: stretch;
+  -ms-flex-align: stretch;
+  align-items: stretch;
+  -ms-flex-line-pack: stretch;
+  align-content: stretch;
+}
+
+.navbar {
+  margin-bottom: 0px !important;
+  border-bottom: 0px;
+  min-height: 40px !important;
+}
+
+.nav .open>a,
+.nav .open>a:hover {
+  color: #ff2679;
+}
+
+.nav .open>a:focus {
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  background: #ff2679;
+  color: #ffffff;
+}
+
+.nav>li>a:hover,
+.nav>li>a:focus {
+  color: #ff2679;
+}
+
+.navbar-right>li>a {
+  color: #ff2679;
+}
+@media screen and (max-width: 900px) {
+  .navbar-nav>li>a {
+    font-size: 12px;
+  }
+}
+
+@media (min-width: 768px) {
+  .navbar-nav>li>a {
+    padding-top: 10px;
+    padding-bottom: 10px;
+  }
+}
+
+.ui-spinner {
+  width: 28%;
+}
+
+.ui-inputtext {
+  width: 100%;
+}
+
+.ui-spinner-input {
+  border: none;
+}
+
+.ui-spinner>.ui-spinner-input {
+  //width: 30%;
+  //background: orange;
+}
+
+body.modal-open {
+  padding-right: 0 !important;
+  .modal {
+    z-index: 1050 !important;
+  }
+}
+
+.popup .modal {
+  z-index: 1050 !important;
+}
+
+div.home-container, div.cart-section {
+  .modal.in {
+    background-color: rgba(0, 0, 0, 0.5);
+    display: initial;
+  }
+  .modal-dialog {
+    -webkit-transform: translate(0,0) !important;
+    -o-transform: translate(0,0) !important;
+    transform: translate(0,0) !important;
+    // top: 50%;
+    margin: 30 auto;
+    width: 900px;
+  }
+  .modal-header {
+    display: none;
+  }
+  .modal-footer {
+    display: none;
+  }
+}
+@media screen and (max-width: 899px) {
+  div.categories {
+    div.accordion {
+      .panel-body {
+        padding-top: 0;
+      }
+    }
+  }
+  div.home-container, div.cart-section {
+    .modal-dialog {
+      width: 100%;
+      margin: 0;
+      .modal-content {
+        border-radius: 0;
+        border: 0;
+      }
+    }
+  }
+}
+
+.drop1 {
+  border: 1px solid #ccc !important;
+}
+
+.dropdown-toggle {
+  width: 100%;
+  text-align: left;
+  border: none;
+  background: transparent;
+  font-size: 1.2em;
+}
+
+.dropdown .dropdown-menu .username {
+  display: block;
+  padding: 3px 20px;
+  color: $white;
+}
+
+.btn-group.open .dropdown-toggle {
+  box-shadow: none;
+}
+
+.caret {
+  margin: 0;
+}
+
+.customClass {
+  position: relative;
+}
+
+.customClass .accordion-toggle:before {
+  font-family: FontAwesome;
+  float: left;
+  content: "\f06b";
+  font-size: 22px;
+}
+
+.customClass .db .accordion-toggle:before {
+  content: "\f09d";
+}
+
+.panel-group {
+  width: 50%;
+}
+
+
+@media screen and (max-width: 767px) {
+  .navbar-nav > li > a {
+     font-size: 12px;
+   }
+  .navbar-fixed-top .navbar-collapse {
+    max-height: unset;
+  }
+  .navbar-default .navbar-collapse,
+  .navbar-default .navbar-form {
+    border-color: #e7e7e7;
+    background: #ff5847;
+    position: absolute;
+    width: 92%;
+    z-index: 999;
+    top: 58px;
+    left: 15px;
+  }
+  .navbar-nav li {
+    text-align: center;
+  }
+  .navbar-default .navbar-toggle:hover,
+  .navbar-default .navbar-toggle:focus {
+    background-color: transparent;
+  }
+  .navbar-default .navbar-toggle {
+    border-color: transparent;
+    padding: 3px 10px;
+    margin-top: 0;
+  }
+  .navbar-default .navbar-toggle .icon-bar {
+    background: #ff5847;
+  }
+}
+
+.search typeahead-container {
+  top: 100% !important;
+  right: 0 !important;
+  left: unset !important;
+  width: 100%;
+  ul.dropdown-menu {
+    background-color: $white;
+    left: unset;
+    right: 0;
+    li a, li a.active {
+      background-color: #fff;
+      color: #333;
+      &:hover {
+        background-color: #FF4D7D;
+        color: #fff;
+      }
+    }
+  }
+}
+@media screen and (max-width: 767px) {
+  .search typeahead-container {
+    right: unset !important;
+    left: 0 !important;
+    position: fixed !important;
+    top: 131px !important;
+    ul.dropdown-menu {
+      width: 100%;
+      border: 0;
+      border-radius: 0;
+      padding: 0;
+      margin: 0;
+      .dropdown-header {
+        font-size: 9px;
+        padding: 10px 10px 0;
+      }
+      & > li > a {
+        padding: 0 10px;
+      }
+    }
+  }
+}
+
+.pagination > li > a {
+  color: #555;
+}
+
+// ADMIN STYLES
+.admin-body {
+  padding: 0;
+  margin: 0;
+  background-color: $white;
+}
+
+// CUSTOM CLASS FOR TABS IN ASSEMBLE ORDER
+.nav-item.customTabs, .nav-item.customTabsPending {
+  a.nav-link {
+    padding: 10px;
+    color: #333;
+    background-color: #f5f5f5;
+    border-bottom: 1px solid #ddd;
+    &:hover {
+      background-color: #eee;
+    }
+  }
+  &.active a.nav-link {
+    background-color: $white;
+    border-bottom: 1px solid transparent;
+  }
+}
+
+.nav-item.customTabsPending {
+  a.nav-link {
+    color: #fff;
+    background-color: #a87d7d;
+    border-bottom: 1px solid #a87d7d;
+    &:hover {
+      color: #333;
+    }
+  }
+  &.active a.nav-link {
+    color: #fff;
+    background-color: #de0051;
+    border-bottom: 1px solid transparent;
+  }
+}
+
+.tab-pane.customTabs, .tab-pane.customTabsPending {
+  padding-top: 20px;
+}

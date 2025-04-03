@@ -1,0 +1,262 @@
+<div class="container">
+  <div class="row">
+    <div class="col-md-12">
+      <h3>
+        <span class="num">1</span>
+        <span class="txt">Information</span>
+        <span class="num">2</span>
+        <span class="txt">Delivery time</span>
+        <span class="num num-sel">3</span>
+        <span class="txt txt-sel">Payment</span>
+      </h3>
+    </div>
+    <div class="col-md-8 col-sm-7 col-xs-12 main-panel">
+      <h4>Select mode of payment</h4>
+      <p class="small reminder-text">If your Order Total reaches P100 you can also pay using Gift Certificates.</p>
+      <div>
+        <!-- NOTE: TEMPORARILY DISABLED -->
+        <!-- <div #group1 class="creditcard">
+          <div class="checkbox disabled">
+            <label>
+              <input #cc type="checkbox" disabled value="" [(ngModel)]="checkedCC" (click)="toggleCheckBox($event)">
+              <span class="cr"><i class="cr-icon fa fa-check"></i></span>Pay with Credit/Debit Card
+              <img src="/assets/cc.png">
+            </label>
+          </div>
+          <div class="row ccOptions" *ngIf="checkedCC">
+            <div class="col-md-1"></div>
+            <div class="col-md-8">
+              <div class="input-group">
+                <p>COMING SOON!</p>
+              </div>
+            </div>
+            <div class="col-md-1"></div>
+          </div>
+        </div> -->
+        <!-- NOTE: TEMPORARILY DISABLED -->
+        <!-- <div #group2 class="paypal">
+          <div class="checkbox disabled">
+            <label>
+              <input #pp type="checkbox" disabled value="" [(ngModel)]="checkedPP" (click)="toggleCheckBox($event)">
+              <span class="cr"><i class="cr-icon fa fa-check"></i></span>Pay with PayPal
+              <img src="/assets/paypal.png">
+            </label>
+          </div>
+          <div class="row paypal" *ngIf="checkedPP">
+            <div class="col-md-1"></div>
+            <div class="col-md-8">
+              <form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+                <input type="hidden" name="cmd" value="_xclick">
+                <input type="hidden" name="business" value="Email">
+                <input type="hidden" name="lc" value="P">
+                <input type="hidden" name="button_subtype" value="services">
+                <input type="hidden" name="no_note" value="0">
+                <input type="hidden" name="currency_code" value="PHP">
+                <input type="hidden" name="bn" value="PP-BuyNowBF:btn_buynowCC_LG.gif:NonHostedGuest">
+                <div>
+                  <input type="image" src="https://www.paypalobjects.com/en_US/GB/i/btn/btn_buynowCC_LG.gif" border="0" name="submit" alt="PayPal – The safer, easier way to pay online.">
+                  <img alt="" border="0" src="https://www.paypalobjects.com/en_GB/i/scr/pixel.gif" width="1" height="1">
+                </div>
+              </form>
+            </div>
+            <div class="col-md-1"></div>
+          </div>
+        </div> -->
+        <!-- NOTE: TEMPORARILY DISABLED -->
+        <!-- <div>
+          <div class="checkbox">
+            <label>
+              <input #paymaya name="paymaya" type="checkbox" [(ngModel)]="checkedPayMaya" (click)="toggleCheckBox($event)">
+              <span class="cr"><i class="cr-icon fa fa-check"></i></span>Pay with PayMaya
+              <img class='logo' src="/assets/paymaya.jpg">
+            </label>
+          </div>
+          <div *ngIf="checkedPayMaya" class="small well">
+            <div class="icon">
+              <i class="glyphicon glyphicon-info-sign"></i>
+            </div>
+            <div class="text">
+              After clicking <strong>Place Order Now</strong>, you will be redirected to PayMaya's website
+              to make your payment. After completing your payment, you will be forwarded back to our site.
+            </div>
+          </div>
+        </div> -->
+
+        <div>
+          <div class="checkbox">
+            <label>
+              <input class="cr" name="cod" type="checkbox" [(ngModel)]="checkedCash" (click)="toggleCheckBox($event)">
+              Pay with Fund Transfer
+              <!-- <span class="cr"><i class="cr-icon fa fa-check"></i></span>Pay with Fund Transfer -->
+            </label>
+          </div>
+          <div *ngIf="checkedCash" class="small well">
+            <div class="icon">
+              <i class="glyphicon glyphicon-info-sign"></i>
+            </div>
+            <div class="text">
+              <p>
+                At this time, we only process pre-paid orders. You can now send payment for the amount indicated at the Grand Total. 
+                Send proof of payment (screenshot/photo and reference number) by replying to the email you will receive after placing this order.
+              </p>
+              <p>
+                Please send payment to:
+              </p>
+              <p>
+                <strong>BPI Account 9061009253</strong>
+                <br>
+                <strong>Chimera Technologies Corporation</strong>
+              </p>
+              <p>
+                You can use GCash, PayMaya, or simply use the e-transfer app or facility of your bank.
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <ng-container *ngIf="isAuthenticated$ | async">
+            <div class="checkbox">
+              <label>
+                <input #pbucheckbox class="cr" name="pbu" type="checkbox" [(ngModel)]="checkedPBU" (click)="toggleCheckBox($event)" >
+                  <!-- <input #pbucheckbox name="pbu" type="checkbox" checked [(ngModel)]="checkedPBU" disabled> -->
+                <!-- <span class="cr"><i class="cr-icon fa fa-check"></i></span> -->
+                Pay with My Credit
+              </label>
+              <label data-toggle="tooltip" data-placement="right"
+                title="The total amount for this order will be debited from your credit. Maximum amount is P{{availableBalance | number:'1.2-2'}}.">
+                <i class="glyphicon glyphicon-question-sign"></i>
+                <button type="button" class="btn btn-light" disabled>
+                  Balance <span class="badge badge-light float-right"> P {{availableBalanceDisplay | number:'1.2-2'}}</span>
+                </button>
+              </label>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="totalAmountDue > 99 || gcList.length">
+          <div>
+            <div class="checkbox">
+              <label>
+                <input #gc class="cr" name="gc" type="checkbox" [(ngModel)]="checkedGC" (click)="toggleCheckBox($event)">
+                <!-- <span class="cr"><i class="cr-icon fa fa-check"></i></span> -->
+                Pay with Gift Certificate(s)
+              </label>
+            </div>
+            <div class="row" *ngIf="checkedGC">
+              <div class="col-md-1"></div>
+              <div class="col-md-8">
+                <div class="input-group">
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-default">{{gcList.length}}</button>
+                  </span>
+                  <input #gCode type="text" pattern="[A-Za-z0-9]+" class="form-control no-spin"
+                    id="gc-code" name="gc-code" [disabled]="totalAmountDue < 99" placeholder="Enter a valid gift certificate code" />
+                  <span class="input-group-btn">
+                    <button class="btn btn-primary" type="button" [disabled]="totalAmountDue < 99" (click)="addGiftCertificate(gCode)">Add</button>
+                  </span>
+                </div>
+                <div class="list-group gc-group">
+                  <ul class="list-group">
+                    <li *ngFor="let gc of gcList" class="list-group-item d-flex justify-content-between align-items-center">
+                      {{gc.code}}
+                      <span class="badge badge-primary badge-pill">{{gc.value}}</span>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="row voucher">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+          <h4>Vouchers / Coupons</h4>
+          <p class="small reminder-text">
+            Limited to use of 1 coupon per checkout. Coupon is subject to Terms and Conditions.
+          </p>
+        </div>
+        <div class="col-md-6 col-sm-8 col-xs-12">
+          <div class="input-group">
+              <span class="input-group-btn">
+                <button class="btn btn-default" type="button" disabled><i [ngClass]="couponIcon"></i></button>
+              </span>
+              <input [(ngModel)]="couponCode" type="text" pattern="[A-Za-z0-9]+"
+                [disabled]="bCouponEntered" class="form-control no-spin" id="coupon-code"
+                name="coupon-code" placeholder="Enter Coupon Code" />
+              <ng-container *ngIf="!bCouponEntered; else elseCoupon">
+                <span class="input-group-btn">
+                  <button class="btn btn-primary" type="button" (click)="applyCoupon()">Apply</button>
+                </span>
+              </ng-container>
+              <ng-template #elseCoupon>
+                <span class="input-group-btn">
+                  <button class="btn btn-primary" type="button" (click)="removeCoupon()">Cancel</button>
+                </span>
+              </ng-template>
+          </div>
+          <div class="error-message" *ngIf="couponErrorMsg">
+            <p>{{ couponErrorMsg }}</p>
+          </div>
+        </div>
+      </div>
+      <div>
+        <h4>Special instructions</h4>
+      <textarea [(ngModel)]="instructionsText" class="form-control special-instructions" cols="50" rows="4"
+        placeholder="Please tell us nearby landmarks, delivery notes, amount of cash, etc...">
+      </textarea>
+      </div>
+    </div>
+
+    <div class="col-md-4 col-sm-5 col-xs-12">
+      <div class="row place-order">
+        <div class="col-md-12">
+          <button class="btn btn-block btn-default" (click)="goBack()">
+            <span class="glyphicon glyphicon glyphicon-chevron-left"></span>Back
+          </button>
+        </div>
+      </div>
+      <app-review-order *ngIf="orderId"
+        [shipAddress]="shipAddress$ | async"
+        [billAddress]="billAddress$ | async"
+        [paidAmount]="totalAmountPaid$ | async"
+        [cartTotal]="cartTotal$ | async"
+        [orderTotal]="grandTotal$ | async"
+        [serviceFees]="serviceFee$ | async"
+        [deliveryFees]="deliveryFee$ | async"
+        [discount]="tempDiscount$ | async"
+        [amountDue]="totalAmountDue$ | async"
+        [paidAmount]="totalAmountPaid$ | async"
+        [cartItems]="cartItems$ | async"
+        [deliveryDate]="deliveryDate$ | async"
+        [isAuthenticated]="isAuthenticated$ | async">
+      </app-review-order>
+      <div class="row place-order">
+        <div class="col-md-12">
+          <button [disabled]="(cartItems$ | async) && !(cartItems$ | async).length"
+            class="btn btn-block btn-primary" (click)="validateOrder()">
+            <span class="glyphicon glyphicon-tags"></span> &nbsp;Place Order Now
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal" bsModal #loadingModal="bs-modal" tabindex="-1"
+    role="dialog" aria-labelledby="dialog-static-name"
+    [config]="{backdrop: 'static', ignoreBackdropClick: true, keyboard: false}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body text-center">
+          <ng-container *ngIf="checkedPayMaya; else elseOmgLoading">
+            <p><img class="img-responsive" src="/assets/paymaya.jpg"></p>
+            <p><img src="/assets/loader.gif"></p>
+            <p>Please wait, you will be redirected to the payment gateway in a few seconds...</p>
+          </ng-container>
+          <ng-template #elseOmgLoading>
+            <h1>Processing...</h1>
+            <p><img src="/assets/loader.gif"></p>
+            <p>Please wait while your order is being processed.</p>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,133 @@
+<div class="container-fluid">
+  <ng-container *ngIf="paymentResult && (paymentResult.status === 'failure'
+    || paymentResult.status === 'cancel'); else elseSuccess">
+    <div class="well">
+      <i class="glyphicon glyphicon-exclamation-sign"></i>
+      <span>
+        There was an issue with your payment transaction.
+        Please <a routerLink="/contact">contact our support</a> to continue processing your order.
+      </span>
+    </div>
+  </ng-container>
+  <ng-template #elseSuccess>
+    <h2>Congratulations!</h2>
+  </ng-template>
+  <ng-container *ngIf="orderDetails">
+    <div class="row">
+      <div class="col-md-12">
+        <p class="small">
+          Your Order Number is: <b>{{orderDetails.number}}</b>.
+          Please keep a record of this. An email notification has also been sent to
+          your email address.
+        </p>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        Summary of Order <b>#{{ orderDetails.number }}</b>, {{ orderDetails.totalQuantity }}
+        items ordered. This will be delivered to you on <b>{{ deliveryDate | date:'fullDate' }}
+        </b> at <b>{{ deliveryHours }}</b>.
+      </div>
+      <div class="panel-body">
+        <div class="row" *ngIf="countWeighted > 0">
+          <div class="col-md-12 col-sm-12 col-xs-12 text-left disclaimer-container">
+            <label class="info-sign"><i class="glyphicon glyphicon-info-sign"></i></label>
+            <span class="disclaimer">
+              <small>
+                <strong>Disclaimer:</strong> Actual price may vary slightly,
+                especially for meat and produce. But our friendly OMG! staff will
+                contact you if ever. For meat and some produce, price indicated is
+                for 1 kilogram. You may order less than a kilo but should be in
+                increments of 250 grams (250g, 500g, 750g, etc.).
+              </small>
+            </span>
+          </div>
+          <br>
+        </div>
+        <div class="row orderlist small">
+          <div *ngFor="let item of orderDetails.items">
+            <p class="col-md-10 col-sm-10 col-xs-8">
+              {{item.name}} <small>(Qty: {{item.quantity}})</small>
+            </p>
+            <p class="col-md-2 col-sm-2 col-xs-4 text-right">₱ {{(item.itemPrice * item.quantity) | number:'1.2-2'}}</p>
+          </div>
+        </div>
+        <hr>
+        <div class="row small">
+          <div class="col-md-10 col-sm-10 col-xs-8 text-right">
+            <h5>Subtotal</h5>
+          </div>
+          <div class="col-md-2 col-sm-2 col-xs-4 text-right text-primary">
+            <h5>₱ {{orderDetails.subTotal | number:'1.2-2'}}</h5>
+          </div>
+        </div>
+        <div class="row small">
+          <div class="col-md-10 col-sm-10 col-xs-8 text-right">
+            <h5>Fees</h5>
+          </div>
+          <div class="col-md-2 col-sm-2 col-xs-4 text-right text-primary">
+            <h5>₱ {{(orderDetails.deliveryFee + orderDetails.serviceFee) | number:'1.2-2'}}</h5>
+          </div>
+        </div>
+        <div class="row small">
+          <div class="col-md-10 col-sm-10 col-xs-8 text-right">
+            <h5>Discount</h5>
+          </div>
+          <div class="col-md-2 col-sm-2 col-xs-4 text-right">
+            <h5 class="text-success">- ₱ {{orderDetails.discountTotal | number:'1.2-2'}}</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-10 col-sm-10 col-xs-8 text-right">
+            <h5><strong>Grand Total</strong></h5>
+          </div>
+          <div class="col-md-2 col-sm-2 col-xs-4 text-right">
+            <h5>₱ {{orderDetails.total | number:'1.2-2'}}</h5>
+          </div>
+        </div>
+        <div class="row small">
+          <div class="col-md-10 col-sm-10 col-xs-8 text-right">
+            <h5>Credit</h5>
+          </div>
+          <div class="col-md-2 col-sm-2 col-xs-4 text-right text-success">
+            <h5 class="text-success">- ₱ {{amountPaid | number:'1.2-2'}}</h5>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-10 col-sm-10 col-xs-8 text-right">
+            <h5>
+              <strong>Amount Due</strong><br>
+              <em class="small">Please pay this amount upon delivery</em>
+            </h5>
+          </div>
+          <div class="col-md-2 col-sm-2 col-xs-4 text-right">
+            <h4 class="text-primary">₱ {{orderDetails.amountTotal | number:'1.2-2'}}</h4>
+          </div>
+        </div>
+        <hr>
+        <div class="row small">
+          <div class="col-md-12 col-sm-12 col-xs-12">
+            <strong>Special instructions:</strong> {{orderDetails.specialInstructions ? orderDetails.specialInstructions : 'None'}}
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <div class="form-inline">
+    <button class="btn btn-primary" (click)="continueShopping()">Continue Shopping</button>
+    <button *ngIf="saveListState == 0 && isAuthenticated$ | async"
+      class="btn btn-default" (click)="saveListState = 1">Save items to List
+    </button>
+    <div *ngIf="saveListState == 1" class="list-name">
+      <div class="input-group">
+        <input type="text" class="form-control" placeholder="List Name" [(ngModel)]="inputNewList">
+        <div class="input-group-btn">
+          <button class="btn btn-primary" type="button" (click)="createNewList()">Save</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="orderDetails">
+  <app-star-rating [orderkey]="orderDetails.orderkey" [userId]="orderDetails.useraccount_id"></app-star-rating>
+</div>

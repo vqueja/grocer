@@ -1,0 +1,165 @@
+@import "../../shared/scss/custom_themes/default/default";
+
+.table{
+  min-width: 0;
+  flex-wrap: wrap;
+  margin-bottom: 20px;
+  margin: 0 auto;
+}
+.card {
+  border-top: 1px solid #ddd;
+  border-bottom: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  flex-wrap: wrap;
+  min-width: 0;
+  min-height: 422px;
+}
+.card-body {
+  margin-top: 20px;
+  margin-left: 20px;
+  position: relative;
+  flex-wrap: wrap;
+  min-width: 0;
+  min-height:50vh;
+}
+
+.row1 {
+  flex-wrap: wrap;
+}
+.container_graph {
+  margin-left: 0px;
+  background-color: $white;
+  flex-wrap: wrap;
+  padding-top: 15px;
+  padding-left: 0;
+  padding-right: 0;
+}
+.panel-heading{
+  color: #595959;
+  border-color: #e8e8e8;
+  background: #fcfcfc;
+  padding: 10px 15px;
+  border-top: 3px solid #ddd;
+  // border-bottom: 1px solid #ddd;
+  border-left: 1px solid #ddd;
+  border-right: 1px solid #ddd;
+  border-top-right-radius: 2px;
+  border-top-left-radius: 2px;
+}
+.footer {
+  min-height: 56px;
+}
+.lineGraph {
+  min-width: 369px;
+  height: 292px;
+}
+.donutGraph{
+  min-width: 369px;
+  // height: 292px;
+}
+.col-orders {
+  border-color: #ff2679;
+  flex-wrap: wrap;
+  min-width: 440px;
+  min-height: 400px;
+}
+.py-1{
+  border: 0;
+  min-width: 389px;
+}
+.col-md-4 {
+  width: 47.333333%;
+  height: 450px;
+}
+.panel-promo-infos {
+  margin-top: 40px;
+}
+.tile{
+  background-color: $pink;
+  color: white;
+}
+.tile-heading {
+  margin: 6px;
+}
+.tile-footer {
+  margin: 6px;
+}
+.tile-body{
+  font-size: 50px;
+  padding: 15px;
+  line-height: 48px;
+}
+.tile-body i{
+  opacity: 0.3;
+}
+.tile-body h2 {
+  font-size: 40px;
+}
+.donutGraph {
+  width: 100%;
+}
+.order-data {
+  font-size: 11px;
+}
+.orderTotal {
+  text-align: right;
+}
+.pull-right{
+  margin-top: 0;
+}
+@media screen and (max-device-width: 480px) and (orientation: portrait){
+  .col-orders {
+    border: 1px solid transparent;
+    border-color: #ff2679;
+    flex-wrap: wrap;
+    min-width: 0;
+    min-height: 400px;
+  }
+  .donutGraph{
+    min-width: 329px;
+  }
+  .line{
+    display: none;
+  }
+  .lineGraph {
+    display: none;
+  }
+}
+
+@media only screen and (max-width: 760px), (min-device-width: 468px) and (max-device-width: 800px)  {
+		table, thead, tbody, th, td, tr {
+			display: block;
+		}
+    thead tr {
+			position: absolute;
+			top: -9999px;
+			left: -9999px;
+		}
+    tr {
+      margin: 0 0 1rem 0;
+    }
+
+    tr:nth-child(odd) {
+      background: #ccc;
+    }
+
+		td {
+			border: none;
+			border-bottom: 1px solid #eee;
+			position: relative;
+			padding-left: 50%;
+		}
+
+		td:before {
+			position: absolute;
+			top: 0;
+			left: 6px;
+			width: 45%;
+			padding-right: 10px;
+			white-space: nowrap;
+		}
+    .lineGraph {
+      display: none;
+    }
+  }

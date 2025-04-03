@@ -1,0 +1,126 @@
+@import "../../shared/scss/custom_themes/default/default";
+
+.bg {
+  background-repeat: no-repeat, 0 0;
+  background-image: url(/assets/supermarket.png);
+  background-size: cover;
+}
+.container {
+  padding-top: 150px;
+  height: calc(100vh);
+  width: 100%;
+  background-color: rgba(0,0,0,0.25);
+	z-index: 10000;
+}
+.entry {
+  width: 375px;
+  margin-left: auto;
+  margin-right: auto;
+}
+.logo {
+    img {
+      height: 40px;
+    }
+    div {
+      font-size: 22px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: $pink;
+    }
+}
+.input-container {
+  margin: 20px;
+  border: 1px solid #bfc0c6;
+  border-radius: 5px;
+  padding: 0;
+
+  .input-item {
+    position: relative;
+
+    .user-input-email {
+      border-top-left-radius: 5px;
+      border-top-right-radius: 5px;
+    }
+
+    .user-input-password {
+      border-top: 1px solid #d5d6d9 !important;
+      border-bottom-left-radius: 5px;
+      border-bottom-right-radius: 5px;
+    }
+
+    .user-input {
+      display: block;
+      color: #282c3f;
+      padding-right: 40px;
+      font-size: 15px;
+      width: 100%;
+      border: 0;
+      padding: 15px;
+    }
+  }
+}
+
+.login-button-container {
+  padding: 10px 20px;
+  margin: 0;
+  border: 0;
+
+  .login-button {
+    font-size: 16px;
+    font-weight: 400;
+    letter-spacing: 1px;
+    padding: 10px;
+    display: block;
+    width: 100%;
+    border: 0;
+    border-radius: 3px;
+  }
+}
+
+fieldset {
+  display: block;
+  -webkit-margin-start: 2px;
+  -webkit-margin-end: 2px;
+  -webkit-padding-before: 0.35em;
+  -webkit-padding-start: 0.75em;
+  -webkit-padding-end: 0.75em;
+  -webkit-padding-after: 0.625em;
+  min-width: -webkit-min-content;
+}
+
+.error-message {
+  font-size: 11px;
+  margin-left: 15px;
+  text-align: left;
+  margin-top: -9px;
+  max-height: 500px;
+  -webkit-transition-property: all;
+  transition-property: all;
+  -webkit-transition-duration: .5s;
+  transition-duration: .5s;
+  -webkit-transition-timing-function: cubic-bezier(0,1,.5,1);
+  transition-timing-function: cubic-bezier(0,1,.5,1);
+}
+
+.error-icon {
+  border: 2px solid $state-danger-text;
+  padding: 0 7px;
+  display: inline-block;
+  position: absolute;
+  top: 12px;
+  right: 10px;
+  font-weight: 500;
+  border-radius: 21px;
+}
+@media screen and (max-width: 767px) {
+  .bg {
+    background-repeat: no-repeat, 0 0;
+    background-image: url(/assets/supermarket.png);
+    background-size: cover;
+  }
+  .entry {
+    width: 275px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}

@@ -1,0 +1,175 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item">Admin Tools</li>
+    <li class="breadcrumb-item">
+      <a [routerLink]="['/admin/tools/page-settings']">Dynamic Page Content</a>
+    </li>
+    <li class="breadcrumb-item text-primary" aria-current="page">{{ operation }}</li>
+  </ol>
+</nav>
+<div class="row">
+  <div class="col-sm-12">
+    <ng-container *ngIf="operation === 'Add'">
+      <button class="btn btn-primary" (click)="onSubmit('Add&Edit')">Save and Edit</button>
+      <button class="btn btn-primary" (click)="onSubmit('Add&New')">Save and Add New Route</button>
+    </ng-container>
+    <ng-container *ngIf="operation === 'Edit'">
+      <button class="btn btn-primary" (click)="onSubmit('Edit')">Save Changes</button>
+    </ng-container>
+    <button class="btn btn-default" (click)="togglePreview = true; popupModal.show()">Preview</button>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <form class="form col-xs-12 col-sm-12 col-md-11 col-lg-9" [formGroup]="pageSettingsForm">
+    <table class="table">
+      <tr>
+        <td>Route</td>
+        <td>
+          <input type="text" formControlName="route" class="form-control"
+            placeholder="/about/faq">
+        </td>
+      </tr>
+      <tr>
+        <td>Route Match Rule</td>
+        <td>
+          <span class="radio">
+            <label>
+              <input type="radio" formControlName="isPartialRouteMatch" [value]="1">
+              <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+              Partial
+            </label>
+          </span>
+          &nbsp;&nbsp;
+          <span class="radio">
+            <label>
+              <input type="radio" formControlName="isPartialRouteMatch" [value]="0">
+              <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+              Full
+            </label>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>Status</td>
+        <td>
+          <span class="radio">
+            <label>
+              <input type="radio" formControlName="isEnabled" [value]="1">
+              <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+              Enabled
+            </label>
+          </span>
+          &nbsp;&nbsp;
+          <span class="radio">
+            <label>
+              <input type="radio" formControlName="isEnabled" [value]="0">
+              <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+              <span [ngClass]="{'text-red': !pageSettingsForm.get('isEnabled').value }">Disabled</span>
+            </label>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>Content URL</td>
+        <td>
+          <input type="text" formControlName="contentUrl" class="form-control"
+            placeholder="http://content-source.info">
+        </td>
+      </tr>
+      <tr>
+        <td>
+          Popup Limit per Session
+        </td>
+        <td>
+          <input type="text" formControlName="popupLimitPerSession"
+            class="form-control width-100" placeholder="0">
+          <em class="small text-muted">* Value of 0 means unlimited</em>
+        </td>
+      </tr>
+      <tr>
+        <td>Add Confirm Button</td>
+        <td>
+          <span class="checkbox">
+            <label>
+              <input type="checkbox" formControlName="isConfirmButton" [value]="1">
+              <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+            </label>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>Confirm Button Label</td>
+        <td>
+          <input 
+            type="text" formControlName="confirmButtonText" class="form-control"
+            placeholder="Press to Continue">
+        </td>
+      </tr>
+      <tr>
+        <td>Add Checkbox to Enable<br>Confirm Button</td>
+        <td>
+          <span class="checkbox">
+            <label>
+              <input type="checkbox" formControlName="isCheckbox" [value]="1">
+              <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+            </label>
+          </span>
+        </td>
+      </tr>
+      <tr>
+        <td>Checkbox Label</td>
+        <td>
+          <input
+            type="text" formControlName="checkboxText" class="form-control"
+            placeholder="Check the box to continue">
+        </td>
+      </tr>
+    </table>
+  </form>
+</div>
+
+<div class="modal fade" bsModal #popupModal="bs-modal" tabindex="-1"
+    role="dialog" aria-labelledby="dialog-static-name" (onHide)="togglePreview = false;">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div *ngIf="togglePreview" class="modal-body text-center">
+          <div class="modal-body-header">
+            <button *ngIf="!pageSettingsForm.get('isConfirmButton').value" type="button"
+              class="close pull-right" aria-label="Close" (click)="popupModal.hide()">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="embed-responsive">
+            <object
+              class="embed-responsive-item"
+              type="text/html"
+              [data]="sanitizer.bypassSecurityTrustResourceUrl(pageSettingsForm.get('contentUrl').value)">
+            </object>
+          </div>
+          <div *ngIf="pageSettingsForm.get('isConfirmButton').value">
+            <br>
+            <p *ngIf="pageSettingsForm.get('isCheckbox').value" class="checkbox-container">
+              <span class="checkbox">
+                <label>
+                  <input type="checkbox" [(ngModel)]="isPreviewChecked">
+                  <span class="cr"><i class="cr-icon fa fa-check"></i></span>
+                </label>
+              </span>
+              <span class="text">
+                <strong>{{pageSettingsForm.get('checkboxText').value}}</strong>
+                <br>
+                <em class="small text-muted">Check the box to continue.</em>
+              </span>
+            </p>
+             <p>
+              <button type="button" class="btn btn-primary btn-lg"
+                (click)="popupModal.hide()" [disabled]="!isPreviewChecked">
+                {{ pageSettingsForm.get('confirmButtonText').value }}
+              </button>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>

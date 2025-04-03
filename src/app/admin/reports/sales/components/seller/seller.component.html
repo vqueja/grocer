@@ -1,0 +1,88 @@
+<div>
+  <div class="pageLabel">
+    <nav class="nav-breadcrumb" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">Reports</li>
+        <li class="breadcrumb-item text-primary" aria-current="page">Store Sales Report</li>
+      </ol>
+    </nav>
+  </div>
+  <div class="commands">
+    <div class="margin-bottom-5">
+      <button type="button" class="btn btn-default btn-sm" (click)="showFilter = !showFilter">Change Filters&nbsp;<i class="glyphicon glyphicon-menu-down"></i></button>
+      &nbsp;|&nbsp;
+      <button type="button" class="btn btn-default btn-sm" (click)="refreshList()">Refresh List</button>
+      &nbsp;|&nbsp;
+      <button type="button" class="btn btn-default btn-sm"
+        (click)="printReport()">Print </button>
+    </div>
+    <div class="small filter-text">Filters: <span [innerHTML]="filterText"></span></div>
+    <div *ngIf="showFilter" class="filter well">
+      <form class="form-inline small">
+        <div class="closeFilter">
+          <a (click)="showFilter = false">CLOSE <i class="glyphicon glyphicon-remove"></i></a>
+        </div>
+
+        <div *ngIf="this.activeUser.partner_id === 1" class="form-group">
+          <label>Store:</label>
+          <!-- <input type="text" placeholder="Partner" class="form-control btn-sm" [(ngModel)]="filterPartner" name="partner"> -->
+          <select class="form-control btn-sm" [(ngModel)]="filterPartner" name="store">
+            <option value="0" disabled selected hidden>Store</option>
+            <option *ngFor="let store of storeList" [value]="store.id">{{ store.name }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Date:</label>
+          <input type="text" placeholder="Order Date Range" class="form-control btn-sm date-input"
+            #dateOrder="bsDaterangepicker" bsDaterangepicker [(ngModel)]="filterDate" name="date">
+          <!-- <input type="text" placeholder="To" class="form-control btn-sm"
+            bsDatepicker [(ngModel)]="filterDateTo" name="filterdateto" [disabled]="!filterDateFrom ? true: false"> -->
+        </div>
+
+      </form>
+      <div class="text-right">
+        <button type="button" class="btn btn-default btn-sm" (click)="clearFilter()">Clear</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="applyFilter()">Apply</button>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="printArea">
+    <div class="small store-text">Store: <span class="store" [innerHTML]="storeText"></span></div>
+    <div class="table-border">
+      <table class="table table-hover table-striped small">
+        <thead>
+          <tr>
+            <th>Order Number</th>
+            <th>Date</th>
+            <th>Total</th>
+            <th *ngIf="this.activeUser.partner_id === 1">Store</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let order of orders; let i = index">
+            <td><a class="orderNum" [routerLink]="['/admin/orders/view',order.id]">{{order.orderNumber}}</a></td>
+            <td>{{ order.dateCompleted | date:'MMM d, y hh:mm a' }}</td>
+            <td>₱ {{ order.finalItemTotal | number:'1.2-2'}}</td>
+            <td *ngIf="this.activeUser.partner_id === 1">{{ order.partnerstore }}</td>
+          </tr>
+          <tr *ngIf="orders && !orders.length">
+            <td >No orders</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div>
+      <label class="grandtotal">Grand Total | ₱ {{grandTotal | number:'1.2-2'}}</label>
+    </div>
+  </div>
+  <div class="row-pages">
+    <div class="col-xs-6 col-6">
+      <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [itemsPerPage]="itemsPerPage" [rotate]="true"
+        [maxSize]="5" [boundaryLinks]="true" (pageChanged)="pageChanged($event)" (numPages)="numPages = $event"></pagination>
+    </div>
+    <div class="col-xs-6 col-6 text-right">
+      <small>Page {{ currentPage }} of {{ numPages }}, {{ totalItems }} total orders</small>
+    </div>
+  </div>
+</div>

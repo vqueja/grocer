@@ -1,0 +1,80 @@
+@import "../../../shared/scss/custom_themes/default/default";
+
+@keyframes notify-bounce-in-up {
+  0% { bottom: -1000px; }
+  10% { bottom: 100px; }
+  15% {
+    opacity: 1;
+    bottom: 20px;
+  }
+  60% {
+    opacity: 1;
+    bottom: 20px;
+  }
+  65% {
+    opacity: 1;
+    bottom: 40px;
+  }
+  100% {
+    opacity: 0;
+    bottom: -1000px;
+  }
+}
+
+.notify-container {
+  z-index: 2000;
+}
+
+.alert-container {
+  position: fixed;
+  bottom: 20px;
+  color: $white;
+  max-width: 980px;
+  margin: 0 auto;
+  left: 20px;
+  min-height: 50px;
+  z-index: 110000;
+  text-align: center;
+  opacity: 100;
+  &.in {
+    -webkit-animation-duration: 5s;
+    animation-duration: 5s;
+    -webkit-animation-fill-mode: both;
+    animation-fill-mode: both;
+    -webkit-animation-name: notify-bounce-in-up;
+    animation-name: notify-bounce-in-up;
+  }
+}
+
+.alert-content {
+  width: 380px;
+  border-radius: 3px;
+  box-shadow: 0 2px 10px rgba(40,44,64,.2);
+
+  .dark-success-txt {
+    color: #3c763d;
+  }
+
+  .dark-info-txt {
+    color: #31708f;
+  }
+
+  .dark-warning-txt {
+    color: #8a6d3b;
+  }
+
+  .dark-error-txt {
+    color: #a94442;
+  }
+}
+@media screen and (max-width: 767px) {
+  .alert-container {
+    padding: 0 10px;
+    left: 0;
+    width: 100%;
+  }
+  .alert-content {
+    width: unset;
+    max-width: 380px;
+  }
+}

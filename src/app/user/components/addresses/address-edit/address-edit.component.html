@@ -1,0 +1,63 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/user','address']">Address</a></li>
+    <li class="breadcrumb-item text-primary" aria-current="page">{{operation}}</li>
+  </ol>
+</nav>
+<ng-container *ngIf="addressType == 'shipping'; else elseBlock">
+  <h3>Shipping Address</h3>
+</ng-container>
+<ng-template #elseBlock>
+  <h3>Billing Address</h3>
+</ng-template>
+<form class="form" [formGroup]="addressForm" (ngSubmit)="onSubmit()" #formAddress="ngForm">
+  <div class="row">
+    <div class="col-sm-8 form-group">
+      <label for="shippingAddress01">Address 1</label>
+      <i>*</i>
+      <input type="text" id="address1" formControlName="address01" class="form-control" placeholder="Street Address, P.O. Box"
+        required>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-8 form-group">
+      <label for="shippingAddress02">Address 2</label>
+      <input type="text" id="address2" formControlName="address02" class="form-control" placeholder="Apartment, suite, unit, building, floor, etc."
+        optional>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-3 form-group">
+      <label for="city">City/Municipality</label>
+      <i>*</i>
+      <input type="text" id="city" formControlName="city" class="form-control" placeholder="City/Municipality" required>
+    </div>
+    <div class="col-sm-2 form-group">
+      <label for="postalcode">Zip Code</label>
+      <i>*</i>
+      <input type="text" id="zipcode" formControlName="postalCode" class="form-control" placeholder="Zip Code" required>
+    </div>
+    <div class="col-sm-3 form-group">
+      <label for="country">Country</label>
+      <i>*</i>
+      <select class="form-control" id="country" formControlName="country">
+        <option value="Philippines">Philippines</option>
+        <i>*</i>
+        <!-- <option *ngFor="let choice of countr">{{ctry}}</option> -->
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <p>
+        <small class="note"><b>*</b>&nbsp;(required)</small>
+      </p>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <button class="btn btn-primary" [disabled]="isLoading">Save</button>
+      <button class="btn btn-default" type="button" [routerLink]="['/user','address']">Cancel</button>
+    </div>
+  </div>
+</form>

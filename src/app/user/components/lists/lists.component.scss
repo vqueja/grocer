@@ -1,0 +1,47 @@
+.status {
+  color: #20bd99;
+}
+
+.cart-empty {
+	min-height: 300px;
+	text-align: center;
+	.empty-cart-icon {
+		height: 120px;
+    width: 120px;
+    margin: 0 auto;
+	}
+	.empty-cart-message {
+		font-size: 20px;
+    color: #535766;
+    font-weight: 600;
+		// font-family: "Whitney-semi-bold";
+		line-height: 120px;
+		margin: 15px 0;
+	}
+	.empty-wishlist-link {
+		color: #526cd0;
+    font-size: 16px;
+    font-weight: 500;
+	}
+}
+
+// xs
+@media screen and (max-width: 767px) {
+  .list.col-xs-6:nth-child(2n+1) {
+    clear: left;
+  }
+}
+
+// sm
+@media screen and (min-width: 768px) and (max-width: 991px) {
+  .list.col-sm-4:nth-child(3n+1) {
+    clear: left;
+  }
+}
+
+// md
+@media screen and (min-width: 992px) {
+  .list.col-md-3:nth-child(4n+1) {
+    clear: left;
+  }
+}

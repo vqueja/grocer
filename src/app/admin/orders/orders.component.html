@@ -1,0 +1,135 @@
+<div class="order">
+  <div class="pageLabel">
+    <nav class="nav-breadcrumb" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item text-primary" aria-current="page">Orders</li>
+      </ol>
+    </nav>
+  </div>
+  <div class="commands">
+    <div class="margin-bottom-5">
+      <button type="button" class="btn btn-default btn-sm" (click)="showFilter = !showFilter">
+        Change Filters
+        <i class="glyphicon glyphicon-menu-down"></i>
+      </button>
+      &nbsp;|&nbsp;
+      <button type="button" class="btn btn-default btn-sm" (click)="refreshList()">Refresh List</button>
+    </div>
+    <div class="small filter-text">Filters: <span [innerHTML]="filterText"></span></div>
+    <div *ngIf="showFilter" class="filter well">
+      <form class="form-inline small">
+        <div class="closeFilter">
+          <a (click)="showFilter = false">CLOSE <i class="glyphicon glyphicon-remove"></i></a>
+        </div>
+        <div class="form-group">
+          <label>Status:</label>
+          <select class="form-control btn-sm" [(ngModel)]="filterForm.status" name="status">
+            <option value="0" disabled selected hidden>Status</option>
+            <option *ngFor="let status of adminVarsService.ORDER_STATUS" [value]="status">
+              {{ status }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Order Number:</label>
+          <input type="text" [(ngModel)]="filterForm.number" name="ordernumber"
+            class="form-control btn-sm" placeholder="Order Number">
+        </div>
+        <div class="form-group">
+          <label>Customer:</label>
+          <input type="text" [(ngModel)]="filterForm.firstName" name="firstname"
+            class="form-control btn-sm" placeholder="First Name">
+          <input type="text" [(ngModel)]="filterForm.lastName" name="lastname"
+            class="form-control btn-sm" placeholder="Last Name">
+        </div>
+        <ng-container *ngIf="this.activeUser.partner_id === 1">
+          <div class="form-group">
+            <label>Store:</label>
+            <select [(ngModel)]="filterForm.store" class="form-control btn-sm" name="store">
+              <option value="0" disabled selected hidden>Store</option>
+              <option *ngFor="let partner of partnerList"
+                [value]="partner.id" [hidden]="partner.type !== 'seller'">
+                {{ partner.name }}
+              </option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Partner Buyer:</label>
+            <select [(ngModel)]="filterForm.buyer" class="form-control btn-sm" name="buyer">
+              <option value="0" disabled selected hidden>Partner Buyer</option>
+              <option *ngFor="let partner of partnerList"
+                [value]="partner.id" [hidden]="partner.type !== 'buyer'">
+                {{ partner.name }}
+              </option>
+            </select>
+          </div>
+        </ng-container>
+        <div class="form-group">
+          <label>Order Date:</label>
+          <input type="text" [(ngModel)]="filterForm.orderDate" name="filterorderdate"
+            class="form-control btn-sm date-input" placeholder="Order Date Range"
+            #dateOrder="bsDaterangepicker" bsDaterangepicker>
+        </div>
+        <div class="form-group">
+          <label>Delivery Date:</label>
+          <input type="text" [(ngModel)]="filterForm.deliverDate" name="filterdeliverdate"
+            class="form-control btn-sm date-input" placeholder="Delivery Date Range"
+            #dateDeliver="bsDaterangepicker" bsDaterangepicker>
+          <select [(ngModel)]="filterForm.timeslot" class="form-control btn-sm" name="timeslot"
+            [disabled]="!filterForm.deliverDate.length ? true: false">
+            <option value="0" disabled selected hidden>Time Slot</option>
+            <option *ngFor="let timeslot of adminVarsService.ORDER_TIMESLOT; let i = index" [value]="(i + 1)">
+              {{ timeslot }}
+            </option>
+          </select>
+        </div>
+      </form>
+      <div class="text-right">
+        <button type="button" class="btn btn-default btn-sm" (click)="clearFilter()">Clear</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="applyFilter()">Apply</button>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="table-border">
+    <table class="table table-hover table-striped small">
+      <thead>
+        <tr>
+          <th>Order Number</th>
+          <th>Status</th>
+          <th>Delivery Date</th>
+          <th>Customer Name</th>
+          <th *ngIf="this.activeUser.partner_id === 1">Store</th>
+          <th *ngIf="this.activeUser.partner_id === 1">Partner Buyer</th>
+          <th>Order Date</th>
+          <th>Grand Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let order of orders; let i = index">
+          <td><a [routerLink]="['/admin/orders/view',order.id]">{{order.orderNumber}}</a></td>
+          <td class="text-uppercase text-primary">{{order.status}}</td>
+          <td>{{ order.date | date:'MMM d, y' }} {{ order.time }}</td>
+          <td>{{ order.firstname}} {{order.lastname }}</td>
+          <td *ngIf="this.activeUser.partner_id === 1">{{ order.partnerstore }}</td>
+          <td *ngIf="this.activeUser.partner_id === 1">{{ order.partnerbuyer }}</td>
+          <td>{{ order.dateCreated | date:'MMM d, y h:mma' }}</td>
+          <td>₱ {{ order.total | number:'1.2-2'}}</td>
+        </tr>
+        <tr *ngIf="orders && !orders.length">
+          <td *ngIf="this.activeUser.partner_id !== 1" colspan="6" class="text-center">No orders</td>
+          <td *ngIf="this.activeUser.partner_id === 1" colspan="8" class="text-center">No orders</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row">
+    <div class="col-xs-6 col-6">
+      <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [itemsPerPage]="itemsPerPage" [rotate]="true"
+        [maxSize]="5" [boundaryLinks]="true" (pageChanged)="pageChanged($event)" (numPages)="numPages = $event"></pagination>
+    </div>
+    <div class="col-xs-6 col-6 text-right">
+      <small>Page {{ currentPage }} of {{ numPages }}, {{ totalItems }} total orders</small>
+    </div>
+  </div>
+</div>

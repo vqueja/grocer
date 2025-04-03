@@ -1,0 +1,118 @@
+<div class="static-pages container-fluid" [ngSwitch]="currentPage">
+  <!-- VISION START -->
+  <div class="vision" *ngSwitchCase="'/vision'">
+    <h2>The Vision</h2>
+    <div class="vision_text"><hr>
+    For everyone who wants a better way to shop for groceries.
+The  OMG is a web and mobile application that allows people to order groceries anytime and anywhere.
+Unlike other online offerings, our product provides users the simplest and most efficient
+way  to  get  on-demand  delivery  of  best-value-for-money groceries
+which supports our strategy to provide the best online grocery shopping experience.
+    </div>
+  </div>
+  <!-- VISION END -->
+
+  <!-- TEAM START -->
+  <div *ngSwitchCase="'/team'">
+    <h2>The Team</h2>
+    <hr>
+
+  </div>
+  <!-- TEAM END -->
+
+  <!-- CAREERS START -->
+  <div class="careers" *ngSwitchCase="'/careers'" >
+    <h2 class="careers_heading">Careers</h2>
+    <hr>
+    OMG! is looking for the magical genie, in human form, who is ready to grant wishes and serve whoever calls him (or her)!
+
+    Why you’ll love working with us:
+    	We are a fast-growing company, with an incredibly talented team. A fun working environment that’s driven with creativity and innovation!
+    Each one of us plays a vital role in the attainment of our company’s objectives. We are committed to our Family Spirit and Love for Work that is founded on Personal Integrity. We strive to make ourselves and our company excellent!
+    <br><br>
+    <div class="careers_list">
+      <b>Join our Family! Be a Genie!</b>
+      <ul>
+        <li>Shopping Coordinator</li>
+        <li>Customer Care</li>
+        <li>Sales Representative</li>
+        <li>Quality Assurance</li>
+        <li>Web Developer</li>
+        <li>Graphic Designer</li>
+        <li>Interns</li>
+      </ul>
+
+      <b>Benefits</b>
+      <ul>
+        <li>All the coverage you would expect.</li>
+        <li>Competitive salary.</li>
+        <li>Flexible hours and work environment.</li>
+        <li>Breakout Sessions and Team Building activities</li>
+        <li>Snacks, coffee, and hydrate in our pantry.</li>
+      </ul>
+      <br><br>
+    </div>
+    Employee Experience or Life at OMG!
+  </div>
+  <!-- CAREERS END -->
+
+  <!-- FAQ START -->
+  <div *ngSwitchCase="'/faq'">
+    <h2>Frequently Asked Questions</h2>
+    <hr>
+  </div>
+  <!-- FAQ END -->
+
+  <!-- SUGGEST START -->
+  <div *ngSwitchCase="'/suggest'">
+    <h2>Suggest a Product</h2>
+    <hr>
+  </div>
+  <!-- SUGGEST END -->
+
+  <!-- PRIVACY START -->
+  <div *ngSwitchCase="'/privacy'">
+    <h2>Security & Privacy Policy</h2>
+    <hr>
+  </div>
+  <!-- PRIVACY END -->
+
+  <!-- TERMS START -->
+  <div *ngSwitchCase="'/terms'">
+    <h2>Terms & Conditions of Use</h2>
+    <hr>
+  </div>
+  <!-- TERMS END -->
+
+  <!-- TERMS START -->
+  <div *ngSwitchCase="'/contact'">
+    <h2>Contact Us</h2>
+    <hr>
+    <div>
+      <p>OMG!  We're super excited to serve you!</p>
+      <p>Our mantra: Just do what you love, we'll do the grocery shopping for you. </p>
+      <p>Our vision: To provide our users the best online grocery shopping ever.</p>
+      <br>
+      <p>Need help with your orders?  Just fire a message and our friendly OMG! staff will be there to assist you. As we are still on beta, we're pretty sure you'll be as understanding as you can be.  Coz you're cool like that ; ).  And we really appreciate that.  Our assurance: we won't stop until all is good.  Okie dokie.  Have a fantastic day!</p>
+      <br>
+      <!-- <p *ngIf='isAuthenticated$ | async; else elseBlock'>
+        Chat:
+        <button type="button" class="btn btn-primary btn-lg" (click)="showChat()">
+          <i class="glyphicon glyphicon-modal-window"></i>&nbsp;Launch Support Chat
+        </button>
+      </p> -->
+      <ng-template #elseBlock>
+        <p>
+          Chat:
+          <span class="small text-red">
+            <span class="glyphicon glyphicon-info-sign"></span>
+            &nbsp;<i>You must be logged in to launch chat.</i>
+          </span>
+        </p>
+      </ng-template>
+      <p>Email: <a class="text-underline" href="mailto:customersupport@ohmygrocery.com">customersupport@ohmygrocery.com</a></p>
+      <p>Facebook: <a class="text-underline" href="https://www.facebook.com/ohmygenieph">www.facebook.com/ohmygenieph</a></p>
+    </div>
+  </div>
+  <!-- TERMS END -->
+</div>

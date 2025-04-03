@@ -1,0 +1,84 @@
+@import "../../../shared/scss/themes";
+
+.auth-logo {
+  img {
+    width: 120px;
+  }
+}
+
+.col-centered {
+  max-width: 440px;
+}
+
+.panel {
+  margin-bottom: 20px;
+  margin: 20px 0;
+  background-color: $white;
+  border: none;
+  border-radius: 5px;
+  // box-shadow: 0 2px 15px rgba(0,0,0,.1);
+  .panel-heading {
+    padding: 20px 0 0;
+    border-bottom: 1px solid transparent;
+    border-top-left-radius: 3px;
+    border-top-right-radius: 3px;
+    text-align: left;
+    background-color: transparent;
+    .panel-title {
+      margin-top: 0;
+      margin-bottom: 0;
+      font-size: 28px;
+      color: #666;
+      font-weight: 400;
+      text-align: left;
+      margin-left: 5%;
+    }
+  }
+  .panel-body {
+    padding: 15px 0;
+  }
+}
+
+.login-container {
+  margin-top: 5%;
+  box-sizing: border-box;
+  text-align: center;
+  position: relative;
+  // padding-bottom: 40px;
+  // background: #ffffff URL('../assets/bg-login-02.jpg') no-repeat;
+  // background-size: auto 100%;
+}
+
+.login-link-container {
+  text-align: left;
+  padding: 10px 20px;
+}
+
+.login-link {
+  text-decoration: none;
+  font-weight: bold;
+  letter-spacing: 0.5px;
+}
+
+.login-right-links {
+  float: right;
+}
+
+.login-info-text {
+  color: #94969f;
+  font-size: 12px;
+}
+
+.login-create-account-link {
+  margin-left: 5px;
+}
+
+a {
+  background-color: transparent;
+}
+
+.login-button-container {
+  margin-top: 10px;
+  margin-bottom: 40px;
+  height: 40px;
+}

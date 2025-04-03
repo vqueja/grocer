@@ -1,0 +1,77 @@
+@import "../../../shared/scss/custom_themes/default/default";
+
+.stat{
+  cursor: pointer;
+}
+
+.table a {
+  color: #000;
+}
+
+hr {
+  margin: 10px 0;
+}
+
+.filter-text {
+  margin-left: 5px;
+}
+.well.filter {
+  position: relative;
+  margin-top: 5px;
+  padding: 10px;
+  .form-group {
+    margin-bottom: 3px;
+    .date-input {
+      min-width: 160px;
+    }
+  }
+  .closeFilter {
+    float: right;
+    a {
+      color: #555;
+      cursor: default;
+      &:hover {
+        color: #aaa;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.gTotal{
+  float: right;
+  margin-right: 30px;
+}
+
+.paymentTotal{
+    margin-right:30px;
+    font-weight: bold;
+}
+
+.margin-bottom-5 {
+  margin-bottom: 5px;
+}
+
+// .table tbody {
+//   display: block;
+//   height: calc(100vh - 300px);
+//   min-height: 300px;
+//   overflow-y: auto;
+// }
+// .table thead, tbody tr {
+//   display: table;
+//   width: 100%;
+//   table-layout: fixed;
+// }
+
+.table-border {
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  min-height: 562px;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+  .table {
+    margin-bottom: 0;
+  }
+}

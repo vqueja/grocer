@@ -1,0 +1,173 @@
+<div class="container">
+  <ng-container *ngIf="(visitedPartners | filterStore : ['visited'] : 1).length > 0">
+    <div class="row">
+      <h4 class="col-md-12">Recently Visited Stores</h4>
+      <span class="col-md-12 store-count">{{ ( visitedPartners | filterStore : ['visited'] : 1).length }} stores available</span>
+    </div>
+    <div class="carousel slide" data-ride="carousel"  id="bs-carousel">
+      <div *ngFor="let store of visitedPartners | filterStore : ['visited']: 1 | slice:startVisited:endVisited; let i=index" class="col-md-3 col-sm-3 col-xs-6 text-center">
+        <a class="store-link" itemprop="url"  (click)="confirmOpenStore(store)">
+          <img class="store-img" itemprop="image" class="logo-thumb" alt="{{store.name}}"
+            [src]="getImageUrl(store)"
+            (error)="onImageError($event, store)">
+          <span class="store-name">{{ store.name }}</span>
+        </a>
+      </div>
+      <a *ngIf="startVisited > 0" class="carousel-control-prev" role="button" data-slide="prev" (click)="previousButton('visited')">
+        <i class="fa fa-chevron-left"></i>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a *ngIf="endVisited < (visitedPartners | filterStore : ['visited'] : 1).length" class="carousel-control-next" role="button" data-slide="next" (click)="nextButton('visited')">
+        <i class="fa fa-chevron-right"></i>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="(partners | filterStore : ['isNew'] : 1).length > 0">
+    <div class="row new-stores">
+      <h4 class="col-md-12">Discover New Stores</h4>
+      <span class="col-md-12 store-count">{{ (partners | filterStore : ['isNew'] : 1).length }} stores available</span>
+    </div>
+    <div class="carousel slide" data-ride="carousel"  id="bs-carousel">
+      <div *ngFor="let store of partners | filterStore: ['isNew'] : 1 | slice:startNew:endNew; let i=index" class="col-md-3 col-sm-3 col-xs-6 text-center">
+        <a class="store-link" itemprop="url"  (click)="confirmOpenStore(store)">
+          <img itemprop="image" class="logo-thumb" alt="{{store.name}}"
+            [src]="getImageUrl(store)"
+            (error)="onImageError($event, store)">
+          <span class="store-name">{{ store.name }}</span>
+        </a>
+      </div>
+      <a *ngIf="startNew > 0" class="carousel-control-prev" role="button" data-slide="prev" (click)="previousButton('new')">
+          <i class="fa fa-chevron-left"></i>
+          <span class="sr-only">Previous</span>
+      </a>
+      <a *ngIf="endNew < (partners | filterStore : ['isNew'] : 1).length" class="carousel-control-next" role="button" data-slide="next" (click)="nextButton('new')">
+        <i class="fa fa-chevron-right"></i>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </ng-container>
+</div>
+<app-banner-featured class="second-banner"></app-banner-featured>
+<div class="container">
+  <ng-container *ngIf="(partners | filterStore : ['subType'] : '1').length > 0">
+    <div class="row classification">
+      <h4 class="col-md-12">#OhMyGrocery</h4>
+      <span class="col-md-12 store-count">{{ (partners | filterStore : ['subType'] : '1').length }} stores available</span>
+    </div>
+    <div class="carousel slide" data-ride="carousel"  id="bs-carousel">
+      <div *ngFor="let store of partners | filterStore : ['subType'] : '1' | slice:startGrocer:endGrocer; let i=index" class="col-md-3 col-sm-3 col-xs-6 text-center">
+        <a class="store-link" itemprop="url"  (click)="confirmOpenStore(store)">
+          <img itemprop="image" class="logo-thumb" alt="{{store.name}}"
+            [src]="getImageUrl(store)"
+            (error)="onImageError($event, store)">
+          <span class="store-name">{{ store.name }}</span>
+        </a>
+      </div>
+      <a *ngIf="startGrocer > 0" class="carousel-control-prev" role="button" data-slide="prev" (click)="previousButton('grocer')">
+        <i class="fa fa-chevron-left"></i>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a *ngIf="endGrocer < (partners | filterStore : ['subType'] : '1').length" class="carousel-control-next" role="button" data-slide="next" (click)="nextButton('grocer')">
+        <i class="fa fa-chevron-right"></i>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="(partners | filterStore : ['subType'] : '2').length > 0" >
+    <div class="row classification">
+      <h4 class="col-md-12">#OhMyGourmet</h4>
+      <span class="col-md-12 store-count">{{ (partners | filterStore : ['subType'] : '2').length }} stores available</span>
+    </div>
+    <div class="carousel slide" data-ride="carousel"  id="bs-carousel">
+      <div *ngFor="let store of partners | filterStore : ['subType'] : '2' | slice:startGourmet:endGourmet; let i=index" class="col-md-3 col-sm-3 col-xs-6 text-center">
+        <a class="store-link" itemprop="url"  (click)="confirmOpenStore(store)">
+          <img itemprop="image" class="logo-thumb" alt="{{store.name}}"
+            [src]="getImageUrl(store)"
+            (error)="onImageError($event, store)">
+          <span class="store-name">{{ store.name }}</span>
+        </a>
+      </div>
+      <a *ngIf="startGourmet > 0" class="carousel-control-prev" role="button" data-slide="prev" (click)="previousButton('gourmet')">
+        <i class="fa fa-chevron-left"></i>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a *ngIf="endGourmet < (partners | filterStore : ['subType'] : '2').length" class="carousel-control-next" role="button" data-slide="next" (click)="nextButton('gourmet')">
+        <i class="fa fa-chevron-right"></i>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="(partners | filterStore : ['subType'] : '3').length > 0">
+    <div class="row classification">
+      <h4 class="col-md-12">#OhMyGoodness</h4>
+      <span class="col-md-12 store-count">{{ (partners | filterStore : ['subType'] : '3').length }} stores available</span>
+    </div>
+    <div class="carousel slide" data-ride="carousel"  id="bs-carousel">
+      <div *ngFor="let store of partners | filterStore : ['subType'] : '3' | slice:startGoodness:endGoodness; let i=index" class="col-md-3 col-sm-3 col-xs-6 text-center">
+        <a class="store-link" itemprop="url"  (click)="confirmOpenStore(store)">
+          <img itemprop="image" class="logo-thumb" alt="{{store.name}}"
+            [src]="getImageUrl(store)"
+            (error)="onImageError($event, store)">
+            <span class="store-name">{{ store.name }}</span>
+        </a>
+      </div>
+      <a *ngIf="startGoodness > 0" class="carousel-control-prev" role="button" data-slide="prev" (click)="previousButton('goodness')">
+        <i class="fa fa-chevron-left"></i>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a *ngIf="endGoodness < (partners | filterStore : ['subType'] : '3').length" class="carousel-control-next" role="button" data-slide="next" (click)="nextButton('goodness')">
+        <i class="fa fa-chevron-right"></i>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="(partners | filterStore : ['subType'] : '4').length > 0">
+    <div class="row classification">
+      <h4 class="col-md-12">#OhMyGifts</h4>
+      <span class="col-md-12 store-count">{{ (partners | filterStore : ['subType'] : '4').length }} stores available</span>
+    </div>
+    <div class="carousel slide" data-ride="carousel"  id="bs-carousel">
+      <div *ngFor="let store of partners | filterStore : ['subType'] : '4' | slice:startGifts:endGifts; let i=index" class="col-md-3 col-sm-3 col-xs-6 text-center">
+        <a class="store-link" itemprop="url"  (click)="confirmOpenStore(store)">
+          <img itemprop="image" class="logo-thumb" alt="{{store.name}}"
+            [src]="getImageUrl(store)"
+            (error)="onImageError($event, store)">
+          <span class="store-name">{{ store.name }}</span>
+        </a>
+      </div>
+      <a *ngIf="startGifts > 0" class="carousel-control-prev" role="button" data-slide="prev" (click)="previousButton('gifts')">
+        <i class="fa fa-chevron-left"></i>
+        <span class="sr-only">Previous</span>
+      </a>
+      <a *ngIf="endGifts < (partners | filterStore : ['subType'] : '4').length" class="carousel-control-next" role="button" data-slide="next" (click)="nextButton('gifts')">
+        <i class="fa fa-chevron-right"></i>
+        <span class="sr-only">Next</span>
+      </a>
+    </div>
+  </ng-container>
+</div>
+
+<div class="modal" bsModal #confirmModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <strong>Confirm</strong>
+      </div>
+      <div class="modal-body">
+        <p>
+          You have items in your cart that are from a different store,
+          and mixing items from different stores is currently not supported.
+        </p>
+        <p>
+          If you proceed, the items will be removed from the cart.
+          Do you want to continue?
+        </p>
+        <p class="text-center">
+          <button type="button" class="btn btn-default" (click)="openStore()">Yes</button>
+          <button type="button" class="btn btn-primary" (click)="confirmModal.hide()">Cancel</button>
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

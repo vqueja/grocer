@@ -1,0 +1,30 @@
+p a {
+  color: #697071;
+  text-decoration: none;
+  &.active {
+    // font-family: Whitney-semi-bold;
+    color: #ff4d7d;
+    font-weight: 500;
+    background-color: transparent;
+  }
+}
+
+.sidebar {
+  border-right: 1px solid #eaeaec;
+}
+
+.user-content {
+  min-height: 500px;
+}
+
+.margin-top-20 {
+  margin-top: 20px;
+}
+
+@media screen and (max-width: 767px) {
+  .user-content {
+    margin-top: 10px;
+    min-height: 300px;
+  }
+
+}

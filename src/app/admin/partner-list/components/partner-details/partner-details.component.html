@@ -1,0 +1,420 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <ng-container *ngIf="operation === 'Edit'; else elseAdd">
+      <li class="breadcrumb-item">Partners</li>
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/admin/partners/list', partnerType.value]">{{ partnerType.value }}</a>
+      </li>
+      <li class="breadcrumb-item text-primary" aria-current="page">{{ operation }}</li>
+    </ng-container>
+    <ng-template #elseAdd>
+      <li class="breadcrumb-item">
+        <a [routerLink]="['/admin/partners/list', 'buyer']">Partners</a>
+      </li>
+      <li class="breadcrumb-item text-primary" aria-current="page">{{ operation }}</li>
+    </ng-template>
+  </ol>
+</nav>
+<div class="row">
+  <div class="col-sm-12">
+    <ng-container *ngIf="operation === 'Add'">
+      <button class="btn btn-primary" (click)="onSubmit('Add&Edit')">Save and Edit</button>
+      <button class="btn btn-primary" (click)="onSubmit('Add&New')">Save and Create New Partner</button>
+    </ng-container>
+    <ng-container *ngIf="operation === 'Edit'">
+      <button class="btn btn-primary" (click)="onSubmit('Add1')">Save Changes</button>
+      &nbsp;|&nbsp;
+      <button
+       *ngIf="partnerData"
+        class="btn btn-default"
+        [routerLink]="['/admin/tools/manage-timeslot']"
+        [queryParams]="{ partner: partnerData.id }">Manage Delivery Timeslots
+       </button>
+    </ng-container>
+  </div>
+</div>
+<hr>
+<div class="row">
+  <form class="form col-xs-12 col-sm-12 col-md-11 col-lg-9" [formGroup]="partnerForm">
+    <div class="row small">
+      <div class="col-sm-7 form-group">
+        <label for="name">Name:</label>
+        <input type="text" formControlName="name" class="form-control" placeholder="Name">
+      </div>
+      <div class="col-sm-3 form-group">
+        <label>Type:</label>
+        <select class="form-control" formControlName="type" name="Type" #partnerType>
+          <option value="0" [selected]="operation === 'Add'" disabled hidden>Type</option>
+          <option value="internal" hidden>Internal</option>
+          <option value="buyer">Buyer</option>
+          <option value="seller">Seller</option>
+        </select>
+      </div>
+      <div class="col-sm-2 form-group">
+        <label for="name">Code:</label>
+        <input type="text" formControlName="code" class="form-control" placeholder="Code">
+      </div>
+      <div class="col-sm-7 form-group">
+        <label for="name">Name (Internal Use Only):</label>
+        <input type="text" formControlName="internalName" class="form-control" placeholder="Internal Name">
+      </div>
+      <div *ngIf="partnerForm.get('type').value === 'buyer'; else elseSeller" class="col-sm-3 form-group">
+        <label>Buyer Type:</label>
+        <select class="form-control" formControlName="subType" name="SubType" #partnerSubType>
+          <option value="0" [selected]="operation === 'Add'" disabled hidden>Type</option>
+          <option value="individual">Individual</option>
+          <option value="corporate">Corporate</option>
+          <option value="hotel & resto">Hotel & Resto</option>
+          <option value="reseller">Reseller</option>
+        </select>
+      </div>
+      <ng-template #elseSeller>
+      <div class="col-sm-12 form-group">
+        <div><label>Subtypes</label></div>
+        <div class="col-sm-6 categories">
+          <div *ngFor="let store of partnerSubtypes" class="col-sm-12 form-group">
+            <input type="checkbox" [checked]="store.checked" (change)="updatePartnerCategories(store.value)"> <label>{{ store.name }}</label>
+          </div>
+        </div>
+      </div>
+      </ng-template>
+    </div>
+    <hr>
+    <h4>Office Address</h4>
+    <div class="row small">
+      <div class="col-sm-12 form-group">
+        <label for="address">Address:</label>
+        <input type="text" formControlName="address" class="form-control" placeholder="Address">
+      </div>
+      <div class="col-sm-4 form-group">
+        <label for="city">City/Municipality:</label>
+        <input type="text" formControlName="city" class="form-control" placeholder="City">
+      </div>
+      <div class="col-sm-4 form-group">
+        <label for="city">Zip Code:</label>
+        <input type="text" formControlName="postalCode" class="form-control" placeholder="Zip Code">
+      </div>
+      <div class="col-sm-4 form-group">
+        <label for="country">Country:</label>
+        <input type="text" formControlName="country" class="form-control" placeholder="Country">
+      </div>
+    </div>
+    <h4>Contact Person</h4>
+    <div class="row small">
+      <div class="col-sm-7 form-group">
+        <label for="address">Name:</label>
+        <input type="text" formControlName="contactPerson" class="form-control" placeholder="Contact Name">
+      </div>
+      <div class="col-sm-5 form-group">
+        <label for="address">Email:</label>
+        <input type="text" formControlName="contactEmail" class="form-control" placeholder="Contact Email">
+      </div>
+    </div>
+    <div>
+      <hr>
+      <h4>Partner Options</h4>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6">
+          <table class="table options">
+            <tr>
+              <td>
+                Service Fee
+                <span class="glyphicon glyphicon-question-sign small"
+                  title="Base Service Fee"></span>
+              </td>
+              <td>
+                <input formControlName="serviceFee" name="serviceFee"
+                  class="form-control width-100 text-right"
+                  placeholder="0.00" type="number">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Service Fee (Promo)
+                <span class="glyphicon glyphicon-question-sign small"
+                  title="Discounted Service Fee"></span>
+              </td>
+              <td>
+                <input formControlName="promoServiceFee" name="promoServiceFee"
+                  class="form-control width-100 text-right"
+                  placeholder="0.00" type="number">
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Service Fee Increment
+                <span class="glyphicon glyphicon-question-sign small"
+                  title="Service Fee Increment"></span>
+              </td>
+              <td>
+                <input formControlName="serviceIncrement" name="serviceIncrement"
+                  class="form-control width-100 text-right"
+                  placeholder="0.00" type="number" >
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Zero Service Fee Promo
+                <span class="glyphicon glyphicon-question-sign small"
+                  title="..."></span>
+              </td>
+              <td><input type="checkbox" formControlName="isZeroServiceFee"></td>
+            </tr>
+            <tr>
+              <td>
+                Delivery Fee
+                <span class="glyphicon glyphicon-question-sign small"
+                  title="Base Delivery Fee"></span>
+              </td>
+              <td>
+                <input formControlName="deliveryFee" name="deliveryFee"
+                  class="form-control width-100 text-right"
+                  placeholder="0.00" type="number" >
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Delivery Fee (Promo)
+                <span class="glyphicon glyphicon-question-sign small"
+                  title="Discounted Delivery Fee "></span>
+              </td>
+              <td>
+                <input formControlName="promoDeliveryFee" name="promoDeliveryFee"
+                  class="form-control width-100 text-right"
+                  placeholder="0.00" type="number" >
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Delivery Fee Increment
+                <span class="glyphicon glyphicon-question-sign small"
+                  title="Delivery Fee Increment"></span>
+              </td>
+              <td>
+                <input formControlName="deliveryIncrement" name="deliveryIncrement"
+                  class="form-control width-100 text-right"
+                  placeholder="0.00" type="number" >
+              </td>
+            </tr>
+            <tr>
+              <td>
+                Zero Delivery Fee Promo
+                <span class="glyphicon glyphicon-question-sign small"
+                  title="..."></span>
+              </td>
+              <td><input type="checkbox" formControlName="isZeroDeliveryFee" ></td>
+            </tr>
+            <tr>
+              <td>
+                Fee Threshold
+                <span class="glyphicon glyphicon-question-sign small"
+                  title="Add Service & Delivery Fee for each threshold increment in cart total"></span>
+              </td>
+              <td>
+                <input type="number" formControlName="threshold"
+                  class="form-control width-100 text-right"
+                  placeholder="0.00" name="threshold">
+              </td>
+            </tr>
+          </table>
+        </div>
+        <ng-container *ngIf="partnerForm.get('type').value === 'buyer'">
+          <div class="col-xs-12 col-sm-6 col-md-6">
+            <table class="table options">
+              <tr>
+                <td>
+                  Custom OMG URL
+                  <span class="glyphicon glyphicon-question-sign small"
+                    title="Custom ohmygrocery.com subdomain"></span>
+                </td>
+                <td>
+                  <input type="text" formControlName="url" class="form-control"
+                    placeholder="custom.ohmygrocery.com">
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Display Registration Link
+                  <span class="glyphicon glyphicon-question-sign small"
+                    title="Show signup page link in custom OMG URL"></span>
+                </td>
+                <td><input type="checkbox" formControlName="signUpFlag"></td>
+              </tr>
+              <tr>
+                <td>
+                  Enable Employee Voucher
+                  <span class="glyphicon glyphicon-question-sign small"
+                    title="Add Employee Voucher payment option to users under partner buyer"></span>
+                </td>
+                <td><input type="checkbox" formControlName="salaryDeduction"></td>
+              </tr>
+              <tr>
+                <td>
+                  Restrict Delivery to Office Address
+                  <span class="glyphicon glyphicon-question-sign small"
+                    title="Delivery will only be to Office address"></span>
+                </td>
+                <td><input type="checkbox" formControlName="restricted"></td>
+              </tr>
+            </table>
+          </div>
+        </ng-container>
+        <ng-container *ngIf="partnerForm.get('type').value === 'seller'">
+          <div class="col-xs-12 col-sm-6 col-md-6">
+            <table class="table options">
+              <tr>
+                <td>
+                  New Store?
+                  <span class="glyphicon glyphicon-question-sign small"
+                    title="Set store to open or close"></span>
+                </td>
+                <td>
+                  <label class="radio-inline">
+                    <input type="radio" formControlName="isNew" [value]="1"> Yes
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" formControlName="isNew" [value]="0"> No
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>Priority</td>
+                <td>
+                  <select class="form-control" formControlName="priority" name="priority" #partnerPriority>
+                    <option value="{{partnerPriority}}" [selected]="operation === 'Add'" disabled hidden >priority</option>
+                    <option *ngFor="let num of priorityNum">{{num}}</option>
+                  </select>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Availability
+                  <span class="glyphicon glyphicon-question-sign small"
+                    title="Set store to open or close"></span>
+                </td>
+                <td>
+                  <label class="radio-inline">
+                    <input type="radio" formControlName="availability" [value]="1"> Open
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" formControlName="availability" [value]="0"> Close
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Visibility
+                  <span class="glyphicon glyphicon-question-sign small"
+                    title="Show or Hide store on Store List"></span>
+                </td>
+                <td>
+                  <label class="radio-inline">
+                    <input type="radio" formControlName="status" [value]="1"> Show
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" formControlName="status" [value]="2"> Hidden
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" formControlName="status" [value]="0"> Disabled
+                  </label>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Use Store Fees?
+                  <span class="glyphicon glyphicon-question-sign small"
+                    title="Use store fees or not"></span>
+                </td>
+                <td><input type="checkbox" formControlName="useStoreFees"></td>
+              </tr>
+              <tr>
+                <td>
+                  Price Markup
+                  <span class="glyphicon glyphicon-question-sign small"
+                    title="Add price markup to store items"></span>
+                </td>
+                <td>
+                  <input type="number" formControlName="markup"
+                    class="form-control width-100 text-right"
+                    placeholder="0.00" name="markUp">
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  Same Day Delivery
+                  <span class="glyphicon glyphicon-question-sign small"
+                    title="Enables customers to select timeslots on the same day"></span>
+                </td>
+                <td><input type="checkbox" formControlName="sameDayDelivery"></td>
+              </tr>
+              <tr>
+                <td>
+                  Pick-Up Delivery
+                  <span class="glyphicon glyphicon-question-sign small"
+                    title="Enables customers to pick up order at the store's address"></span>
+                </td>
+                <td><input type="checkbox" formControlName="pickUpDelivery"></td>
+              </tr>
+              <tr>
+                <td>
+                  Request Item Feature
+                  <span class="glyphicon glyphicon-question-sign small"
+                    title="Enable module for customers to request an item"></span>
+                </td>
+                <td><input type="checkbox" formControlName="requestItemFlag"></td>
+              </tr>
+            </table>
+          </div>
+          <div class="col-xs-12 col-sm-6 col-md-6">
+            <div class="logo-container well well-sm text-center">
+              <div class="text-left"><strong>Store Logo</strong></div>
+              <p>
+                <img itemprop="image" class="logo-thumb" alt="{{partnerData.name}}"
+                [src]="logoUrl" (error)="onImageError($event)">
+              </p>
+              <p>
+                <input type="text" formControlName="logo"
+                class="form-control" placeholder="Logo filename">
+              </p>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <!-- PARTNER BUYER OPTIONS -->
+    <!-- <div *ngIf="partnerForm.get('type').value === 'buyer'">
+      <hr>
+      <h4>Partner Buyer Options</h4>
+      <div class="row">
+
+
+      </div>
+    </div> -->
+    <!-- PARTNER SELLER OPTIONS -->
+    <!-- <div *ngIf="partnerForm.get('type').value === 'seller'">
+      <hr>
+      <h4>Partner Seller Options</h4>
+      <div class="row">
+
+      </div>
+    </div> -->
+  </form>
+  <!-- OUTSIDE OF FORM -->
+  <div class="col-xs-12 col-sm-12 col-md-11 col-lg-9">
+    <div *ngIf="partnerForm.get('type').value === 'buyer' && operation === 'Edit'" class="store-list well">
+      <h4>
+        List of Hidden Stores
+        <button class="btn btn-default" (click)="saveStoreList()">Save Store List</button>
+      </h4>
+      <hr>
+      <div class="row store-list">
+        <div *ngFor="let store of partnerStoreList" class="checkbox col-xs-6 col-sm-3 col-md-2">
+          <label>
+            <input type="checkbox" [(ngModel)]="store.checked"> {{ store.name }}
+          </label>
+        </div>
+        <div *ngIf="!partnerStoreList.length" class="col-md-12">No hidden stores</div>
+      </div>
+    </div>
+  </div>
+</div>

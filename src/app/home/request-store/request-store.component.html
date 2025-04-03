@@ -1,0 +1,29 @@
+<div class="container">
+  <div class="content-container">
+    <div class="image">
+      <img src="assets/girl_omg_apron.jpg" class="img-responsive">
+    </div>
+    <div class="content">
+      <h3><strong>Shopping Genie</strong></h3>
+      <p>Book your personal shopping genie to make your shopping wishes come true!</p>
+      <p>Begin by clicking on the the button below. You can choose from the catalogue, or just let us know what you want!</p>
+      <p>It's so simple! Your wish is our comand.</p>
+      <p>
+        <button class="btn btn-primary" (click)="openItemRequest()">
+          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Book Your Genie&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        </button>
+      </p>
+    </div>
+    <div class="clearfix"></div>
+  </div>
+</div>
+
+<modal #itemRequestModal [closeOnOutsideClick]="false">
+  <ng-template #modalBody>
+    <app-item-request
+      [partnerStore]="partnerStore"
+      (onCloseModalEmit)="closeItemRequest($event)"
+      (onClose)="closeItemRequest($event)">
+    </app-item-request>
+  </ng-template>
+</modal>

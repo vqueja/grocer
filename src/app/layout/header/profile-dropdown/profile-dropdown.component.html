@@ -1,0 +1,143 @@
+<div class="main-header">
+  <!-- <ul class="nav navbar-nav navbar-right">
+    <ng-container *ngIf="!isAuthenticated; else elseBlock">
+      <li *ngIf="checkUrl()">
+        <a class="menu-label" [routerLink]="registerLink()">Register</a>
+      </li>
+      <li>
+        <a class="menu-label" [routerLink]="['/auth', 'login']" [queryParams]="{ returnUrl: returnUrl }">Sign in</a>
+      </li>
+    </ng-container>
+    <ng-template #elseBlock>
+
+      <li class="hidden-sm hidden-md hidden-lg hidden-xl">
+        <a routerLink="/" class="navbar-brand">
+          <img class="logo" src="assets/OMG.png" />
+        </a>
+      </li>
+
+    </ng-template>
+  </ul> -->
+  <div class="mobile-logo header-item hidden-sm hidden-md hidden-lg hidden-xl">
+    <a routerLink="/">
+      <img class="logo" src="assets/OMG.png" />
+    </a>
+  </div>
+  <ng-container *ngIf="isAuthenticated; else elseBlock">
+    <div class="header-item user-profile dropdown" dropdown>
+      <a class="dropdown-toggle" dropdownToggle>
+        <!-- <i class="fa fa-user" aria-hidden="true"></i> -->
+        <img src="assets/omg-profile.png">
+        <span class="hidden-xs">
+          {{ userData.firstName }} {{ userData.lastName }}
+        </span>
+        <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu user-menu" *dropdownMenu>
+        <!-- <li><span class="username">Signed in as<br>{{ userData.username }}</span></li> -->
+        <!-- <li role="separator" class="divider"></li> -->
+        <li><a routerLink="/user">My Profile</a></li>
+        <li><a routerLink="/user/address">Saved Addresses</a></li>
+        <li><a routerLink="/user/orders">Orders</a></li>
+        <li><a routerLink="/user/lists">Lists</a></li>
+        <!-- <li role="separator" class="divider"></li>
+        <li><a (click)="onOpenReferralEmit.emit()"><i class="fa fa-share-alt"></i> Refer a Friend</a></li> -->
+        <li role="separator" class="divider hidden-xs"></li>
+        <li><a routerLink="/contact">Contact Us</a></li>
+        <li role="separator" class="divider hidden-xs"></li>
+        <li><a (click)="logout()" href="">Logout</a></li>
+      </ul>
+    </div>
+    <div class="header-item hidden-xs">
+      <a class="menu-label" routerLink="/user/lists">
+        <!-- <i class="glyphicon glyphicon-list"></i> -->
+        <span>My List</span>
+      </a>
+    </div>
+  </ng-container>
+  <ng-template #elseBlock>
+    <div *ngIf="checkUrl()" class="header-item hidden-xs">
+      <a class="menu-label"
+      [routerLink]="registerLink()">Register</a>
+    </div>
+    <div class="header-item hidden-xs">
+      <a class="menu-label"
+        [routerLink]="['/auth', 'login']"
+        [queryParams]="{ returnUrl: returnUrl }">Sign in</a>
+    </div>
+    <div class="header-item user-profile dropdown
+      hidden-sm hidden-md hidden-lg hidden-xl" dropdown>
+      <a class="dropdown-toggle" dropdownToggle>
+        <img src="assets/omg-profile.png">
+        <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu user-menu" *dropdownMenu>
+        <li *ngIf="checkUrl()"><a [routerLink]="registerLink()">Register</a></li>
+        <li>
+          <a [routerLink]="['/auth','login']"
+            [queryParams]="{ returnUrl: returnUrl }">Sign in</a>
+        </li>
+        <li><a routerLink="/contact">Contact Us</a></li>
+      </ul>
+    </div>
+  </ng-template>
+  <ng-container>
+    <!--       <a [routerLink]="['checkout','cart']"> -->
+    <div class="header-item cart hidden-sm hidden-md hidden-lg hidden-xl">
+      <a (click)=onMobileCartToggle()>
+        <img src="assets/omg-cart.png">
+        <span class="badge badge-danger">{{totalCartItems}}</span>
+        <span class="caret"></span>
+      </a>
+    </div>
+    <div class="header-item cart hidden-xs"
+      dropdown
+      #cartDropdown="bs-dropdown"
+      [autoClose]="false"
+      (onShown)="showCartPreview()"
+      (onHidden)="hideCartPreview()">
+      <a dropdownToggle class="dropdown-toggle">
+        <!-- <i class="fa fa-shopping-cart" aria-hidden="true"></i> -->
+        <img src="assets/omg-cart.png">
+        <span class="badge badge-danger">{{totalCartItems}}</span>
+        <span class="hidden-xs">₱{{totalCartValue | number : '1.2-2'}}</span>
+        <span class="caret"></span>
+      </a>
+      <ul *dropdownMenu class="dropdown-menu cart-preview">
+        <li>
+          <div>
+            <!-- <button type="button" class="btn btn-block btn-primary"
+              [routerLink]="['checkout','cart']" (click)="cartDropdown.hide()">
+              Checkout Now
+            </button> -->
+            <h4 class="text-center">Cart Preview</h4>
+          </div>
+          <div class="col-md-12 cart-list">
+            <app-cart-item-list [isCartSummary]="true"></app-cart-item-list>
+            <div *ngIf="totalCartValue <= 0" class="empty text-center">
+              Your Shopping Cart is empty
+            </div>
+          </div>
+          <div class="col-md-12 subtotal">
+            <h4>Subtotal: <span class="pull-right">₱{{totalCartValue | number : '1.2-2'}}</span></h4>
+          </div>
+          <div class="col-md-12">
+            <button type="button" class="btn btn-primary btn-lg btn-block"
+              [routerLink]="['checkout','cart']" (click)="cartDropdown.hide()">
+              Checkout Now
+            </button>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </ng-container>
+  <ng-template #isCheckoutBlock>
+    <div class="cart">
+      <a [routerLink]="['checkout','cart']">
+        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
+        <span class="badge badge-danger">{{totalCartItems}}</span>
+        ₱{{totalCartValue | number : '1.2-2'}}
+      </a>
+    </div>
+  </ng-template>
+</div>

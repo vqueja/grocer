@@ -1,0 +1,23 @@
+<form class="login-login-form" [formGroup]="signInForm" (ngSubmit)="onSubmit()">
+  <fieldset class="login-input-container">
+    <div class="login-input-item">
+      <input #emailInput type="email" class="login-user-input-email login-user-input" name="email" placeholder="Your Email Address" formControlName="email"
+        autocomplete="off" autofocus>
+      <div *ngIf="signInForm.get('email').errors && signInForm.get('email').touched">
+        <span class="login-error-icon text-danger">!</span>
+        <p class="login-error-message text-danger">{{signInForm.get('email').errors.msg || 'Please enter a valid email id'}}</p>
+      </div>
+    </div>
+    <div class="login-input-item">
+      <input type="password" class="login-user-input-password login-user-input" name="password" placeholder="Enter Password" formControlName="password"
+        autocomplete="off">
+      <div *ngIf="signInForm.get('password').errors && signInForm.get('password').touched">
+        <span class="login-error-icon text-danger">!</span>
+        <p class="login-error-message text-danger">{{signInForm.get('password').errors.msg || 'Password must be at least 6 characters'}}</p>
+      </div>
+    </div>
+  </fieldset>
+  <fieldset class="login-login-button-container">
+    <button type="submit" class="btn btn-primary login-login-button">Log in</button>
+  </fieldset>
+</form>

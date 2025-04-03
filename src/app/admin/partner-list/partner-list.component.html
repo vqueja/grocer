@@ -1,0 +1,220 @@
+<div>
+  <div class="pageLabel">
+    <nav class="nav-breadcrumb" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">Partners</li>
+        <li class="breadcrumb-item text-primary" aria-current="page">{{ partnerType }}</li>
+      </ol>
+    </nav>
+  </div>
+  <div class="commands">
+    <div class="margin-bottom-5">
+      <button type="button" class="btn btn-default btn-sm" (click)="showFilter = !showFilter">
+        Change Filters&nbsp;<i class="glyphicon glyphicon-menu-down"></i>
+      </button>
+      &nbsp;|&nbsp;
+      <button type="button" class="btn btn-default btn-sm" [routerLink]="['/admin/partners/add']">
+        Add New Partner
+      </button>
+      &nbsp;|&nbsp;
+      <button *ngIf="!showGroups" type="button" class="btn btn-default btn-sm" (click)="showGroups = !showGroups">
+        Group View
+      </button>
+      <button *ngIf="showGroups" type="button" class="btn btn-default btn-sm" (click)="showGroups = !showGroups">
+        List View
+      </button>
+    </div>
+    <div class="small filter-text">Filters: <span [innerHTML]="filterText"></span></div>
+    <div *ngIf="showFilter" class="filter well">
+      <form class="form-inline small">
+        <div class="closeFilter">
+          <a (click)="showFilter = false">CLOSE <i class="glyphicon glyphicon-remove"></i></a>
+        </div>
+        <div class="form-group">
+          <label>Name:</label>
+          <input type="text" placeholder="Name" class="form-control btn-sm"
+            [(ngModel)]="filters.name" name="name">
+          </div>
+          <div class="form-group">
+            <label>Code:</label>
+            <input type="text" placeholder="Code" class="form-control btn-sm"
+            [(ngModel)]="filters.code" name="code">
+          </div>
+        <ng-container *ngIf="partnerType === 'buyer'; else elseFilters">
+          <div class="form-group">
+            <label>URL:</label>
+            <input type="text" placeholder="URL" class="form-control btn-sm"
+              [(ngModel)]="filters.url" name="url">
+          </div>
+        </ng-container>
+        <ng-template #elseFilters>
+          <div class="form-group">
+            <label>Type:</label>
+            <select class="form-control btn-sm" [(ngModel)]="filters.status" name="status">
+              <option value="-1" disabled selected hidden>Status</option>
+              <option value="1">Open</option>
+              <option value="2">Hidden</option>
+              <option value="0">Disabled</option>
+            </select>
+          </div>
+        </ng-template>
+      </form>
+      <div class="text-right">
+        <button type="button" class="btn btn-default btn-sm" (click)="clearFilter()">Clear</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="applyFilter()">Apply</button>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <!-- <ng-template *ngIf="showGroups; else ShowList"> -->
+    <div *ngIf="showGroups" class="table-border">
+      <table class="table table-hover table-striped small">
+       <thead>
+          <tr>
+            <th>CATEGORIES</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let group of groupedStores; let i = index">
+            <td class='category-name'>
+              <span>{{group.name}}</span>
+            </td>
+            <ng-container *ngFor="let store of group.stores; let i = index">
+                <td class='partner-name-group' [routerLink]="['/admin/partners/edit',store.id]">
+                  <img
+                  *ngIf="partnerType === 'seller'"
+                  class="logo-thumb2" alt="{{store.name}}"
+                  [src]="getImageUrl(store)"
+                  (error)="onImageError($event, store)">
+                  &nbsp;&nbsp;<br><span class='store-names'>{{store.name}}</span>
+              </td>
+            </ng-container>
+          </tr>
+        <tbody>
+      </table>
+    </div>
+  <!-- </ng-template> -->
+  <!-- <ng-template #ShowList> -->
+    <div *ngIf="!showGroups" class="table-border">
+      <table class="table table-hover table-striped small">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+            <th>Code</th>
+            <ng-container *ngIf="partnerType === 'buyer'; else elseHeaders">
+              <th>Buyer Type</th>
+              <th>OMG URL</th>
+              <th>Service Fee</th>
+              <th>Delivery Fee</th>
+            </ng-container>
+            <ng-template #elseHeaders>
+              <th>Price Markup</th>
+              <th>Availability</th>
+              <th>Visibility</th>
+              <th>Priority</th>
+            </ng-template>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let partner of partners; let i = index">
+            <td>{{ partner.id }}</td>
+            <td class='partner-name' [routerLink]="['/admin/partners/edit', partner.id]">
+              <img
+                *ngIf="partnerType === 'seller'"
+                class="logo-thumb" alt="{{ partner.name }}"
+                [src]="getImageUrl(partner)"
+                (error)="onImageError($event, partner)">
+                &nbsp;&nbsp;<span>{{ partner.name }}</span>
+            </td>
+            <td>{{ partner.code }}</td>
+            <ng-container *ngIf="partnerType === 'buyer'; else elseColumns">
+              <td>{{ partner.subType }}</td>
+              <td>{{ partner.url }}</td>
+              <td>
+                <span [ngClass]="{ 'line-through' : partner.promoServiceFee }">
+                  {{ partner.serviceFee | number:'1.2-2' }}</span>&nbsp;
+                <span *ngIf="partner.promoServiceFee">
+                  {{ partner.promoServiceFee | number:'1.2-2' }}
+                </span>
+              </td>
+              <td>
+                <span [ngClass]="{ 'line-through' : partner.promoDeliveryFee }">
+                  {{ partner.deliveryFee | number:'1.2-2' }}</span>&nbsp;
+                <span *ngIf="partner.promoDeliveryFee">
+                  {{ partner.promoDeliveryFee | number:'1.2-2'}}
+                </span>
+              </td>
+            </ng-container>
+            <ng-template #elseColumns>
+              <td>{{ partner.markup | number:'1.2-2' }}</td>
+              <td>{{ partner.availableText }}</td>
+              <td>{{ partner.statusText }}</td>
+              <td>
+                <div dropdown class="priority">
+                  <button dropdownToggle type="button" class="btn btn-default btn-sm numDisplay">
+                    {{ partner.priority }} &nbsp;<span class="caret"></span>
+                  </button>
+                  <select *dropdownMenu role="menu" class="dropdown-menu" (change)="setPriority(partner,$event.target.value)">
+                    <option *ngFor="let num of priorityNum">{{num}}</option>
+                  </select>
+                </div>
+              </td>
+            </ng-template>
+            <td>
+              <div dropdown class="actions">
+                <button dropdownToggle type="button" class="btn btn-default btn-sm">
+                  <i class="glyphicon glyphicon-cog"></i>&nbsp;<span class="caret"></span>
+                </button>
+                <ul *dropdownMenu role="menu" class="dropdown-menu">
+                  <li [routerLink]="['/admin/partners/edit/', partner.id]">Edit</li>
+                  <ng-container *ngIf="partnerType === 'buyer'; else elseActions">
+                  </ng-container>
+                  <ng-template #elseActions>
+                    <li (click)="setAvailability(partner)">
+                      Set Availability
+                      <em>[{{ partner.availability ? 'Close': 'Open' }}]</em>
+                    </li>
+                    <li
+                      *ngIf="partner.status != 1"
+                      (click)="setStatus(partner, 1)">
+                      Set Visibility <em>[Open]</em>
+                    </li>
+                    <li
+                      *ngIf="partner.status != 2"
+                      (click)="setStatus(partner, 2)">
+                      Set Visibility <em>[Hidden]</em>
+                    </li>
+                    <li
+                      *ngIf="partner.status != 0"
+                      (click)="setStatus(partner, 0)">
+                      Set Visibility <em>[Disabled]</em>
+                    </li>
+                  </ng-template>
+                  <li
+                    [routerLink]="['/admin/tools/manage-timeslot']"
+                    [queryParams]="{ partner: partner.id }">Manage Delivery Timeslots
+                  </li>
+                </ul>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="row">
+      <div class="col-xs-6 col-6">
+        <pagination [totalItems]="totalItems" [(ngModel)]="currentPage"
+          [itemsPerPage]="itemsPerPage" [rotate]="true"
+          [maxSize]="5" [boundaryLinks]="true"
+          (pageChanged)="pageChanged($event)" (numPages)="numPages = $event">
+        </pagination>
+      </div>
+      <div class="col-xs-6 col-6 text-right">
+        <small>Page {{ currentPage }} of {{ numPages }}, {{ totalItems }} total partners</small>
+      </div>
+    </div>
+  <!-- </ng-template> -->
+</div>

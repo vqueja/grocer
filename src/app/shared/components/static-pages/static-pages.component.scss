@@ -1,0 +1,50 @@
+.static-pages {
+  min-height: 500px;
+  padding-top: 20px;
+
+  h2 {
+    font-weight: 300;
+  }
+}
+
+a {
+  color: #333;
+  cursor: pointer;
+}
+
+.text-red {
+  color: red;
+}
+
+.text-underline {
+  text-decoration: underline;
+}
+
+.vision {
+  text-align: center;
+}
+
+.vision_text{
+  width: 600px;
+  display: inline-block;
+}
+
+.careers_heading {
+  text-align: center;
+}
+
+.careers_list {
+  margin-left: 175px;
+}
+
+@media screen and (max-width: 767px) {
+  .vision_text{
+    width: 300px;
+    display: inline-block;
+  }
+
+  .careers_list {
+    margin-left: 75px;
+  }
+
+}

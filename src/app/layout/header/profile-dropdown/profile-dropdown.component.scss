@@ -1,0 +1,187 @@
+@import "../../../shared/scss/custom_themes/default/default";
+
+.caret {
+  color: $pink;
+}
+.btn-primary:active{
+	background-color: $pink-dark;
+}
+.fa {
+  font-size: 2rem;
+}
+.navbar-nav.navbar-right {
+  cursor: pointer;
+  margin-right: -10px;
+}
+.navbar-nav > li  {
+  border-right: 1px solid #ccc;
+  &.cart {
+    border-right: 0;
+  }
+  & > a {
+    min-height: 0px;
+    letter-spacing: 0.5px;
+    font-size: 14px;
+    padding: 0 10px;
+    &.menu-label {
+      // text-transform: uppercase;
+      // font-weight: bold;
+      line-height: 25px;
+    }
+    img {
+      height: 25px;
+    }
+  }
+}
+.divider {
+  top: 10px;
+}
+.btn-primary{
+  border-color: $pink-dark;
+  background-color: $pink;
+}
+.nav .open>a, .nav .open>a:focus, .nav .open>a:hover {
+  background-color: transparent;
+}
+
+.main-header {
+  text-align: right;
+  margin-right: -20px;
+  height: 25px;
+}
+.header-item {
+  display: inline-block;
+  cursor: pointer;
+  border-right: 1px solid #ccc;
+  margin-left: -4px;
+  &.cart {
+    border-right: 0;
+  }
+  & > a {
+    min-height: 0px;
+    letter-spacing: 0.5px;
+    font-size: 14px;
+    padding: 0 20px;
+    color: #777;
+    text-decoration: none;
+    &.menu-label {
+      line-height: 25px;
+    }
+    img {
+      height: 25px;
+    }
+  }
+}
+
+.cart {
+  cursor: pointer;
+  position: relative;
+  ul.cart-preview {
+    background-color: $white;
+    cursor: auto;
+    padding: 0;
+    margin: 0;
+    top: 105%;
+    left: unset;
+    right: 20px;
+    li {
+      width: 460px;
+      height: 445px;
+      font-family: sans-serif;
+      .cart-list {
+        overflow: scroll;
+        height: 320px;
+        // border-color: #444;
+        // border-width: 1px 0;
+        // border-style: solid;
+        overflow-x: hidden;
+      }
+      .subtotal {
+        // border-top: 5px solid #ccc;
+      }
+      .empty {
+        padding: 50px 0;
+      }
+    }
+  }
+}
+
+.user-menu {
+  left: unset;
+  top: 105%;
+  right: 0;
+  background-color: #fff;
+  color: #333;
+  min-width: 120px;
+  a {
+    color: #333;
+    &:hover {
+      background-color: $pink;
+      color: #fff;
+    }
+  }
+  .divider {
+    margin: 5px 0;
+  }
+  .fa-share-alt {
+    font-size: 14px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .main-header {
+    margin-right: 0;
+    .header-item a {
+      padding: 0 10px;
+    }
+  }
+  .mobile-logo {
+    display: block;
+    text-align: center;
+    border-right: 0 !important;
+  }
+  .user-profile {
+    position: absolute;
+    left: 5px;
+    top: 0;
+    right: unset;
+    border-right: 0 !important;
+    .user-menu {
+      width: calc(100vw);
+      position: fixed;
+      border: 0px;
+      border-radius: 0px;
+      top: 48px;
+      left: 0;
+      font-size: 15px;
+      padding: 0;
+      margin: 0;
+      li > a {
+        padding: 10px 15px;
+        border-bottom: 1px solid #e5e5e5;
+      }
+    }
+  }
+  .cart {
+    position: absolute;
+    right: 5px;
+    top: 0;
+  }
+}
+
+/* width */
+::-webkit-scrollbar {
+    width: 10px;
+}
+/* Track */
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+}
+ /* Handle */
+::-webkit-scrollbar-thumb {
+    background: #aaa;
+}
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: #888;
+}

@@ -1,0 +1,79 @@
+<div>
+  <div class="pageLabel">
+    <nav class="nav-breadcrumb" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item text-primary" aria-current="page">Item Price History</li>
+      </ol>
+    </nav>
+  </div>
+  <div class="commands">
+    <div class="margin-bottom-5">
+      <button type="button" class="btn btn-default btn-sm" (click)="showFilter = !showFilter">Change Filters&nbsp;<i class="glyphicon glyphicon-menu-down"></i></button>
+      &nbsp;|&nbsp;
+      <button type="button" class="btn btn-default btn-sm" (click)="applyFilter()">Refresh List</button>
+    </div>
+    <div class="small filter-text text-">Filters: <span [innerHTML]="filterText"></span></div>
+    <div *ngIf="showFilter" class="filter well">
+      <form class="form-inline small">
+        <div class="closeFilter">
+          <a (click)="showFilter = false">CLOSE <i class="glyphicon glyphicon-remove"></i></a>
+        </div>
+        <div class="form-group">
+          <label>User:</label>
+          <input type="text" placeholder="User Name" class="form-control btn-sm" [(ngModel)]="filters.user" name="user">
+        </div>
+        <div class="form-group">
+          <label>Date:</label>
+          <input type="text" placeholder="Date Range" class="form-control btn-sm date-input"
+            #dateOrder="bsDaterangepicker" bsDaterangepicker [(ngModel)]="filters.date" name="date">
+        </div>
+      </form>
+      <div class="text-right">
+        <button type="button" class="btn btn-default btn-sm" (click)="clearFilter()">Clear</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="applyFilter()">Apply</button>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="table-border">
+    <table class="table table-hover table-striped small">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Item Code</th>
+          <th>Item Name</th>
+          <th>Date Updated</th>
+          <th>By</th>
+          <th>Original Price</th>
+          <th>Current Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let record of history;">
+          <td>{{ record.id }}</td>
+          <td>{{ record.code }}</td>
+          <td>{{ record.name }}</td>
+          <td>{{ record.date }}</td>
+          <td>{{ record.updatedBy }}</td>
+          <td>{{ record.originalPrice }}</td>
+          <td>{{ record.currentPrice }}</td>
+        </tr>
+        <tr *ngIf="history && !history.length">
+          <td colspan="9" class="text-center">No logs</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row">
+    <div class="col-xs-6 col-6">
+      <pagination [totalItems]="totalItems" [(ngModel)]="currentPage"
+        [itemsPerPage]="itemsPerPage" [rotate]="true"
+        [maxSize]="5" [boundaryLinks]="true"
+        (pageChanged)="pageChanged($event)" (numPages)="numPages = $event">
+      </pagination>
+    </div>
+    <div class="col-xs-6 col-6 text-right">
+      <small>Page {{ currentPage }} of {{ numPages }}, {{ totalItems }} total logs</small>
+    </div>
+  </div>
+</div>

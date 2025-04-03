@@ -1,0 +1,28 @@
+.breadcrumb {
+  a {
+    color: #666;
+  }
+}
+
+.row {
+  margin-bottom: 10px;
+}
+
+label {
+  width: 100px;
+}
+
+input.ng-invalid.ng-touched, select.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+
+.display-text {
+  height: 34px;
+  font-size: 14px;
+  padding: 6px 12px;
+  color: #555;
+}
+
+.form-inline input.form-control, .form-inline select.form-control  {
+  width: 300px;
+}

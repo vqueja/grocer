@@ -1,0 +1,20 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item text-primary" aria-current="page">Orders</li>
+  </ol>
+</nav>
+<div *ngIf="(orders$ | async).length; else elseBlock">
+  <div *ngFor="let order of orders$ | async">
+    <app-order-list-item [order]="order"></app-order-list-item>
+  </div>
+</div>
+
+<ng-template #elseBlock>
+  <div class="order-empty">
+    <!-- <div class="empty-order-icon">
+      <img src="assets/omg-01.png"[tSlot]="timeSlot" />
+    </div> -->
+    <div class="empty-order-message">You haven't ordered anything yet.</div>
+    <a class="empty-wishlist-link" routerLink="/">Start Shopping</a>
+  </div>
+</ng-template>

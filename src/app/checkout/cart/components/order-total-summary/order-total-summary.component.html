@@ -1,0 +1,70 @@
+<div>
+  <div class="order-total-summary">
+    <div class="panel panel-default">
+        <div class="col-md-12">
+          Subtotal ({{totalCartItems}} items)
+          <div class="pull-right">
+            <span>₱{{totalCartValue | number:'1.2-2'}}</span>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <small>Service Fee</small>
+          <div *ngIf="isServicePromo" class="pull-right">
+            <span class="line-through">
+              ₱{{serviceFee | number:'1.2-2'}}
+            </span>
+            <span class="text-primary">
+              &nbsp;₱{{serviceFees | number:'1.2-2'}}
+            </span>
+          </div>
+          <div *ngIf="!isServicePromo" class="pull-right">
+            <span class="text-primary">
+              ₱{{serviceFees | number:'1.2-2'}}
+            </span>
+          </div>
+        </div>
+        <div class="col-md-12">
+          <small>Delivery Fee</small>
+          <div *ngIf="isDeliveryPromo" class="pull-right">
+            <span class="line-through">
+              ₱{{deliveryFee | number:'1.2-2'}}
+            </span>
+            <span  class="text-primary">
+              &nbsp;₱{{deliveryFees | number:'1.2-2'}}
+            </span>
+          </div>
+          <div *ngIf="!isDeliveryPromo" class="pull-right">
+            <span class="text-primary">
+              ₱{{deliveryFees | number:'1.2-2'}}
+            </span>
+          </div>
+          <hr>
+        </div>
+        <div class="col-md-12" *ngIf="totalDiscounts > 0">
+          <small>Discounts</small>
+          <div class="pull-right">
+            <span>₱{{totalDiscounts | number:'1.2-2'}}</span>
+          </div>
+          <hr>
+        </div>
+        <div class="col-md-12">
+          <strong>Grand Total</strong>
+          <div class="pull-right">
+            <strong>₱{{grandTotal | number:'1.2-2'}}</strong>
+          </div>
+          <hr>
+        </div>
+        <div class="col-md-12">
+          <p class="small">If everything looks good, click on CHECKOUT NOW to enter your delivery and payment information</p>
+        </div>
+        &nbsp;
+    </div>
+    <div class="row checkout">
+      <div class="col-md-12">
+        <button type="button" class="btn btn-block btn-lg btn-primary" (click)="placeOrder()">
+          <span class="glyphicon glyphicon-log-out"></span>&nbsp;Checkout Now
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

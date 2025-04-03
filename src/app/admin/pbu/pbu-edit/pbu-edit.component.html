@@ -1,0 +1,49 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/admin/employees']">Employees</a></li>
+    <li class="breadcrumb-item text-primary" aria-current="page">Edit</li>
+  </ol>
+</nav>
+
+<form class="form-horizontal">
+  <fieldset>
+    <div class="form-group">
+      <label class="col-md-3 control-label" for="name">Name</label>
+      <div class="col-md-6">
+        <input id="name" name="name" class="form-control input-md" required="" type="text" value="{{pbuData.name}}" disabled>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3 control-label" for="email">Email</label>
+      <div class="col-md-6">
+        <input #email id="email" name="email" class="form-control input-md" required="" type="text" value="{{pbuData.email}}">
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3 control-label" for="balance">Available Balance <span>&#8369;</span></label>
+      <div class="col-md-6">
+        <input #aBal id="aBalance" name="aBalance" class="form-control input-md" required="" type="text" value="{{pbuData.availablebalance | number:'1.2-2'}}" disabled>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3 control-label" for="balance">Outstanding Balance <span>&#8369;</span></label>
+      <div class="col-md-6">
+        <input #oBal id="oBalance" name="oBalance" class="form-control input-md" required="" type="text" value="{{pbuData.outstandingbalance | number:'1.2-2'}}" disabled>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-md-3 control-label" for="credit">Credit <span>&#8369;</span></label>
+      <div class="col-md-6">
+        <input #credit id="credit" name="credit" class="form-control input-md" required="" type="text" value="{{pbuData.credit | number:'1.2-2'}}">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label class="col-md-3 control-label" for="save"></label>
+      <div class="col-md-6">
+        <button id="save" name="save" class="btn btn-success" (click)="save(email.value, credit.value)">Save Changes</button>
+        <button id="cancel" name="cancel" class="btn btn-danger" type="button" [routerLink]="['/admin/employees']">Cancel</button>
+      </div>
+    </div>
+  </fieldset>
+</form>

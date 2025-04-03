@@ -1,0 +1,32 @@
+language: node_js
+node_js:
+- 8.8.1
+env:
+  matrix:
+  - CXX=g++-4.8 TRAVIS=true
+# script:
+#   - npm run build--prod
+# deploy:
+#   provider: s3
+#   access_key_id: AKIAIGXY23ZL6N7QLW2A
+#   secret_access_key:
+#     secure: jk9qp2N5j1WIn5BLgdS6djpCHO2xUc/1SLZKcxel8YlDyG9X/jeDzkJXcUwfbFT8xOEgUg6tnt+1Z7YdlljQA0vR1Kwh/9+MsmWQlZBnx3nwixWWuT7UP/orXT/kRMSAqgIVCkzr7BICReF/oXVD4ibbAg4mASqPol1aFxv6IBn+cKswUsDxKheVbNQkmCVOJUr3KUtu9j3m6K5U4JtURMuX+J06y9vYlfyD1aZqQu+D1d44BHO5fmji1VyN8z2eHcAwaC0/2cHhFr12t+t8vhBkCuotWfe+9CXOS32l0A2Ybarn3w+5DSWgq5Ym6FUrLQ2l3LrY7MpTM7flu1n2JmD6XPLIbGb7NF+/lQNukqoN5VE/cc/STplwPxV9q/EuA+OWY39JTnJzmlUgbvs3kdATCHJANgHf8xPwMPglGQ/2BlTNOwVYTauLTtQoEpH75m3LbRxIAJCUz3d1zJayo1cl4XNh7eqQnCPBvRx6iJEp8CL/Fy7VLAC/zeDS5NZbVcmO98/cuAU5zQPPTZLHQOS9RxWnNePbfB9mx71knAS8elZyZGCbfJCiTeDBfRau056qtP1QgkA6yV6Od5H3YDSnNxFwE5zZ6Ffi1tnXrOMixNgSPCKq9Q4k5hfpJSSVzAT88En/qCelYrjZB9ShSAg7EeBTG8XLeRmpVFUVZjw=
+#   region: "ap-southeast-2"
+#   local_dir: dist
+#   bucket: elasticbeanstalk-ap-southeast-2-259994102961
+#   skip_cleanup: true
+#   on:
+#     repo: n0rbs/shop
+#     branch: develop
+
+  # provider: elasticbeanstalk
+  # access_key_id: AKIAIGXY23ZL6N7QLW2A
+  # secret_access_key:
+  #   secure: jk9qp2N5j1WIn5BLgdS6djpCHO2xUc/1SLZKcxel8YlDyG9X/jeDzkJXcUwfbFT8xOEgUg6tnt+1Z7YdlljQA0vR1Kwh/9+MsmWQlZBnx3nwixWWuT7UP/orXT/kRMSAqgIVCkzr7BICReF/oXVD4ibbAg4mASqPol1aFxv6IBn+cKswUsDxKheVbNQkmCVOJUr3KUtu9j3m6K5U4JtURMuX+J06y9vYlfyD1aZqQu+D1d44BHO5fmji1VyN8z2eHcAwaC0/2cHhFr12t+t8vhBkCuotWfe+9CXOS32l0A2Ybarn3w+5DSWgq5Ym6FUrLQ2l3LrY7MpTM7flu1n2JmD6XPLIbGb7NF+/lQNukqoN5VE/cc/STplwPxV9q/EuA+OWY39JTnJzmlUgbvs3kdATCHJANgHf8xPwMPglGQ/2BlTNOwVYTauLTtQoEpH75m3LbRxIAJCUz3d1zJayo1cl4XNh7eqQnCPBvRx6iJEp8CL/Fy7VLAC/zeDS5NZbVcmO98/cuAU5zQPPTZLHQOS9RxWnNePbfB9mx71knAS8elZyZGCbfJCiTeDBfRau056qtP1QgkA6yV6Od5H3YDSnNxFwE5zZ6Ffi1tnXrOMixNgSPCKq9Q4k5hfpJSSVzAT88En/qCelYrjZB9ShSAg7EeBTG8XLeRmpVFUVZjw=
+  # region: "ap-southeast-2"
+  # app: "grocer-web"
+  # env: "grocer-web-dev"
+  # bucket_name: "elasticbeanstalk-ap-southeast-2-259994102961"
+  # skip_cleanup: true
+  # on:
+  #   branch: develop

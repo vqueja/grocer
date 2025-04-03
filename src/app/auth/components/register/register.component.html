@@ -1,0 +1,26 @@
+<div class="row register-container" data-hook="">
+  <div id="content" class="col-sm-12" data-hook="">
+    <div class="col-md-5 col-sm-8 col-xs-12 col-centered">
+      <div class="panel panel-default">
+        <div id="existing-customer" class="panel-body" data-hook="login">
+          <div class="omg-logo">
+            <img src="../assets/OMG.png" />
+          </div>
+          <app-register-form></app-register-form>
+          <!-- <div>or</div>
+          <div class="register-third-party-register">
+            <app-register-facebook></app-register-facebook>
+          </div> -->
+          <div class="register-link-container">
+            <small>
+              <div class="register-login-link">
+                <span class="register-info-text">Already have an account?</span>
+                <a class="register-link text-danger" [routerLink]="['/auth','login']" queryParamsHandling>Login!</a>
+              </div>
+            </small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

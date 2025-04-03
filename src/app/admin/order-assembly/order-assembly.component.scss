@@ -1,0 +1,67 @@
+@import "../../shared/scss/custom_themes/default/default";
+
+.stat{
+  cursor: pointer;
+}
+
+.form-inline {
+  .form-group {
+    display: inline-block;
+    margin-bottom: 5px;
+    select.form-control {
+      width: 120px;
+      display: inline-block;
+    }
+    input.form-control {
+      width: 100px;
+      display: inline-block;
+    }
+  }
+}
+.panel {
+  button {
+    margin-bottom: 5px;
+  }
+}
+
+.caret {
+  position: static;
+  margin-left: 5px;
+}
+
+.filter {
+  margin-top: 5px;
+  margin-bottom: 0;
+  padding: 10px;
+}
+
+.panel {
+  position: relative;
+}
+
+.fresh-meat {
+  border: 5px solid #cc0000; /* #794ca6; */
+  border-radius: 10px;
+  padding: 2px;
+  font-size: 9px;
+  width: 100px;
+  text-align: center;
+  font-weight: bold;
+  font-family: serif;
+  color: #cc0000; /* #794ca6; */
+  background-color: $white;
+  text-transform: uppercase;
+  opacity: 0.5;
+  display: inline-block;
+}
+
+.marker {
+  font-size: 10px;
+  text-transform: uppercase;
+  font-family: serif;
+  color: #002bb8;
+}
+
+.marker-border {
+  border-color: #002bb8;
+}

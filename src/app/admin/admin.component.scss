@@ -1,0 +1,171 @@
+@import "../shared/scss/custom_themes/default/default";
+hr {
+  margin: 0;
+}
+a {
+  margin-bottom: 0px;
+}
+.text-white {
+  color: #ffffff;
+}
+.admin {
+  background-color: $pink;
+  z-index: 10000;
+}
+.container-fluid {
+  background-color: white;
+  border-bottom: 1px solid #fb81b1;
+  height: 53px;
+}
+.container {
+  margin-left: 51px;
+  background-color: $white;
+  min-height: calc(100vh - 51px);
+  width: calc(100vw - 66px);
+  padding: 15px;
+
+  .footer {
+    min-height: 56px;
+  }
+}
+.navbar {
+  border: none;
+}
+.navbar-brand {
+  color: $pink;
+  padding: 8px 15px;
+  text-align: center;
+  &:hover, &:active {
+    color: $pink;
+  }
+  .logo {
+    height: 24px;
+  }
+  span {
+    color: $pink;
+    text-transform: uppercase;
+    font-size: 70%;
+    letter-spacing: 1px;
+  }
+}
+.navbar-nav {
+  float: right;
+  margin-right: -15px;
+  a {
+    padding: 15px;
+    color: $pink;
+    cursor: pointer;
+    &:hover {
+      color: #333;
+      background-color: transparent;
+    }
+  }
+}
+.navbar-toggle {
+  border-color: $pink;
+  background-color: white;
+  .icon-bar {
+    background-color: #ff4d7d;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .container {
+    margin-left: 0;
+    width: 100%;
+    margin-top: 50px;
+  }
+  .navbar-header {
+    text-align: center;
+  }
+  .navbar-brand {
+    margin-left: 25px;
+    display: inline-block;
+    float: none;
+  }
+  .navbar-collapse {
+    background-color: #ff4d7d;
+    border-color: white;
+    max-height: calc(100vh - 54px);
+    overflow-y: auto;
+    a {
+      color: #fff;
+      &:focus, &:hover {
+        background: transparent;
+      }
+    }
+  }
+}
+
+.sidebar {
+  z-index: 100;
+  position: absolute;
+  left: 0;
+  top: 52px;
+  width: 50px;
+  padding: 1px 0 0 0;
+  background-color: $pink;
+  .nav {
+    small {
+      margin-left: 10px;
+    }
+    span {
+      color: #eee;
+      padding: 10px 15px;
+
+    }
+  }
+}
+.sidebar .nav > li {
+  position: relative;
+  margin-top: 0px;
+  border-bottom: 0.1px solid #fb81b1;
+  .btn {
+    font-size: 1.2em;
+  }
+  &:hover {
+    background-color: #fff;
+    & > div {
+      display: block;
+    }
+    .btn {
+      color: $pink;
+    }
+  }
+}
+.sidebar .nav  > li > div {
+  font-size: 1.2em;
+  cursor: pointer;
+  display: none;
+  position: absolute;
+  left: 50px;
+  top: 0;
+  background-color: #fff;
+  & > p {
+    color: $pink;
+    display: inline-block;
+    white-space: nowrap;
+    padding: 10px 15px;
+    margin: 0;
+    border-bottom: 0.1px solid #fb81b1;
+    width: 100%;
+    &:hover {
+      color: #333;
+    }
+  }
+  & > span {
+    font-size: 12px;
+    letter-spacing: 1px;
+    /* text-decoration: underline; */
+    color: #333;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+}
+
+@media print {
+  .container {
+    margin-left: 0;
+    width: 100%;
+  }
+}

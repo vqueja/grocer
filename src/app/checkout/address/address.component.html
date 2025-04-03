@@ -1,0 +1,37 @@
+<div class="address-section">
+	<div *ngIf="isShowDeliveryOption" id="deliverytime" class="delivery-time">
+		<div class="col-md-12">
+			<h3>
+				<span class="num">1</span>
+				<span class="txt">Information</span>
+				<span class="num num-sel">2</span>
+				<span class="txt txt-sel">Delivery time</span>
+				<span class="num">3</span>
+				<span class="txt">Payment</span>
+			</h3>
+			<app-delivery-options
+				[deliveryDate]="deliveryDate$ | async"
+				[partnerStore]="partnerStore$ | async"
+				(onBackClickEmit)="toggleShowDeliveryAddressOption()"></app-delivery-options>
+		</div>
+	</div>
+	<div *ngIf="!isShowDeliveryOption" id="enterAddress">
+		<div class="col-md-12">
+			<h3>
+				<span class="num num-sel">1</span>
+				<span class="txt txt-sel">Information</span>
+				<span class="num">2</span>
+				<span class="txt">Delivery time</span>
+				<span class="num">3</span>
+				<span class="txt">Payment</span>
+			</h3>
+		</div>
+		<div class="col-sm-12 col-md-10 col-lg-8 add-address">
+			<app-add-address
+				[isAuthenticated]="isAuth$ | async"
+			 	[partnerStore]="partnerStore$ | async"
+				 (onProceedClickEmit)="toggleShowDeliveryDateOption()">
+			</app-add-address>
+		</div>
+	</div>
+</div>

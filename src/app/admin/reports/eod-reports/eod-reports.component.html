@@ -1,0 +1,114 @@
+<div>
+  <div class="pageLabel">
+    <nav class="nav-breadcrumb" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">Reports</li>
+        <li class="breadcrumb-item text-primary" aria-current="page">End-of-Day Reports</li>
+      </ol>
+    </nav>
+  </div>
+<div class="commands">
+  <div class="margin-bottom-5">
+    <button type="button" class="btn btn-default btn-sm" (click)="showFilter = !showFilter">Change Filters&nbsp;<i class="glyphicon glyphicon-menu-down"></i></button>
+    &nbsp;|&nbsp;
+    <button type="button" class="btn btn-default btn-sm" (click)="refreshList()">Refresh List</button>
+  </div>
+  <div class="small filter-text">Transaction Date: <span [innerHTML]="filterText"></span></div>
+  <div *ngIf="showFilter" class="filter well">
+    <form class="form-inline small">
+      <div class="closeFilter">
+        <a (click)="closeFilter()">CLOSE <i class="glyphicon glyphicon-remove"></i></a>
+      </div>
+      <!-- <div class="form-group">
+        <label>Status:</label>
+        <select class="form-control btn-sm" [(ngModel)]="filterStatus" name="status">
+          <option value="0" disabled selected hidden>Status</option>
+          <option *ngFor="let status of statusArrayData" [value]="status">{{ status }}</option>
+        </select>
+      </div> -->
+      <!-- <div class="form-group">
+        <label>Payment Type:</label>
+        <select class="form-control btn-sm" [(ngModel)]="filterPaymentType" name="paymenttype">
+          <option value="0" disabled selected hidden>Payment Type</option>
+          <option *ngFor="let type of paymentTypeArrayData" [value]="type">{{ type }}</option>
+        </select>
+      </div> -->
+      <div class="form-group">
+        <label>Date:</label>
+        <input type="text" placeholder="Payment Date Range" class="form-control btn-sm date-input"
+          #transactionDate="bsDatepicker" bsDatepicker [(ngModel)]="filterDate" name="filterDate" [maxDate]="today">
+        <!-- <input type="text" placeholder="To" class="form-control btn-sm"
+          bsDatepicker [(ngModel)]="filterDateTo" name="filterdateto" [disabled]="!filterDateFrom ? true: false"> -->
+      </div>
+    </form>
+    <div class="text-right">
+      <button type="button" class="btn btn-default btn-sm" (click)="resetFilter()">Reset</button>
+      <button type="button" class="btn btn-primary btn-sm" (click)="applyFilter()">Apply</button>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="table-border">
+  <table class="table table-hover table-striped small">
+    <thead>
+      <tr>
+        <th>PAYMENTS</th>
+        <th>SALES</th>
+        <!--th>Status</th>
+        <th>Amount</th>
+        <th>Payment Date</th>
+        <th>Payment Type</th> -->
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Total Payments: ₱ {{totalPayments | number:'1.2-2'}}</strong></td>
+        <td><strong>Total Sales: ₱ {{totalSales | number:'1.2-2'}}</strong></td>
+      </tr>
+      <tr>
+        <td>Total Cash: ₱ {{totalCash | number:'1.2-2'}}</td>
+        <td>Total Service Fee: ₱ {{totalServiceFee | number:'1.2-2'}}</td>
+      </tr>
+      <tr>
+        <td>Total CC: ₱ {{this.totalCC | number:'1.2-2'}}</td>
+        <td>Total Delivery Fee: ₱ {{totalDeliveryFee | number:'1.2-2'}}</td>
+      </tr>
+      <tr>
+        <td>Total DC: ₱ {{this.totalDC | number:'1.2-2'}}</td>
+        <td>Total Discounts: ₱ {{totalDiscount | number:'1.2-2'}}</td>
+      </tr>
+      <tr>
+        <td>Total PAYPAL: ₱ {{this.totalPaypal | number:'1.2-2'}}</td>
+        <td>Net Sales: ₱ {{netSales | number:'1.2-2'}}</td>
+      </tr>
+      <tr>
+        <td>Total GC: ₱ {{this.totalGC | number:'1.2-2'}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <td>Total EV: ₱ {{this.totalEV | number:'1.2-2'}}</td>
+        <td></td>
+      </tr>
+    </tbody>
+    <!-- <tbody *ngIf="noData">
+      <tr>
+        No Data Found!
+      </tr>
+    </tbody> -->
+  </table>
+
+</div>
+<!-- <div class="gTotal">
+  <ul class="paymentTotal">Grand Total: ₱ {{totalPayments | number:'1.2-2'}}</ul>
+</div> -->
+
+<!-- <div class="row">
+  <div class="col-xs-6 col-6">
+    <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [itemsPerPage]="itemsPerPage" [rotate]="true"
+      [maxSize]="5" [boundaryLinks]="true" (pageChanged)="pageChanged($event)" (numPages)="numPages = $event"></pagination>
+  </div>
+  <div class="col-xs-6 col-6 text-right">
+    <small>Page {{ currentPage }} of {{ numPages }}, {{ totalItems }} total payments</small>
+  </div>
+</div> -->
+</div>

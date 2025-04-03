@@ -1,0 +1,31 @@
+<!--star rating html file-->
+<div class="star-rating-container" [hidden]="bClose">
+  <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+  <link href="https://afeld.github.io/emoji-css/emoji.css" rel="stylesheet">
+  <div class="star-rating">
+    <div class="rating-header">
+      <h3>Send us your feedback!</h3>
+      <span>How do you feel about your experience on the OMG! app. Do you have a suggestion or found some bugs? Let us know in the field below.</span>
+      <span class="close-btn"><button class="btn-primary close-btn" (click)="close()" ><span class="glyphicon glyphicon-remove close"></span></button></span>
+    </div>
+    <div class="question_exp"><p>How was your experience?</p></div>
+    <div class="star-rating__wrap">
+      <p>
+        <input checked="checked" type="radio" (click)="getRating(3)" name="rating" id="gr3" value="3"/>
+        <label class="em em-smiley" for="gr3"></label>
+        <i>&nbsp;</i>
+        <input class="rating" type="radio" (click)="getRating(2)" name="rating" id="gr2" value="2"/>
+        <label class="em em-neutral_face" for="gr2"></label>
+        <i>&nbsp;</i>
+        <input class="rating" type="radio" (click)="getRating(1)" name="rating" id="gr1" value="1"/>
+        <label class="em em-white_frowning_face" for="gr1"></label>
+      </p>
+    </div>
+    <div class="form-group">
+      <textarea class="form-control rounded-0" #fback rows="4" placeholder="Describe your experience here"></textarea>
+    </div>
+    <div>
+      <button class="btn btn-primary btn-block" (click)="sendFeedBack(fback.value)">Send Feedback</button>
+    </div>
+  </div>
+</div>

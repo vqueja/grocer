@@ -1,0 +1,38 @@
+.breadcrumb {
+  a {
+    color: #333;
+  }
+}
+
+.formContainer {
+  padding-left: 90px;
+  text-align: center;
+}
+.fieldContainer {
+  border: 1px solid #ddd;
+  padding-top: 20px;
+  width: calc(100vw - 485px);
+  min-width: 420px;
+}
+.form-group {
+  min-width: 350px;
+}
+.cat {
+  min-width: 200px;
+}
+
+@media screen and (max-width: 767px) and (orientation: portrait) {
+  .formContainer {
+      align-content: center;
+      text-align: justify;
+      padding-left: 0px;
+  }
+}
+
+@media screen and (max-width: 767px) and (orientation: landscape) {
+  .formContainer {
+      align-content: center;
+      text-align: justify;
+      padding-left: 0px;
+  }
+}

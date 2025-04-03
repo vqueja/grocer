@@ -1,0 +1,51 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item text-primary" aria-current="page">Address</li>
+  </ol>
+</nav>
+<div class="row">
+  <div class="col-md-6">
+    <div class="panel panel-default">
+      <div class="panel-heading">Delivery Address</div>
+      <div class="panel-body">
+        <div *ngIf="address.shipping; else noShipAddr">
+          {{address.shipping.address01}}<br>
+          <ng-container *ngIf="address.shipping.address02">{{address.shipping.address02}}<br></ng-container>
+          {{address.shipping.city}}, {{address.shipping.country}} {{address.shipping.postalCode}}
+          <small>
+            <br><br>
+            <a [routerLink]="['edit', address.shipping.id]" class="text-primary">Edit</a>
+          </small>
+        </div>
+        <ng-template #noShipAddr>
+          <small>
+            <br><br>
+            <a [routerLink]="['add', 'shipping']" class="text-primary"><i class="glyphicon glyphicon-plus"></i> Add Address</a>
+          </small>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  <div class="col-md-6">
+  <div class="panel panel-default">
+    <div class="panel-heading">Billing Address</div>
+    <div class="panel-body">
+      <div *ngIf="address.billing; else noBillAddr">
+        {{address.billing.address01}}<br>
+        <ng-container *ngIf="address.billing.address02">{{address.billing.address02}}<br></ng-container>
+        {{address.billing.city}}, {{address.billing.country}} {{address.billing.postalCode}}
+        <small>
+          <br><br>
+          <a [routerLink]="['edit', address.billing.id]" class="text-primary">Edit</a>
+        </small>
+      </div>
+      <ng-template #noBillAddr>
+        <small>
+          <br><br>
+          <a [routerLink]="['add','billing']" class="text-primary"><i class="glyphicon glyphicon-plus"></i> Add Address</a>
+        </small>
+      </ng-template>
+    </div>
+  </div>
+</div>
+</div>

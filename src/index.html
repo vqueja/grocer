@@ -1,0 +1,57 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="description" content="Stay home with the people you love, we'll do the 
+    groceries for you! Shop for groceries, pre-packed essentials, and more!">
+  <meta name="keywords" content="online grocery groceries">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="theme-color" content="#ff4d7d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="OMG!">
+  <meta name="msapplication-TileColor" content="#ff4d7d">
+  <meta property="og:locale" content="en_US">
+  <meta property="og:type" content="website">
+  <meta property="og:description" content="Stay home with the people you love, we'll do the
+    groceries for you! Shop for groceries, pre-packed essentials, and more!">
+  <meta property="og:url" content="https://www.ohmygrocery.com/">
+  <meta property="twitter:card" content="summary_large_image">
+  <meta property="twitter:title" content="OMG!">
+  <meta property="twitter:site" content="https://www.ohmygrocery.com/">
+  <title>OMG!</title>
+  <base href="/">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/x-icon" href="favicon.ico?r=1">
+  <link rel="stylesheet" href="https://unpkg.com/ngx-bootstrap/datepicker/bs-datepicker.css">
+</head>
+<body >
+  <app-root></app-root>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/service-worker.js')
+          .then((registration) => {
+            console.log('Service Worker registered');
+          })
+          .catch(function (err) {
+            console.log('Service Worker registration failed: ', err);
+          });
+      });
+    }
+  </script>
+  <!-- To enable search engine to render the app first then parse -->
+  <script src=https://cdnjs.cloudflare.com/ajax/libs/core-js/2.4.1/shim.min.js></script>
+  <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+  <!-- <script type="text/javascript"> window.$zopim||(function(d,s){var z=$zopim=function(c){ z._.push(c)},$=z.s= d.createElement(s),e=d.getElementsByTagName(s)[0];z.set=function(o){z.set. _.push(o)};z._=[];z.set._=[];$.async=!0;$.setAttribute('charset','utf-8'); $.src='https://v2.zopim.com/?2KsXjfpZ8W33ooGnmBja1XGZLslyLFOi';z.t=+new Date;$. type='text/javascript';e.parentNode.insertBefore($,e)})(document,'script'); </script>
+  <script>
+    $zopim(function() {
+      $zopim.livechat.theme.setColor('#de0051');
+      $zopim.livechat.theme.reload(); // apply
+      $zopim.livechat.hideAll();
+    });
+  </script> -->
+</body>
+</html>

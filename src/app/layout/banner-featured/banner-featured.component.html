@@ -1,0 +1,27 @@
+<div class="carousel fade-carousel slide carousel-fade" data-ride="carousel" data-interval="5000" id="bs-carousel">
+  <ol class="carousel-indicators">
+      <li data-target="#bs-carousel" data-slide-to="0" class="active"></li>
+      <li data-target="#bs-carousel" data-slide-to="1"></li>
+      <li data-target="#bs-carousel" data-slide-to="2"></li>
+  </ol>
+  <div class="carousel-inner">
+      <div class="item slides active carousel-item">
+          <div class="slide-1">
+              <img src="{{ bannerVal1 }}" style="width:100%; height: 100%" (error)="onBannerError($event)"/>
+              <div class="overlay"></div>
+          </div>
+      </div>
+      <div class="item slides carousel-item">
+          <div class="slide-2">
+            <img src="{{ bannerVal2 }}" style="width:100%; height: 100%" (error)="onBannerError($event)" />
+              <div class="overlay"></div>
+          </div>
+      </div>
+      <div class="item slides carousel-item">
+          <div class="slide-3">
+            <img src="{{ bannerVal3 }}" style="width:100%; height: 100%" (error)="onBannerError($event)" />
+              <div class="overlay"></div>
+          </div>
+      </div>
+  </div>
+</div>

@@ -1,0 +1,147 @@
+<div class="pageLabel">
+  <nav class="nav-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Admin Tools</li>
+      <li class="breadcrumb-item text-primary" aria-current="page">Manage Items</li>
+    </ol>
+  </nav>
+</div>
+<div class="commands">
+  <div class="margin-bottom-5">
+    <button type="button" class="btn btn-default btn-sm" (click)="showFilter = !showFilter">
+      Change Filters&nbsp;<i class="glyphicon glyphicon-menu-down"></i>
+    </button>
+    &nbsp;|&nbsp;
+    <button type="button" class="btn btn-default btn-sm" [routerLink]="['/admin/manage-items/add-item']">
+      <i class="glyphicon glyphicon-plus-sign"></i> Add Item
+    </button>
+    <!-- <button type="button" class="btn btn-default btn-sm" [routerLink]="['/admin/manage-items/csv/add']">Add Items</button>
+    <button type="button" class="btn btn-default btn-sm" [routerLink]="['/admin/manage-items/csv/update']">Update Items</button> -->
+    <button type="button" class="btn btn-default btn-sm" (click)="refreshList()">
+      <i class="glyphicon glyphicon-refresh"></i> Refresh
+    </button>
+  </div>
+  <div class="small filter-text">Filters: <span [innerHTML]="filterText"></span></div>
+  <div [hidden]="!showFilter" class="filter well">
+    <form class="form-inline small">
+      <div class="closeFilter">
+        <a (click)="closeFilter()">CLOSE <i class="glyphicon glyphicon-remove"></i></a>
+      </div>
+      <div *ngIf="isEOSUser" class="form-group">
+        <label>Store:</label>
+        <select class="form-control" [(ngModel)]="filters.partnerId" name="partnerId">
+          <option [ngValue]="0" selected>Master Item List</option>
+          <option *ngFor="let store of stores" [ngValue]="store.id">{{ store.name }}</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Code:</label>
+        <input type="text" placeholder="Item Code" class="form-control" [(ngModel)]="filters.code" name="itemCode">
+      </div>
+      <div class="form-group">
+        <label>Name:</label>
+        <input type="text" placeholder="Item Name" class="form-control" [(ngModel)]="filters.keyword" name="itemName">
+      </div>
+      <div class="form-group">
+        <label>Brand:</label>
+        <input class="form-control" [(ngModel)]="filters.brand" name="brand" list="brands-list" placeholder="Brand">
+        <datalist id="brands-list">
+          <option [ngValue]="null" selected> </option>
+          <option *ngFor="let brand of brands" [value]="brand">
+        </datalist>
+      </div>
+      <div class="form-group">
+        <label>Category1:</label>
+        <select class="form-control" [(ngModel)]="filters.category1" name="category1" (change)="changeCategory1()" [disabled]="!filters.partnerId">
+          <option [ngValue]="null" selected>None</option>
+          <option *ngFor="let category of category1List" [ngValue]="category.id">{{ category.name }}</option>
+          <option [ngValue]="0">Others</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Category2:</label>
+        <select class="form-control" [(ngModel)]="filters.category2" name="category2" (change)="changeCategory2()" [disabled]="isDisabledCategory2">
+          <option [ngValue]="null" selected>None</option>
+          <option *ngFor="let category of category2List" [ngValue]="category.id">{{ category.name }}</option>
+          <option [ngValue]="0">Others</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Category3:</label>
+        <select class="form-control" [(ngModel)]="filters.category3" name="category3" [disabled]="isDisabledCategory3">
+          <option [ngValue]="null" selected>None</option>
+          <option *ngFor="let category of category3List" [ngValue]="category.id">{{ category.name }}</option>
+          <option [ngValue]="0">Others</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Status:</label>
+        <select class="form-control" [(ngModel)]="filters.status" name="status" [disabled]="!filters.partnerId">
+          <option [ngValue]="null" selected>None</option>
+          <option [ngValue]="1">Enabled</option>
+          <option [ngValue]="0">Disabled</option>
+        </select>
+      </div>
+    </form>
+    <div class="text-right">
+      <button type="button" class="btn btn-default btn-sm" (click)="clearFilter()">Clear</button>
+      <button type="button" class="btn btn-primary btn-sm" (click)="applyFilter()">Apply</button>
+    </div>
+  </div>
+</div>
+<hr>
+<div class="table-border">
+  <table class="table table-hover table-striped small">
+    <thead class="thead-dark">
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Item Code</th>
+        <th scope="col">Item Name</th>
+        <th scope="col">Brand</th>
+        <th *ngIf="showColumn" scope="col">Price</th>
+        <th *ngIf="showColumn" scope="col">Status</th>
+        <th scope="col">Actions</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngIf="!items.length">
+        <td class="text-center" colspan="7">No Items</td>
+      </tr>
+      <tr *ngFor="let item of items; let i = index">
+        <td>{{item.id}}</td>
+        <td>{{item.code}}</td>
+        <td>
+          <a [routerLink]="['/admin/manage-items/edit', item.id]"
+            [queryParams]="{ partnerId : filters.partnerId, masterId: item.item_id ? item.item_id : item.id }">
+            {{item.name}}
+          </a>
+        </td>
+        <td>{{item.brandName}}</td>
+        <td *ngIf="showColumn" class="text-right">{{item.price | number:'1.2-2'}}</td>
+        <td *ngIf="showColumn" [ngClass]="{'text-primary': !item.enabled}">
+          {{item.enabled ? 'Enabled' : 'Disabled' }}
+        </td>
+        <td>
+          <div dropdown class="actions">
+            <button dropdownToggle type="button" class="btn btn-default btn-sm">
+              <i class="glyphicon glyphicon-cog"></i>&nbsp;<span class="caret"></span>
+            </button>
+            <ul *dropdownMenu role="menu" class="dropdown-menu">
+              <li [routerLink]="['/admin/manage-items/edit', item.id]"
+                [queryParams]="{ partnerId : filters.partnerId, masterId: item.item_id ? item.item_id : item.id }">Edit</li>
+            </ul>
+          </div>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+<div class="row">
+  <div class="col-xs-12 col-12 text-right">
+    <small>Page {{ currentPage }} of {{ numPages }}, {{ totalItems }} total items</small>
+  </div>
+  <div class="col-xs-12 col-12">
+    <pagination class="test" [totalItems]="totalItems" [(ngModel)]="currentPage" [itemsPerPage]="itemsPerPage" [rotate]="true"
+      [maxSize]="5" [boundaryLinks]="true" (pageChanged)="pageChanged($event)" (numPages)="numPages = $event"></pagination>
+  </div>
+</div>

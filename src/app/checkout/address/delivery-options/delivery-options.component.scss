@@ -1,0 +1,52 @@
+@import "../../../shared/scss/custom_themes/default/default";
+
+.calendar {
+  .row {
+		margin: 0 -10px 15px;
+    font-weight: 500;
+		&:first-child {
+			text-align: center;
+		}
+    div {
+      padding: 0 10px;
+    }
+    div:first-child {
+      text-align: right;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 44px;
+    }
+		.col-custom {
+			width: 12.5%;
+			float: left;
+			position: relative;
+			min-height: 1px;
+		}
+    label {
+      padding: 12px 0;
+    }
+  }
+}
+.btn-primary {
+  background-color: $pink;
+  border-color: $pink-dark;
+}
+.btn-primary:active{
+  background-color: $pink-dark;
+}
+.btn-success-selected {
+	color: $white;
+	background-color: #13a45d;
+	border-color: #0f844b;
+}
+
+@media screen and (max-width: 767px) {
+  .calendar {
+    .row {
+      div {
+        padding: 0 2px;
+      }
+    }
+  }
+}

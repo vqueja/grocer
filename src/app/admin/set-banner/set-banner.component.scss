@@ -1,0 +1,23 @@
+@import "../../shared/scss/custom_themes/default/default";
+
+.pageLabel {
+  flex-wrap: wrap;
+}
+.dashboard {
+  margin-top: 0;
+}
+.nav-breadcrumb {
+  display: inline-flex;
+}
+.breadcrumb {
+  margin-left: 10px;
+  width: calc(100vw - 285px);
+}
+.breadcrumb-item {
+  font-weight: bolder;
+  text-transform: uppercase;
+}
+.tile{
+  background-color: $pink;
+  color: white;
+}

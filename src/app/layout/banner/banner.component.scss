@@ -1,0 +1,105 @@
+@import "../../shared/scss/custom_themes/default/default";
+
+.carousel {
+    height: 100%;
+    width: 100%;
+    padding-bottom: 55px;
+    overflow:hidden;
+}
+.carousel .carousel-inner {
+    height:100%;
+}
+.carousel-fade .carousel-inner .item {
+  -webkit-transition-property: opacity;
+  transition-property: opacity;
+}
+.carousel-fade .carousel-inner .item,
+.carousel-fade .carousel-inner .active.left,
+.carousel-fade .carousel-inner .active.right {
+  opacity: 0;
+}
+.carousel-fade .carousel-inner .active,
+.carousel-fade .carousel-inner .next.left,
+.carousel-fade .carousel-inner .prev.right {
+  opacity: 1;
+}
+.carousel-fade .carousel-inner .next,
+.carousel-fade .carousel-inner .prev,
+.carousel-fade .carousel-inner .active.left,
+.carousel-fade .carousel-inner .active.right {
+  left: 0;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+}
+.carousel-fade .carousel-control {
+  z-index: 2;
+}
+
+img {
+  margin-top: 45px;
+}
+/********************************/
+/*       Fade Bs-carousel       */
+/********************************/
+.fade-carousel {
+    position: relative;
+    height: 100%;
+}
+.fade-carousel .carousel-inner .item {
+    height: 100%;
+
+}
+.fade-carousel .carousel-indicators > li {
+    margin: 0 2px;
+    background-color: $gray-237;
+    border-color: $gray-237;
+    opacity: .7;
+}
+.fade-carousel .carousel-indicators > li.active {
+  width: 10px;
+  height: 10px;
+  opacity: 1;
+  background-color: $gray-211;
+}
+
+@media screen and (max-width: 780px){
+  img {
+    margin-top: 0px;
+  }
+  .fade-carousel {
+      position: relative;
+      height: 100%;
+  }
+  .fade-carousel .carousel-inner .item {
+      height: 100%;
+      margin-top: 85px;
+  }
+}
+
+@media screen and (max-width: 411px){
+  img {
+    margin-top: 0px;
+  }
+  .fade-carousel {
+      position: relative;
+      height: 100%;
+  }
+  .fade-carousel .carousel-inner .item {
+      height: 100%;
+      margin-top: 85px;
+  }
+}
+
+@media screen and (max-width: 360px){
+  img {
+    margin-top: 0px;
+  }
+  .fade-carousel {
+      position: relative;
+      height: 100%;
+  }
+  .fade-carousel .carousel-inner .item {
+      height: 100%;
+      margin-top: 85px;
+  }
+}

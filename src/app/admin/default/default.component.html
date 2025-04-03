@@ -1,0 +1,179 @@
+<div class="dashboard_main">
+  <div class="pageLabel">
+    <nav class="nav-breadcrumb" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item text-primary" aria-current="page">Home</li>
+      </ol>
+    </nav>
+  </div>
+  <div *ngIf="activeUser.role_id == 1 || activeUser.role_id == 2; else elseBlock1" class="adminView">
+    <div class="container_numbers">
+      <div class="row">
+        <div class="col-lg-3 col-md-3 col-sm-6">
+          <div class="tile">
+            <div class="tile-heading">Total Orders <span class="pull-right">
+              </span></div>
+              <div class="tile-body"><i class="fa fa-shopping-cart"></i>
+                <h2 class="pull-right">{{totalOrders}}</h2>
+              </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6">
+          <div *ngIf="activeUser.role_id == 1; else elseBlock1" class="tile">
+            <div class="tile-heading">Total Sales <span class="pull-right">
+              </span>
+            </div>
+            <div class="tile-body"><i class="fa fa-credit-card"></i>
+              <h2 class="pull-right">{{totalSales}}</h2>
+            </div>
+          </div>
+          <ng-template #elseBlock1>
+            <div class="tile">
+              <div class="tile-heading">Total Expenditures <span class="pull-right">
+                </span>
+              </div>
+              <div class="tile-body"><i class="fa fa-credit-card"></i>
+                <h2 class="pull-right money"> {{stringTotalSales}}</h2>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6">
+          <div class="tile">
+            <div class="tile-heading">Total Users <span class="pull-right">
+              </span>
+            </div>
+            <div class="tile-body"><i class="fa fa-user"></i>
+              <h2 class="pull-right">{{userCount}}</h2>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-3 col-md-3 col-sm-6">
+          <div class="tile">
+            <div class="tile-heading">Active Users <span class="pull-right">
+              </span>
+            </div>
+            <div class="tile-body"><i class="fa fa-eye"></i>
+              <h2 class="pull-right">{{activeUserCount}}</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container_graph">
+        <div class="row1">
+          <div class="col-lg-6 col-md-12 col-sx-12 col-sm-12 col-graph line">
+            <div class="panel-heading">
+              <h3 class="panel-title"><i class="fa fa-user"></i> Data Charts</h3>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <canvas class="barGraph" id="chBar1"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-12 col-sx-12 col-sm-12 col-graph pie">
+            <div class="panel-heading">
+              <h3 class="panel-title"><i class="fa fa-user"></i> User Distribution</h3>
+            </div>
+            <div class="card">
+              <div class="card-body">
+                <canvas class="pieGraph" id="chDonut1"></canvas>
+              </div>
+            </div>
+          </div>
+          <div class="col-lg-6 col-md-12 col-sx-12 col-sm-12 col-orders">
+            <div class="panel-heading">
+              <h3 class="panel-title"><i class="fa fa-shopping-cart"></i> Latest Orders</h3>
+            </div>
+          <div class="order-table">
+          <table class="table table-hover table-striped small">
+            <thead>
+              <tr>
+                <th>Order Number</th>
+                <th>Status</th>
+                <th>Delivery Date</th>
+                <th>Customer Name</th>
+                <th>Order Date</th>
+                <th>Grand Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="order-data" *ngFor="let order of orders; let i = index">
+                <td class="orderNumber">{{order.orderNumber}}</td>
+                <td class="text-uppercase text-primary">{{order.status}}</td>
+                <td>{{ order.datetime | date:'MMM d, y hh:mm a' }}</td>
+                <td>{{ order.firstname}} {{order.lastname }}</td>
+                <td>{{ order.dateCreated | date:'MMM d, y hh:mm a' }}</td>
+                <td class="orderTotal">{{ order.total | number:'1.2-2'}}</td>
+              </tr>
+              <tr *ngIf="orders && !orders.length">
+                <td colspan="6" class="text-center">No orders</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="col-lg-6 col-md-12 col-sx-12 col-sm-12 col-others">
+        <!-- <div class="other-grapsh">
+          <div class="col-sm-12">
+            Popular Items
+          </div>
+          <div class="col-sm-12">
+            Days with most orders
+          </div>
+          <div class="col-sm-12">
+          </div>
+          <div class="col-sm-12">
+          </div>
+        </div> -->
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+<ng-template #elseBlock1>
+    <div class="container_numbers">
+      <div class="row1">
+        <div class="col-sm-4">
+          <div class="tile">
+            <div class="tile-heading">Total Orders <span class="pull-right">
+              </span></div>
+              <div class="tile-body"><i class="fa fa-shopping-cart"></i>
+                <h2 class="pull-right">{{totalOrders}}</h2>
+              </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="tile">
+            <div class="tile-heading">Total Sales <span class="pull-right">
+              </span></div>
+              <div class="tile-body"><i class="fa fa-shopping-cart"></i>
+                <h2 class="pull-right">{{totalOrders}}</h2>
+              </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="tile">
+            <div class="tile-heading">Total Payments Receivable<span class="pull-right">
+              </span></div>
+              <div class="tile-body"><i class="fa fa-shopping-cart"></i>
+                <h2 class="pull-right">{{totalOrders}}</h2>
+              </div>
+          </div>
+        </div>
+      </div>
+      <div class="row2">
+        <div class="col-lg-6 col-md-12 col-sx-12 col-sm-12 col-graph">
+          <div class="panel-heading">
+            <h3 class="panel-title"><i class="fa fa-user"></i> Data Charts</h3>
+          </div>
+          <div class="card">
+            <div class="card-body">
+              <canvas class="barGraph" id="chBar1"></canvas>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</ng-template>
+</div>

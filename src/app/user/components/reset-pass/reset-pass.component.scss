@@ -1,0 +1,36 @@
+.ng-valid[required],
+.ng-valid.required {
+  border-left: 5px solid #42A948;
+  /* green */
+}
+
+.ng-invalid:not(form), form.ng-invalid input[name='verify'] {
+  border-left: 5px solid #a94442;
+  /* red */
+}
+
+
+.breadcrumb {
+  a {
+    color: #666;
+  }
+}
+
+.error-message {
+  position: absolute;
+  top: 100%;
+
+  p {
+    font-size: 11px;
+    margin-left: 15px;
+    color: #ee5f73;
+    text-align: left;
+    max-height: 500px;
+    -webkit-transition-property: all;
+    transition-property: all;
+    -webkit-transition-duration: .5s;
+    transition-duration: .5s;
+    -webkit-transition-timing-function: cubic-bezier(0,1,.5,1);
+    transition-timing-function: cubic-bezier(0,1,.5,1);
+  }
+}

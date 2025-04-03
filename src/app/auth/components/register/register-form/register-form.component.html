@@ -1,0 +1,122 @@
+<form class="register-register-form" novalidate="" [formGroup]="signUpForm" (ngSubmit)="onSubmit()">
+  <fieldset class="register-input-container">
+
+    <div class="register-input-item">
+      <input type="email" class="first-input register-user-input" name="email" formControlName="email" placeholder="Your Email Address"
+        autocomplete="off">
+      <div *ngIf="signUpForm.get('email').errors && signUpForm.get('email').touched">
+        <span class="register-error-icon">!</span>
+        <p class="register-error-message">{{signUpForm.get('email').errors.msg || 'Please enter a valid email address'}}</p>
+      </div>
+    </div>
+
+    <div class="register-input-item">
+      <input type="password" class="border-top register-user-input" name="password" formControlName="password"
+        placeholder="Choose Password" autocomplete="off">
+      <div *ngIf="signUpForm.get('password').errors && signUpForm.get('password').touched">
+        <span class="register-error-icon">!</span>
+        <p class="register-error-message">{{signUpForm.get('password').errors.msg || 'Password must be at least 6 characters'}}</p>
+      </div>
+    </div>
+
+    <div class="register-input-item">
+      <input type="password" class="border-top register-user-input" name="password_confirmation" formControlName="password_confirmation"
+        placeholder="Confirm Password" autocomplete="off">
+      <div *ngIf="(signUpForm.get('password_confirmation').errors || signUpForm.hasError('mismatchedPasswords')) && signUpForm.get('password_confirmation').touched">
+        <span class="register-error-icon">!</span>
+        <p class="register-error-message">{{ 'Password must match'}}</p>
+      </div>
+    </div>
+
+    <div class="register-input-item">
+      <input type="text" class="border-top register-user-input" name="first_name" formControlName="first_name"
+        placeholder="First Name" autocomplete="off">
+      <div *ngIf="signUpForm.get('first_name').errors && signUpForm.get('first_name').touched">
+        <span class="register-error-icon">!</span>
+        <p class="register-error-message">{{ 'Please enter your first name'}}</p>
+      </div>
+    </div>
+
+    <div class="register-input-item">
+      <input type="text" class="border-top register-user-input" name="last_name" formControlName="last_name"
+        placeholder="Last Name" autocomplete="off">
+      <div *ngIf="signUpForm.get('last_name').errors && signUpForm.get('last_name').touched">
+        <span class="register-error-icon">!</span>
+        <p class="register-error-message">{{ 'Please enter your last name'}}</p>
+      </div>
+    </div>
+
+    <div class="register-input-item">
+      <div class="register-user-input-mobile register-user-input" >
+        <div>
+          <select class="form-control" name="prefix" formControlName="prefix">
+            <option value="+63">+63</option>
+          </select>
+          <input class="form-control" type="number" name="mobile"
+            formControlName="mobile" placeholder="Mobile Number">
+        </div>
+      </div>
+      <div *ngIf="signUpForm.get('mobile').errors && signUpForm.get('mobile').touched">
+        <span class="register-error-icon">!</span>
+        <p class="register-error-message">{{signUpForm.get('mobile').errors.msg || 'Please enter a valid mobile number (10 digits)'}}</p>
+      </div>
+    </div>
+
+    <div class="register-input-item">
+      <div class="register-user-input-birthdate register-user-input">
+        <!-- <div (change)="changeDate()"> -->
+          <select class="form-control" name="month" formControlName="month" >
+            <option value="" disabled selected hidden>Month</option>
+            <option [value]="01">January</option>
+            <option [value]="02">February</option>
+            <option [value]="03">March</option>
+            <option [value]="04">April</option>
+            <option [value]="05">May</option>
+            <option [value]="06">June</option>
+            <option [value]="07">July</option>
+            <option [value]="08">August</option>
+            <option [value]="09">September</option>
+            <option [value]="10">October</option>
+            <option [value]="11">November</option>
+            <option [value]="12">December</option>
+          </select>
+          <input class="form-control" type="number" name="day" formControlName="day" placeholder="Day">
+          <input class="form-control" type="number" name="year" formControlName="year" placeholder="Year">
+        <!-- </div> -->
+        <!-- <div class="birthday-string"><span class="text-muted small">Date of Birth</span> {{ displayDate }}</div> -->
+      </div>
+      <div *ngIf="(signUpForm.get('month').errors || signUpForm.get('day').errors || signUpForm.get('year').errors
+        || signUpForm.hasError('invalidDate')) && (signUpForm.get('day').touched || signUpForm.get('year').touched
+        || signUpForm.get('month').touched)">
+        <span class="register-error-icon">!</span>
+        <p class="register-error-message">{{ 'Please enter a valid date of birth'}}</p>
+      </div>
+    </div>
+
+    <fieldset data-type="horizontal" class="register-gender">
+      <legend class="register-gender-title"> I'm a </legend>
+
+      <input type="radio" class="register-gender-radio" id="male" name="gender" value="M" formControlName="gender">
+      <label class="register-gender-label" for="male">Male</label>
+
+      <input type="radio" class="register-gender-radio" id="female" name="gender" value="F" formControlName="gender">
+      <label class="register-gender-label" for="female">Female</label>
+
+      <div *ngIf="signUpForm.get('gender').errors && signUpForm.get('gender').touched">
+        <span class="register-gender-error-icon register-error-icon">!</span>
+        <p class="register-gender-error-message register-error-message">{{signUpForm.get('gender').errors.msg || 'Please select your gender'}}</p>
+      </div>
+    </fieldset>
+    <fieldset *ngIf="!referrer" data-type="horizontal" class="register-gender">
+      <legend class="register-gender-title"> Referral Code (optional) </legend>
+      <input type="text" class="register-user-input nopadding" name="referrer" formControlName="referrer"
+        placeholder="Enter Referal Code" autocomplete="off">
+    </fieldset>
+  </fieldset>
+  <fieldset class="register-register-button-container">
+    <button class="btn btn-primary register-register-button" [disabled]="!isEnabled">Register</button>
+    <p class="policy-text">
+      <small>By clicking "Register" I agree to <a class="text-primary" routerLink="/privacy">OMG! Privacy Policy</a></small>
+    </p>
+  </fieldset>
+</form>

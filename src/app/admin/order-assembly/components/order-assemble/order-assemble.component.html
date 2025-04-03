@@ -1,0 +1,303 @@
+<div *ngIf="orderSeller">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb small">
+      <li class="breadcrumb-item"><a [routerLink]="['/admin','order-assemble']">
+        Orders</a></li>
+      <li class="breadcrumb-item text-primary" aria-current="page">
+        Edit - Order #{{orderSeller.orderNumber}}</li>
+    </ol>
+  </nav>
+  <div [ngClass]="{'sticky' : isSticky == true}">
+    <div>
+      <button type="button" class="btn btn-danger btn-sm margin-bottom-5"
+        [disabled]="(itemsConfirmed + itemsUnavailable != orderItems.length)
+          || !itemsConfirmed || isReadOnly"
+        (click)="confirmModal.show()">Send to Delivery
+      </button>
+      <button type="button" class="btn btn-default btn-sm margin-bottom-5"
+        [disabled]="isReadOnly"
+        (click)="cancelModal.show()">
+        Cancel Order</button>
+      <button *ngIf="itemsReplaced || itemsUnavailable > 0"
+        type="button" class="btn btn-secondary btn-sm margin-bottom-5"
+        (click)="createText()">
+        Replace SMS</button>
+    </div>
+    <div *ngIf="discrepancyItems.length" class="discrepancy well">
+      <div>
+        <i class="glyphicon glyphicon-exclamation-sign"></i>&nbsp;
+        Data discrepancy in order, unable to proceed. Please contact OMG! support.
+        <a (click)="showErrorDetails = !showErrorDetails">See details...</a>
+      </div>
+      <ul [ngClass]="{'hide' : !showErrorDetails}">
+        <li *ngFor="let item of discrepancyItems" class="small">
+          id:{{item.item.orderItem_id}}&nbsp;-&nbsp;{{item.item.name}}&nbsp;-&nbsp;<em>{{item.status}}</em>
+        </li>
+      </ul>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-body row small">
+        <div class="col-xs-12 col-sm-6 col-md-4">
+          <span class="text-muted">Customer Name:</span>
+          {{ orderSeller.firstname }} {{ orderSeller.lastname }}<br>
+          <span class="text-muted">Mobile Number:</span>
+          {{ orderSeller.phone }}
+          <hr class="hidden-sm hidden-md hidden-lg hidden-xl">
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+          <div class="col-12">
+            <b>Item(s) Processed: {{ itemsConfirmed + itemsUnavailable}} of {{ orderItems.length }}</b>
+          </div>
+          <div class="col-12">
+            <div class="col-6 small">
+              Confirmed Item(s): {{ itemsConfirmed }}<br>
+              Replaced Item(s): {{ itemsReplaced }} <br>
+              Unavailable Item(s): {{ itemsUnavailable }}<br>
+            </div>
+            <div class="col-6">
+              <span class="small">
+                Item(s) Quantity: {{ itemsQuantity }}<br>
+                Item(s) Sub-total:
+              </span>
+              <strong>₱{{ itemsTotal | number:'1.2-2' }}</strong> <br>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-xs-12 col-sm-12 col-md-4">
+          <hr class="hidden-sm hidden-md hidden-lg hidden-xl">
+          <strong>Special Instructions:</strong> {{orderSeller.specialInstructions ? orderSeller.specialInstructions : 'None'}}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="container-fluid item-list">
+    <div *ngFor="let item of orderItems; let i = index;" class="row" [ngClass]="{'replacement-item': item.replaced_orderitem_id != 0}">
+      <div *ngIf="item.replaced_orderitem_id && replacedItemsObj[item.replaced_orderitem_id];
+        else elseReplacementError"
+        class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group small replaced-item">
+          <span class="text-muted">Replacement for</span>
+          <strong>{{ replacedItemsObj[item.replaced_orderitem_id].name }}:</strong>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6">
+        <div class="item-img-container">
+          <i *ngIf="item.status == 'confirmed'" class="glyphicon glyphicon-ok-sign text-success"></i>
+          <i *ngIf="item.status == 'unavailable'" class="glyphicon glyphicon-remove-sign text-danger"></i>
+          <img class="img-responsive item-img" [src]="getItemImageUrl(item.imageKey)" alt="item.name" (error)="onImageError($event)">
+        </div>
+        <div class="form-group">
+          <p><strong>{{item.name}}</strong></p>
+          <p class="item-info">
+            <span class="text-muted">Code:</span>
+            {{ item.code }}
+          </p>
+          <p class="item-info">
+            <span class="small">{{ item.category1Name }} / {{ item.category2Name }}</span>
+          </p>
+        </div>
+      	<div class="form-group small">
+      	  <label class="control-label">Price:</label>
+          <input type="number" class="text-center form-control input-sm final-price"
+            [value]="item.finalPrice | number:'1.2-2'" (blur)="updatePrice($event, item)"
+            [disabled]="item.status != 'ordered'"/>
+      	</div>
+        <div class="form-group small">
+          <label class="control-label">Quantity:</label>
+          <div class="item-quantity">
+            <div class="input-group">
+              <span class="input-group-btn">
+                <button type="button" class="btn btn-default btn-sm"
+                  (click)="decrementQuantity(i)"
+                  [disabled]="item.finalQuantity == MIN_VALUE || item.status != 'ordered'">
+                  <span class="glyphicon glyphicon-minus"> </span>
+                </button>
+              </span>
+              <input type="number" class="text-center form-control input-sm"
+                [value]="item.finalQuantity" disabled/>
+               <span class="input-group-btn">
+                 <button type="button" class="btn btn-success btn-sm" (click)="incrementQuantity(i)"
+                  [disabled]="item.finalQuantity == MAX_VALUE || item.status != 'ordered'">
+                   <span class="glyphicon glyphicon-plus"></span>
+                 </button>
+               </span>
+            </div>
+          </div>
+        </div>
+        <div class="form-group small">
+          <label class="control-label">Total:</label>
+          <span [ngClass]="{'unavailable': item.status == 'unavailable'}">
+            ₱{{(item.finalPrice * item.finalQuantity) | number:'1.2-2'}}
+          </span>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-6 col-md-6">
+        <div *ngIf="!item.replaced_orderitem_id" class="form-group small instructions">
+          Replacement option:
+          <span>{{ replacementOptionText[item.subOption] }}</span>
+        </div>
+        <div *ngIf="item.specialInstructions" class="form-group small instructions">
+          <b>Special Instructions:</b>&nbsp;<i>{{ item.specialInstructions }}</i>
+        </div>
+        <div *ngIf="item.replaced_orderitem_id && replacedItemsObj[item.replaced_orderitem_id]
+          && replacedItemsObj[item.replaced_orderitem_id].specialInstructions"
+          class="form-group small instructions">
+          <b>Special Instructions:</b>&nbsp;
+          <i>{{ replacedItemsObj[item.replaced_orderitem_id].specialInstructions }}</i>
+        </div>
+        <div class="form-group pull-right" *ngIf="!isReadOnly">
+          <label *ngIf="item.status == 'confirmed' || item.status == 'ordered'"
+            class="btn btn-sm btn-success margin-top-5"
+            [(ngModel)]="orderItemStatus[item.orderItem_id]" btnRadio="confirmed"
+            (click)="confirm(item)">Confirm</label>
+          <label *ngIf="!item.replaced_orderitem_id && item.status == 'ordered'"
+            class="btn btn-sm btn-default margin-top-5"
+            (click)="showReplacement(item)">Replace</label>
+          <label *ngIf="!item.replaced_orderitem_id && (item.status == 'ordered' || item.status == 'unavailable')"
+            class="btn btn-sm btn-default margin-top-5"
+            [(ngModel)]="orderItemStatus[item.orderItem_id]" btnRadio="unavailable"
+            (click)="unavailable(item)">Unavailable</label>
+          <label *ngIf="item.replaced_orderitem_id && item.status == 'ordered'"
+            class="btn btn-sm btn-default margin-top-5"
+            (click)="unreplace(item)">Remove</label>
+          <label *ngIf="item.status != 'ordered'"
+            class="btn btn-sm btn-default margin-top-5"
+            (click)="reset(item)">Reset</label>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" bsModal #cancelModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="cancelModal.hide()">&times;</button>
+          <h4 class="modal-title">Are you sure?</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <label for="comment">Reason for cancellation:</label>
+            <textarea #cancelReason class="form-control" rows="5"></textarea>
+            <div *ngIf="isCancelReason">
+              <p class="error-message text-danger">{{ 'Please enter your reason' }}</p>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" (click)="cancelOrder(cancelReason.value)">OK</button>
+          <button type="button" class="btn btn-default" (click)="cancelModal.hide()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" bsModal #replaceModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close"
+          [disabled]="isProcessing"
+            (click)="closeReplacement()">&times;</button>
+          <h4 class="modal-title">Replacement Items</h4>
+        </div>
+        <div class="modal-body">
+          <div *ngIf="substituteItem" class="substitute">
+            <p>Customer preferred replacement:</p>
+            <div class="row">
+              <div class="col-xs-12">
+                <div class="image">
+                  <img class="product-thumb imgitems img-responsive" itemprop="image"
+                    alt="{{substituteItem.name}}" (error)="onImageError($event)"
+                    [src]="getItemImageUrl(substituteItem.imageKey)">
+                </div>
+                <div class="details small">
+                  {{substituteItem.name}}<br>
+                  ₱{{substituteItem.price | number:'1.2-2'}}<br>
+                  <button type="button" class="btn btn-success"
+                    [disabled]="isProcessing"
+                    (click)="replace(substituteItem)">Add</button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="replacement">
+            <div>
+              <p class="input-group">
+                <input [(ngModel)]="searchText" class="form-control"
+                  (keyup.enter)="searchKeyword()" placeholder="Search for an item">
+                <span class="input-group-btn">
+                  <button class="btn btn-secondary btn-primary glyphicon glyphicon-search"
+                    type="button" (click)="searchKeyword()"></button>
+                </span>
+              </p>
+            </div>
+            <div class="search-result">
+              <div *ngIf="!searchItems.length">
+                No results found. Please try another keyword or code.
+              </div>
+              <div *ngFor="let searchItem of searchItems;" class="row">
+                <div class="col-xs-12">
+                  <div class="image">
+                    <img class="product-thumb imgitems img-responsive" itemprop="image"
+                      alt="{{searchItem.name}}" (error)="onImageError($event)"
+                      [src]="getItemImageUrl(searchItem.imageKey)">
+                  </div>
+                  <div class="details small">
+                    {{searchItem.name}}<br>
+                    <small>Code: {{ searchItem.code }}</small><br>
+                    ₱{{searchItem.price | number:'1.2-2'}}<br>
+                    <button type="button" class="btn btn-success"
+                      [disabled]="isProcessing"
+                      (click)="replace(searchItem)">Add</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" bsModal #textTemplateModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="textTemplateModal.hide()">&times;</button>
+          <h4 class="modal-title">Replacment Text Template</h4>
+        </div>
+        <div class="modal-body">
+          <div class="form-group">
+            <textarea [(ngModel)]="textTemplate" #textArea class="form-control" rows="18"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="copyText(textArea)">Copy Text</button>
+          <button type="button" class="btn btn-default" (click)="textTemplateModal.hide()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal" bsModal #confirmModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+    <div class="modal-dialog modal-sm">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" aria-label="Close" (click)="textTemplateModal.hide()">&times;</button>
+          <h4 class="modal-title">Confirmation</h4>
+        </div>
+        <div class="modal-body">
+          <i class="glyphicon glyphicon-question-sign"></i>
+          Are you sure you want to forward order to delivery?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" (click)="forwardToDelivery()">Continue</button>
+          <button type="button" class="btn btn-default" (click)="confirmModal.hide()">Cancel</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

@@ -1,0 +1,52 @@
+<div class="cart-section">
+  <div *ngIf="(totalCartItems$ | async) > 0 else emptyCart" class="row">
+    <div class="col-md-8 item-list">
+      <div class="row item-list-header">
+        <div class="col-md-4 col-sm-4 col-xs-12">
+          <h3>Cart Summary</h3>
+        </div>
+        <div class="col-md-8 col-sm-8 col-xs-12 buttons">
+          <button class="btn btn-default" [routerLink]="returnUrl">
+            Continue Shopping
+          </button>
+          <button *ngIf="(isAuthenticated$ | async) && !(partnerStore$ | async).requestItemFlag" class="btn btn-default"
+            [routerLink]="['/user','lists']">Add Items from List</button>
+          <button type="button" class="btn btn-default"
+            (click)="confirmModal.show()">Clear Cart</button>
+        </div>
+      </div>
+      <app-cart-item-list></app-cart-item-list>
+    </div>
+    <div class="col-md-4">
+      <app-order-total-summary
+        [isAuth]="isAuthenticated$ | async"
+        [partnerStore]="partnerStore$ | async"
+        [totalCartItems]="totalCartItems$ | async"
+        [totalDiscounts]="totalDiscount$ | async"
+        [totalCartValue]="totalCartValue$ | async"
+        [grandTotal]="grandTotal$ | async"
+        [totalAmtDue]="totalAmtDue$ | async"
+        [serviceFees]="serviceFee$ | async"
+        [deliveryFees]="deliveryFee$ | async">
+      </app-order-total-summary>
+    </div>
+  </div>
+  <ng-template #emptyCart>
+    <app-empty-cart
+      [isAuthenticated]="isAuthenticated$ | async"
+      [returnUrl]="returnUrl">
+    </app-empty-cart>
+  </ng-template>
+</div>
+
+<div class="modal" bsModal #confirmModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <p>Are you sure you want to remove all items?</p>
+        <button type="button" class="btn btn-default" (click)="clearCart()">Yes</button>
+        <button type="button" class="btn btn-primary" (click)="confirmModal.hide()">No</button>
+      </div>
+    </div>
+  </div>
+</div>

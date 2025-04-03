@@ -1,0 +1,313 @@
+<div>
+  <div class="dialog-header">
+    <ol class="breadcrumb small">
+      <li>&nbsp;</li>
+      <ng-container *ngIf="item">
+        <li *ngIf="itemCategories[0]">
+          <a (click)=selectCategory(itemCategories[0])>{{itemCategories[0].name}}</a>
+        </li>
+        <li *ngIf="!itemCategories[0]">
+            Others
+        </li>
+        <li *ngIf="itemCategories[1]">
+          <a (click)=selectCategory(itemCategories[1],itemCategories[0])>
+            {{itemCategories[1].name}}
+          </a>
+        </li>
+        <li *ngIf="itemCategories[2]">
+          <a (click)=selectCategory(itemCategories[2],itemCategories[1],itemCategories[0])>
+            {{itemCategories[2].name}}
+          </a>
+        </li>
+      </ng-container>
+    </ol>
+    <a href="javascript:void(0)" class="closeModal" (click)="onCloseModal()">
+      <span class="glyphicon glyphicon-remove"></span>
+    </a>
+  </div>
+
+  <div class="item-details row">
+    <div class="item-images col-md-6 col-sm-6 col-xs-12">
+      <img class="img-responsive" [src]="getItemImageUrl(item.imageKey)"
+        (error)="onImageError($event)">
+    </div>
+    <!-- INSERT IMAGES HERE -->
+    <div class="item-info col-md-6 col-sm-6 col-xs-12">
+      <div class="item-name">
+        <p class="title">{{item.name}}</p>
+        <p>{{item.brandName}}</p>
+      </div>
+      <div class="meta-info">
+        <p class="price">
+          <span>₱{{item.price | number:'1.2-2'}}</span>
+        </p>
+        <p *ngIf="hideListPrice(item.displayPrice, item.price)" class="list-price">
+          List Price: <span>₱{{item.displayPrice | number:'1.2-2'}}</span>
+        </p>
+        <p *ngIf="hideSavings(item.displayPrice, item.price)">
+          You Save: ₱{{item.displayPrice - item.price | number:'1.2-2'}}
+        </p>
+        <p *ngIf="this.item.weighted == 1" class="disclaimer">
+          <i class="glyphicon glyphicon-info-sign"></i>
+          <span>
+            Disclaimer: Actual price may vary slightly, especially for meat
+            and produce. But our friendly OMG! staff will contact you if ever.
+            For meat and some produce, price indicated is for 1 kilogram.
+            You may order less than a kilo but should be in increments of 250 grams
+            (250g, 500g, 750g, etc.).
+          </span>
+        </p>
+      </div>
+      <div class="buttons-container row">
+        <div class="buttons">
+          <div *ngIf="itemQuantity != 0; else elseAddCart" class="input-group btn-block">
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-default"
+                data-type="minus" data-field="" (click)="decrementQuantity()"
+                [disabled]="itemQuantity == MIN_VALUE" title="Remove 1">
+                <span class="glyphicon glyphicon-minus"></span>
+              </button>
+            </span>
+            <input type="number" class="form-control text-center"
+              [min]="MIN_VALUE" [max]="MAX_VALUE" step="1"
+              [value]="itemQuantity" [formControl]="quantityControl"
+              (blur)="checkIfValid($event)" (keypress)="keyPress($event)" />
+            <span class="input-group-btn">
+              <button type="button" class="btn btn-success"
+                data-type="plus" data-field="" (click)="incrementQuantity()"
+                [disabled]="itemQuantity == MAX_VALUE" title="Add more of this item">
+                <span class="glyphicon glyphicon-plus"></span>
+              </button>
+            </span>
+          </div>
+          <ng-template #elseAddCart>
+            <button type="button" class="quantity-in-cart-add btn btn-block btn-success"
+              (click)="addToCart()" title="Add 1 item">
+              <i class="glyphicon glyphicon-shopping-cart"></i>&nbsp;Add to cart
+            </button>
+          </ng-template>
+        </div>
+        <!-- START: ADD TO MY LIST-->
+        <div class="buttons">
+          <div class="btn-group btn-block" dropdown [autoClose]="false">
+            <button dropdownToggle type="button" class="add-to-list btn btn-default btn-block">
+              <i class="glyphicon glyphicon-edit"></i>
+              &nbsp;Add to my list
+              <span class="caret"></span>
+            </button>
+            <ul *dropdownMenu class="dropdown-menu list-dropdown" role="menu">
+              <ng-container *ngIf="isAuthenticated; else notAuth">
+                <div class="user-list">
+                  <ng-container *ngFor="let userList of userLists; let i = index">
+                    <li *ngIf="userList.partnerId === partnerStore.id" role="menuitem">
+                      <div class="list-dropdown-item" title="{{userList.name}}" (click)="selectList(i, userList.id)">
+                        <div class="checkbox">
+                          <label>
+                            <input type="checkbox" name="checkboxState{{i}}" [(ngModel)]="listState[userList.id]">
+                            <span class="cr"><i class="cr-icon fa fa-check"></i></span>{{userList.name}}
+                          </label>
+                        </div>
+                      </div>
+                    </li>
+                  </ng-container>
+                  <ng-container *ngIf="userLists.length == 0">
+                    <li role="menuitem">
+                      <div class="list-dropdown-item">
+                        <span><i>No list created</i></span>
+                      </div>
+                    </li>
+                  </ng-container>
+                </div>
+                <li class="divider dropdown-divider"></li>
+                <li role="menuitem" class="list-dropdown-item">
+                  <div>
+                    <ng-container *ngIf="!isCreateList; else createList">
+                      <div class="input-group">
+                        <span class="input-group-btn">
+                          <button class="btn btn-primary btn-block newList" type="button" (click)="toggleCreateNewList()">
+                            <i class="glyphicon glyphicon-edit"></i> Create new list
+                          </button>
+                        </span>
+                      </div>
+                    </ng-container>
+                    <ng-template #createList>
+                      <div class="input-group">
+                        <input type="text" class="form-control" placeholder="List Name" [formControl]="inputNewList">
+                        <div class="input-group-btn">
+                          <button class="btn btn-default" type="button" (click)="createNewList()">
+                            <i class="glyphicon glyphicon-plus"></i>
+                          </button>
+                        </div>
+                      </div>
+                    </ng-template>
+                  </div>
+                </li>
+              </ng-container>
+              <ng-template #notAuth>
+                <li role="menuitem">
+                  <div>
+                    <p>Login to add item to your list</p>
+                    <hr class="divider">
+                    <button type="button"
+                      class="btn btn-sm btn-primary"
+                      [routerLink]="['/auth', 'login']"
+                      [queryParams]="{ returnUrl: router.url }">
+                      Login
+                    </button>
+                  </div>
+                </li>
+              </ng-template>
+            </ul>
+          </div>
+        </div>
+        <!-- END: ADD TO MY LIST-->
+      </div>
+      <ng-container *ngIf="itemQuantity">
+        <ng-container *ngIf="isAuthenticated; else elseInstructions">
+          <div class="item-instructions">
+            <div class="form-group">
+              <label for="comment">Add instructions:</label>
+              <textarea class="form-control" rows="3"
+                [formControl]="specialInstructions"
+                placeholder="Provide additional instructions to your shopper">
+              </textarea>
+              <button type="button" class="btn btn-default btn-default btn-sm"
+                (click)="addInstructions()">Save
+              </button>
+            </div>
+          </div>
+          <div class="item-substitute">
+            <div class="form-group">
+              <label for="comment">When this item is not available:</label>
+              <select class="form-control" [(ngModel)]="substituteOptions"
+                (change)="selectSubsitution()">
+                <option [ngValue]="0">Select a similar item for me</option>
+                <option [ngValue]="1">Select this item instead</option>
+                <option [ngValue]="2">Do not select a substitute</option>
+              </select>
+            </div>
+          </div>
+        </ng-container>
+        <ng-template #elseInstructions>
+          <p>
+            <button type="button"
+              class="btn btn-sm btn-primary"
+              [routerLink]="['/auth', 'login']"
+              [queryParams]="{ returnUrl: router.url }">
+              Login
+            </button>
+            <span class="small">to add instructions and select a substitute item</span>
+          </p>
+        </ng-template>
+      </ng-container>
+    </div>
+  </div>
+  <!-- START: SUBSTIUTE LIST -->
+  <ng-container *ngIf="substituteOptions === 1 && isAuthenticated">
+    <div *ngIf="!selectedSubItem" class="substitute-items row">
+      <h4>Search substitute item</h4>
+      <section class="search-input col-md-12 col-sm-12 col-xs-12">
+        <input class="form-control" [formControl]="searchSubstitute"
+          placeholder="{{ item.name }}">
+      </section>
+      <h4>Select a substitute item</h4>
+      <section class="search-results col-md-12 col-sm-12 col-xs-12">
+        <div class="slider-container">
+          <div class="back" (click)="sliderBack('substitute')"
+            [ngClass]="{'disabled': substituteSlider.state == 'set1'}">
+            <i class="glyphicon glyphicon-chevron-left"></i>
+          </div>
+          <div class="slider">
+            <ul [ngClass]="substituteSlider.class">
+              <li *ngFor="let subItem of substituteItems" class="product-base" itemscope
+                itemtype="https://schema.org/Product">
+                <app-item-list-entry [item]="subItem" [isSubstitute]="true"
+                  (onOpenModalEmit)="selectSubstituteItem($event)">
+                </app-item-list-entry>
+              </li>
+            </ul>
+          </div>
+          <div class="next" (click)="sliderNext('substitute', substituteItems)"
+            [ngClass]="{'disabled': substituteSlider.state == 'set4'
+              || this.substituteItems.length < 4
+              || (substituteSlider.state == 'set2' && substituteItems.length <= 8)
+              || (substituteSlider.state == 'set3' && substituteItems.length <= 12)}">
+            <i class="glyphicon glyphicon-chevron-right"></i>
+          </div>
+        </div>
+      </section>
+    </div>
+    <div *ngIf="selectedSubItem" class="substitute-items row">
+      <h4>Selected substitute item</h4>
+      <div class="substitute-item row">
+        <div class="col-md-3 col-sm-3 col-xs-3">
+          <img class="item-image-thumbnails img-responsive" [src]="getItemImageUrl(selectedSubItem.imageKey)"
+            (error)="onImageError($event)">
+        </div>
+        <div class="col-md-9 col-sm-9 col-xs-9 substitute-item-details">
+          <div class="col-md-8 col-sm-8 col-xs-12">
+            <span class="substitute-item-name">{{selectedSubItem.name}}</span><br>
+            <span>₱{{selectedSubItem.price | number:'1.2-2'}}</span><br>
+            <a class="small text-success" (click)="changeSubstitute()">
+              <i class="glyphicon glyphicon-edit"></i>&nbsp;Change substitute
+            </a>
+          </div>
+          <div class="col-md-4 col-sm-4 col-xs-12 text-right">
+            <div class="substitute-quantity">
+              <div class="input-group">
+                <span class="input-group-btn">
+                  <button class="btn btn-default" type="button" title="Remove 1"
+                    (click)="decrementSubQuantity()" [disabled]="subItemQuantity == MIN_VALUE">
+                    <span class="glyphicon glyphicon-minus"></span>
+                  </button>
+                </span>
+                <input type="number" class="text-center form-control"
+                  [min]="MIN_VALUE" [max]="MAX_VALUE" step="1" title="Add more of this item"
+                  [value]="subItemQuantity" [formControl]="subQuantityControl"
+                  (blur)='checkIfValid($event)' (keypress)='keyPress($event)'/>
+                <span class="input-group-btn">
+                  <button class="btn btn-success" type="button"
+                    (click)="incrementSubQuantity()" [disabled]="subItemQuantity == MAX_VALUE">
+                    <span class="glyphicon glyphicon-plus"></span>
+                  </button>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <!-- END: SUBSTIUTE LIST -->
+  <!-- START: RECOMMENDED LIST -->
+  <hr *ngIf="substituteOptions !== 1" class="recommended-divider">
+  <div class="row suggested-items">
+    <h4>You might also be interested in these items</h4>
+    <section class="col-md-12 col-sm-12 col-xs-12">
+      <div class="slider-container">
+        <div class="back" (click)="sliderBack('suggested')"
+          [ngClass]="{'disabled': suggestedSlider.state == 'set1'}">
+          <i class="glyphicon glyphicon-chevron-left"></i>
+        </div>
+        <div class="slider">
+          <ul [ngClass]="suggestedSlider.class">
+            <li *ngFor="let sugItem of suggestedItems" class="product-base" itemscope
+              itemtype="https://schema.org/Product">
+              <app-item-list-entry [item]="sugItem" [cartItem]="getCartItem(sugItem.id)"
+                (onOpenModalEmit)="openSuggestedItem($event)">
+              </app-item-list-entry>
+            </li>
+          </ul>
+        </div>
+        <div class="next" (click)="sliderNext('suggested', suggestedItems)"
+          [ngClass]="{'disabled': suggestedSlider.state == 'set4'
+            || this.suggestedItems.length < 4
+            || (suggestedSlider.state == 'set2' && suggestedItems.length <= 8)
+            || (suggestedSlider.state == 'set3' && suggestedItems.length <= 12)}">
+          <i class="glyphicon glyphicon-chevron-right"></i>
+        </div>
+      </div>
+    </section>
+  </div>
+  <!-- END: RECOMMENDED LIST -->
+</div>

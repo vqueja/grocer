@@ -1,0 +1,312 @@
+<div *ngIf="orderSeller" class="order-details">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['/admin','orders']">Orders</a></li>
+      <li class="breadcrumb-item text-primary" aria-current="page">Order Details - #{{orderSeller.orderNumber}}</li>
+    </ol>
+  </nav>
+  <div *ngIf="activeUser.partner_id === 1">
+    <ng-container *ngIf="activeUser.role_id === 1 || activeUser.role_id === 2 ||
+      activeUser.role_id === 4 || activeUser.role_id === 11 || activeUser.role_id === 12">
+      <button *ngIf="showButton('TAKE')" type="button" class="btn btn-default btn-sm"
+        (click)="takeOrder()">Take Order</button>
+      <button *ngIf="showButton('CONTINUE'); else elseReadOnly" type="button" class="btn btn-default btn-sm"
+        [routerLink]="['/admin/order-assemble/edit', orderSeller.id]">Continue</button>
+      <ng-template #elseReadOnly>
+        <button *ngIf="showButton('READONLY')" type="button" class="btn btn-default btn-sm"
+          [routerLink]="['/admin/order-assemble/edit', orderSeller.id]"
+          [queryParams]="{ readonly: 'true' }">
+          View Assembly
+        </button>
+      </ng-template>
+      <button *ngIf="showButton('CONTINUE-DELIVER')" type="button" class="btn btn-default btn-sm"
+        [routerLink]="['/admin/order-assemble/view', orderSeller.id]">Continue</button>
+      <button *ngIf="showButton('DELIVER')" type="button" class="btn btn-default btn-sm"
+        (click)="deliverOrder()">Deliver Order</button>
+      <button *ngIf="showButton('UNASSIGN')" type="button" class="btn btn-default btn-sm"
+        (click)="unassignModal.show()">Unassign</button>
+      <button type="button" class="btn btn-default btn-sm"
+        (click)="printListModal.show()">Print List</button>
+    </ng-container>
+    <ng-container *ngIf="activeUser.role_id === 1 || activeUser.role_id === 2 ||
+      activeUser.role_id === 4">
+      <div dropdown class="dropdown-container">
+        <button dropdownToggle type="button" class="btn btn-default btn-sm">
+          Send Email&nbsp;<span class="caret"></span>
+        </button>
+        <ul *dropdownMenu role="menu" class="dropdown-menu">
+          <li 
+            title="Can only send when status is PENDING"
+            [ngClass]="{'disabled': orderSeller.status !== 'pending'}"
+            (click)="sendConfirmationEmail()">Confirmation Email [Customer]</li>
+          <li (click)="sendPOModal.show()">Purchase Order [Store]</li>
+        </ul>
+      </div>
+    </ng-container>
+    <hr>
+  </div>
+  <div *ngIf="discrepancyItems.length" class="discrepancy well">
+    <div>
+      <i class="glyphicon glyphicon-exclamation-sign"></i>&nbsp;
+      <strong>Data discrepancy with one or more items. Please contact OMG! support.</strong>
+    </div>
+    <ul>
+      <li *ngFor="let item of discrepancyItems" class="small">
+        id:{{item.item.orderItem_id}}&nbsp;-&nbsp;{{item.item.name}}&nbsp;-&nbsp;<em>{{item.status}}</em>
+      </li>
+    </ul>
+  </div>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-xs-12">Status: <b class="text-primary text-uppercase">{{ orderSeller.status }}</b></div>
+      </div>
+      <div class="row order-info">
+        <div class="col-xs-12 col-sm-6 col-md-4">
+          <p>
+            <span class="text-muted">Customer:</span>
+            {{ orderSeller.firstname }} {{ orderSeller.lastname }}
+          </p>
+          <p>
+            <span class="text-muted">Mobile No:</span>
+            {{ orderSeller.phone }}
+          </p>
+          <p>
+            <span class="text-muted">Address:</span>
+            {{ orderSeller.shippingAddress01 }} {{ orderSeller.shippingAddress02 }},
+            {{ orderSeller.city }}, {{ orderSeller.postalcode }}
+            <small>(<em>{{ orderSeller.addressTypeStr }}</em>)</small>
+          </p>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+          <p *ngIf="activeUser.partner_id === 1">
+            <span class="text-muted">Partner Buyer:</span>
+            {{ orderSeller.partnerbuyer }}
+            <br><br class="hidden-xs">
+          </p>
+          <p>
+            <span class="text-muted">Order Date:</span>
+            {{ orderSeller.dateCreated | date:'MMM d, y h:mma' }}
+          </p>
+          <p>
+            <span class="text-muted">Delivery Date:</span>
+            {{ orderSeller.date | date:'MMM d, y' }} {{orderSeller.time}}
+          </p>
+        </div>
+        <div class="col-xs-12 col-sm-6 col-md-4">
+          <p>
+            <span class="text-muted">Assembled By:</span>
+            {{ orderSeller.assembledByName }}
+          </p>
+          <p>
+            <span class="text-muted">Delivered By:</span>
+            {{ orderSeller.deliveredByName }}
+          </p>
+        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12 text-right text-20px">
+          <span class="text-muted">Total:</span> ₱{{ orderSeller.total | number:'1.2-2' }}
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngFor="let item of orderItems;" class="row item-list">
+    <div [ngClass]="{'unavailable': item.status === 'unavailable', 'border': !item.replaced_orderitem_id}">
+      <div class="col-md-1">
+        <div class="item-img-container">
+          <img class="img-responsive item-img" [src]="getProductImageUrl(item.imageKey)"
+            (error)="onImageError($event)" alt="item.name">
+        </div>
+      </div>
+      <div class="col-md-5">
+        <strong>{{ item.name }}</strong>
+        <span *ngIf="item.status === 'unavailable'" class="unavailable-text">UNAVAILABLE</span>
+        <br>
+        <small>
+          <span class="text-muted">Item Code:</span> {{ item.code }}
+        </small>
+        <span *ngIf="item.specialInstructions" class="small">
+          <br><span class="text-muted">Special Instructions:</span> <em>{{ item.specialInstructions }}</em>
+        </span>
+      </div>
+      <div class="col-md-2">
+        <ng-container *ngIf="item.itemPrice != item.finalPrice; else elsePrice">
+          <span class="changed">
+            ₱{{ item.itemPrice | number:'1.2-2' }}
+          </span>
+          <br>
+          ₱{{ item.finalPrice | number:'1.2-2' }}
+        </ng-container>
+        <ng-template #elsePrice>
+          ₱{{ item.finalPrice | number:'1.2-2' }}
+        </ng-template>
+      </div>
+      <div class="col-md-2">
+        <ng-container *ngIf="item.quantity != item.finalQuantity; else elseQuantity">
+          <span class="changed">
+            <span class="text-muted">Qty:</span> {{ item.quantity }}
+          </span>
+          <br>
+          <span class="text-muted">Qty:</span> {{ item.finalQuantity }}
+        </ng-container>
+        <ng-template #elseQuantity>
+          <span class="text-muted">Qty:</span> {{ item.finalQuantity }}
+        </ng-template>
+      </div>
+      <div class="col-md-2 text-right">
+        <span class="text-muted">T:</span> ₱{{ (item.finalPrice * item.finalQuantity) | number:'1.2-2' }}
+      </div>
+    </div>
+    <div *ngIf="item.replaced" class="unavailable border">
+      <div class="col-md-1">
+        <div class="item-img-container">
+          <img class="img-responsive item-img" [src]="getProductImageUrl(item.replaced.imageKey)"
+            (error)="onImageError($event)" alt="item.replaced.name">
+        </div>
+      </div>
+      <div class="col-md-5">
+        <strong>{{ item.replaced.name }}</strong>
+        <span class="unavailable-text">REPLACED</span>
+        <br>
+        <small>
+          <span class="text-muted">Item Code:</span> {{ item.replaced.code }}
+        </small>
+        <br>
+      </div>
+      <div class="col-md-2">
+        ₱{{ item.replaced.itemPrice | number:'1.2-2' }}
+      </div>
+      <div class="col-md-2">
+        <span class="text-muted">Qty:</span> {{ item.replaced.quantity }}
+      </div>
+      <div class="col-md-2 text-right">
+        <span class="text-muted">T:</span> ₱{{ (item.replaced.itemPrice * item.replaced.quantity) | number:'1.2-2' }}
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-md-6"></div>
+    <div class="col-md-6">
+      <div class="total-summary">
+        <h4>Total Summary</h4>
+        <div>
+          <span class="text-muted">Subtotal:</span>
+          <span class="pull-right">
+            ₱{{ (orderSeller.finalItemTotal === '0' ? orderSeller.itemTotal : orderSeller.finalItemTotal) | number:'1.2-2' }}
+          </span>
+        </div>
+        <div>
+          <span class="text-muted">Service Fee:</span>
+          <span class="pull-right">₱{{ orderSeller.serviceFee | number:'1.2-2' }}</span>
+        </div>
+        <div>
+          <span class="text-muted">Delivery Fee:</span>
+          <span class="pull-right">₱{{ orderSeller.deliveryFee | number:'1.2-2' }}</span>
+        </div>
+        <div>
+          <span class="text-muted">Discount:</span>
+          <small *ngIf="orderSeller.voucherCode">({{ orderSeller.voucherCode }})</small>
+          <span class="pull-right">₱{{ orderSeller.discountTotal | number:'1.2-2' }}</span>
+        </div>
+        <hr>
+        <div>
+          <span class="text-muted">Grand Total:</span>
+          <span class="pull-right">₱{{ orderSeller.total | number:'1.2-2' }}</span>
+        </div>
+        <br>
+        <h4>Payment Method:</h4>
+        <ng-container *ngFor="let payment of orderPayments">
+          <div>
+            <span class="text-muted">{{ payment.label }}</span>
+            <span class="pull-right">₱{{ payment.amount | number:'1.2-2' }}</span>
+          </div>
+        </ng-container>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="orderSeller" class="print-list">
+  <h3>Order #{{ printListData.number }}</h3>
+  <div>Customer: {{ orderSeller.firstname.charAt(0) }}. {{ orderSeller.lastname }}</div>
+  <div>Assembly Date: {{ printListData.date | date:'MMM d, y' }}</div>
+  <div>{{printListData.code}}</div>
+  <br>
+  <div *ngFor="let item of orderItemsData;" class="row">
+    <p *ngIf="!item.replaced_orderitem_id" class="col-md-12">
+      <span class="check-box"></span>&nbsp;
+      {{ item.quantity }}&nbsp;x&nbsp;
+      <strong>{{ item.name }}</strong>&nbsp;
+      [code:{{ item.code }} | id:{{ item.orderItem_id }}]&nbsp;
+      <span *ngIf="item.weighted">₱{{ item.itemPrice | number:'1.2-2' }}</span>
+      <span *ngIf="item.specialInstructions" class="indent">
+        <br><em>Note: {{item.specialInstructions}}</em>
+      </span>
+    </p>
+  </div>
+</div>
+<div class="modal" bsModal #unassignModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <p>Do you want to confirm?</p>
+        <button type="button" class="btn btn-default" (click)="confirmUnassign()">Yes</button>
+        <button type="button" class="btn btn-primary" (click)="unassignModal.hide()">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" bsModal #sendPOModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <strong>Send Purchase Order Email</strong>
+      </div>
+      <div *ngIf="partnerStoreData" class="modal-body">
+        <div>
+          <p>
+            <span class="text-muted">Store:</span>
+            <strong>{{ partnerStoreData.internalName ? partnerStoreData.internalName : partnerStoreData.name }}</strong>
+          </p>
+          <p>
+            <span class="text-muted">Contact Person:</span> {{partnerStoreData.contactPerson}}<br>
+            <span class="text-muted">Email:</span> {{partnerStoreData.contactEmail}}
+          </p>
+        </div>
+        <div class=" text-center">
+          <p>Do you want to proceed?</p>
+          <button
+            type="button" class="btn btn-primary"
+            [disabled]="!partnerStoreData.contactEmail || !partnerStoreData.contactPerson"
+            (click)="sendPurchaseOrder()">
+            Yes</button>
+          <button type="button" class="btn btn-default" (click)="sendPOModal.hide()">No</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal" bsModal #printListModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <strong>Print Order List</strong>
+      </div>
+      <div class="modal-body">
+        <p *ngIf="orderSeller">
+          <span class="text-muted">Delivery Date:</span>
+          {{ orderSeller.date | date:'MMM d, y' }}
+        </p>
+        <p>
+          <span class="text-muted">Assembly Date:</span>
+          <input type="text" [(ngModel)]="printListData.date" name="assemblydate"
+            class="form-control form-inline-120px" placeholder="Assembly Date"
+            #dateOrder="bsDatepicker" bsDatepicker
+            [bsConfig]="{ dateInputFormat: 'MMM D, YYYY' }">
+        </p>
+        <div class=" text-center">
+          <button type="button" class="btn btn-primary" (click)="printList()">Print</button>
+          <button type="button" class="btn btn-default" (click)="printListModal.hide()">Close</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

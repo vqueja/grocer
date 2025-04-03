@@ -1,0 +1,142 @@
+<nav class="navbar navbar-fixed-top nopadding ">
+  <div class="container-fluid">
+    <div class="row nav-menu-main">
+      <div class="col-xs-4 hidden-xs">
+        <a routerLink="/" class="navbar-brand">
+          <img class="logo" src="assets/OMG.png" />
+        </a>
+      </div>
+      <div class="col-xs-12 col-sm-8 col-md-8">
+        <app-profile-dropdown
+          [totalCartItems]="totalCartItems | async"
+          [totalCartValue]="totalCartValue | async"
+          [isAuthenticated]="isAuthenticated | async"
+          [currentStep]="currentStep"
+          [partnerBuyer]="partnerBuyer"
+          [partnerStore]="partnerStore"
+          (onOpenReferralEmit)="openReferralModal()">
+        </app-profile-dropdown>
+      </div>
+    </div>
+    <div class="row nav-menu-store" *ngIf="checkStoreURL()">
+      <div class="col-xs-12 col-sm-4 col-md-4">
+        <h3 *ngIf="partnerStore" class="store-name">
+          <img
+            (load)="onLogoLoad()"
+            (error)="onLogoError($event)"
+            [src]="getLogoUrl(partnerStore)">
+          {{ partnerStore.name }}
+        </h3>
+      </div>
+      <div class="store-menu-right col-xs-12 col-sm-8 col-md-8">
+        <div class="search">
+          <!-- NOTE: AUTOSUGGEST SEARCH -->
+          <ng-template #searchTemplate let-keyword="item" let-index="index">
+            <ng-container *ngIf="keyword.price; else searchCategory">
+              <div class="search-item">
+                <div class="item-img">
+                  <img class="imgitems img-responsive"
+                    itemprop="image"
+                    alt="{{keyword.name}}"
+                    (error)="onImageError($event)"
+                    [src]="getItemImageUrl(keyword.imageKey)">
+                </div>
+                <div class="item-info">
+                  {{keyword.name}}<br>
+                  ₱{{keyword.price | number:'1.2-2'}}
+                </div>
+              </div>
+            </ng-container>
+            <ng-template #searchCategory>
+              <div class="search-category">{{keyword.name}}</div>
+            </ng-template>
+          </ng-template>
+          <input
+            #searchbox
+            [(ngModel)]="searchText"
+            [typeahead]="autoSuggestData$"
+            [typeaheadOptionsLimit]="10"
+            [typeaheadWaitMs]="900"
+            [typeaheadMinLength]="2"
+            [typeaheadItemTemplate]="searchTemplate"
+            (typeaheadLoading)="changeTypeaheadLoading($event)"
+            (typeaheadNoResults)="changeTypeaheadNoResults($event)"
+            (typeaheadOnSelect)="typeaheadOnSelect($event)"
+            typeaheadGroupField="group"
+            (keyup.enter)="typeaheadOnSelect($event)"
+            placeholder="looking for something?">
+          <span class="clear-search" required (click)="clearSearchText()">&times;</span>
+          <span class="icon">
+            <img src="assets/omg-search.png"
+            (click)="searchKeyword()">
+          </span>
+        </div>
+        <div *ngIf="!partnerStore.requestItemFlag" class="categories" #categoryMenuMobile>
+          <div class="accordion-label"
+            [ngClass]="{active: isShowCategories}"
+            (click)="isShowCategories = !isShowCategories">
+            <span class="hidden-xs">store</span>
+            categories <span class="caret color-pink"></span>
+          </div>
+          <div *ngIf="isShowCategories"  class="accordion">
+            <accordion [closeOthers]="oneAtATime">
+              <accordion-group *ngFor="let category of categories$ | async; let i = index;">
+                <div accordion-heading class="category-name-title">{{category.name}}<span class="caret color-pink"></span></div>
+                <div class="col-xs-12 category-name">
+                  <div (click)="selectCategory(category)">
+                    <a href="javascript:void(0)">{{category.name}}</a>
+                  </div>
+                </div>
+                <div class="col-xs-6 category-name" *ngFor="let category2 of category.subCategories">
+                  <div>
+                    <a href="javascript:void(0)" (click)="selectCategory(category2, category)">{{category2.name}}</a>
+                    <div *ngIf="category2.subCategories.length > 0" class="caret-box" (click)="toggleCategory3(category2.id)">
+                      <span class="caret color-pink"></span>
+                    </div>
+                  </div>
+                  <ul *ngIf="category2.subCategories.length > 0" class="category-3-container"
+                    #category3Container [attr.data-category-2id]="category2.id">
+                    <li *ngFor="let category3 of category2.subCategories">
+                      <a (click)="selectCategory(category3, category2, category);" href="javascript:void(0)">{{category3.name}}</a>
+                    </li>
+                  </ul>
+                </div>
+              </accordion-group>
+            </accordion>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<div class="modal fade" bsModal #referralModal="bs-modal" tabindex="-1" role="dialog"
+  aria-labelledby="dialog-static-name" (onHide)="closeReferralModal()">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-body text-center referral">
+        <a href="javascript:void(0)" class="closeModal" (click)="referralModal.hide();">
+          <span class="glyphicon glyphicon-remove"></span>
+        </a>
+        <h2 class="modal-title">Refer a Friend</h2>
+        <!-- <p class="intro">Introduce a friend to <span class="text-primary">OMG!</span>. Once <strong>5</strong> of your referred friends signs up, you'll recieve a [TODO]. Only for new <span class="text-primary">OMG!</span> users.</p> -->
+        <p class="intro">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer convallis enim eget felis fringilla fermentum. Orci varius natoque penatibus et magnis dis parturient montes, nascetur ridiculus mus. Donec non odio et dui venenatis egestas.</p>
+        <hr>
+        <p class="code"><span>{{ referralCode }}</span></p>
+        <p><textarea #referralURL class="form-control" [value]="referralLink" readonly></textarea></p>
+        <p><button class="btn btn-block btn-lg btn-success" (click)="copyReferralURL(referralURL)">COPY URL</button></p>
+        <hr>
+        <h4>There are <strong>{{ referredUsers.length }}</strong> <span class="text-primary">OMG!</span> user(s) that were referred by you.</h4>
+        <p *ngFor="let user of referredUsers">
+          <ng-container *ngIf="user.ordered; else elseReferredUser">
+            <i class="glyphicon glyphicon-ok-circle text-success" title="Have ordered"></i>
+          </ng-container>
+          <ng-template #elseReferredUser>
+            <i class="glyphicon glyphicon-ok-circle text-warning" title="Have not ordered"></i>
+          </ng-template>
+          {{ user.firstName }} {{ user.lastName }} ({{ user.email }})
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

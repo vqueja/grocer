@@ -1,0 +1,149 @@
+<div class="order-assemble">
+  <div class="pageLabel">
+    <nav class="nav-breadcrumb" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item text-primary" aria-current="page">Assemble Orders</li>
+      </ol>
+    </nav>
+  </div>
+
+  <!-- <div class="options">
+    <div class="small">Filters: Status = {{ selectedValue }}, Date Range = {{ fromDate | date:'shortDate' }} - {{ toDate | date:'shortDate' }}</div>
+    <div>
+      <button type="button" class="btn btn-default btn-sm" (click)="showFilter = !showFilter">Change Filter<i class="caret"></i></button>
+      &nbsp;|&nbsp;
+      <button type="button" class="btn btn-default btn-sm" (click)="refresh()">Refresh List</button>
+    </div>
+    <div *ngIf="showFilter" class="filter well">
+      <form class="form-inline small">
+        <div class="form-group">
+          <label>Status:</label>
+          <select class="form-control btn-sm" [(ngModel)]="selectedValue" name="status">
+            <option value="ALL" selected>ALL</option>
+            <option *ngFor="let status of statusArray" [value]="status">{{ status }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Date Range:</label>
+          <input type="text" placeholder="From" class="form-control btn-sm"
+            bsDatepicker [(ngModel)]="fromDate" name="fromdate" [maxDate]="toDate">
+          <input type="text" placeholder="To" class="form-control btn-sm"
+            bsDatepicker [(ngModel)]="toDate" name="todate" [maxDate]="maxDate">
+        </div>
+        <button type="button" class="btn btn-default btn-sm" (click)="applyFilter()">Apply Filter</button>
+      </form>
+    </div>
+  </div> -->
+  <div>
+    <form class="form-inline small">
+      <div class="form-group">
+        <label>Status:</label>
+        <select class="form-control btn-sm" [(ngModel)]="selectedValue" name="status" (change)="refresh()">
+          <option value="ALL" selected>ALL</option>
+          <option *ngFor="let status of statusArray" [value]="status">{{ status }}</option>
+        </select>
+      </div>
+      &nbsp;|&nbsp;
+      <button type="button" class="btn btn-default btn-sm" (click)="refresh()">Refresh List</button>
+    </form>
+  </div>
+  <br>
+  <div>
+    <tabset>
+      <tab *ngFor="let timeslot of orders; let j = index"
+        [customClass]="timeslot.pending ? 'customTabsPending' : 'customTabs'"
+        [active]="(activeTab == j) ? true: false">
+        <ng-template tabHeading>
+          {{ timeslot.timeslot }}
+          <small *ngIf="timeslot.pending" class="badge badge-danger">
+            {{ timeslot.orders.length }}
+          </small>
+        </ng-template>
+        <div *ngFor="let order of timeslot.orders; let i = index" class="panel panel-default"
+          [ngClass]="{'marker-border' : (order.adjustmentTotal !== '0' && userData.role_id !== 9) || isPerishable(order)}">
+          <div class="panel-body row">
+            <div class="col-xs-12 col-sm-6">
+              <span *ngIf="userData.partner_id === 1">
+                <span class="text-muted">Store:</span>&nbsp;
+                <span>{{ order.partnerstore }}</span><br>
+              </span>
+              <span class="text-muted">Customer: </span>&nbsp;
+              <span class="text-primary">{{order.firstname}} {{order.lastname}}</span>
+              <br>
+              <span class="text-muted">Order Number: </span>&nbsp;
+              <strong>
+                <span class="text-primary">{{order.orderNumber}}</span>
+              </strong><br>
+              <small>
+                <span class="text-muted">Status:</span>&nbsp;
+                <strong>
+                  <span class="text-primary">{{ order.status | uppercase }}</span>
+                </strong><br>
+                <span class="text-muted">Delivery Date:</span>&nbsp;
+                <strong>
+                  <span>{{ order.date | date:'MMM d, y' }} {{ order.time }}</span>
+                </strong>
+                <br>
+                <span class="text-muted">Date Ordered:</span>&nbsp;
+                <span>{{ order.dateCreated | date:'short' }}</span>
+                <br>
+                <span *ngIf="order.sellerAccountName">
+                  <span class="text-muted">Handled By:</span>&nbsp;
+                  <strong>{{ order.sellerAccountName }}</strong><br>
+                </span>
+                <span class="text-muted">Last Updated On:</span>&nbsp;
+                <span>{{ order.dateUpdated | date:'short' }}</span>
+              </small>
+            </div>
+            <div class="col-xs-12 col-sm-4">
+              <button *ngIf="showButton(order,'TAKE')"
+                type="button" class="btn btn-primary btn-lg"
+                (click)="takeOrder(order)">TAKE ORDER
+              </button>
+              <button *ngIf="showButton(order,'CONTINUE')"
+                type="button" class="btn btn-success btn-lg"
+                [routerLink]="['/admin/order-assemble/edit',order.id]">CONTINUE
+              </button>
+              <button *ngIf="showButton(order,'DELIVER')"
+                type="button" class="btn btn-danger btn-lg"
+                (click)="deliverOrder(order)">DELIVER ORDER
+              </button>
+              <button *ngIf="showButton(order,'VIEW')"
+                type="button" class="btn btn-default"
+                [routerLink]="['/admin/order-assemble/view',order.id]">VIEW
+              </button>
+              <button *ngIf="showButton(order,'UNASSIGN')"
+                type="button" class="btn btn-default"
+                (click)="setUnassign(order)">UNASSIGN
+              </button>
+            </div>
+            <div class="col-xs-12 col-sm-2">
+              <div class="marker" *ngIf="order.adjustmentTotal !== '0' && userData.role_id !== 9">
+                <i class="glyphicon glyphicon-star"></i>&nbsp;Cash On Delivery
+              </div>
+              <div class="marker" *ngIf="isPerishable(order)">
+                <i class="glyphicon glyphicon-star"></i>&nbsp;Contains Fresh and/or Frozen Goods
+              </div>
+            </div>
+          </div>
+        </div>
+        <div *ngIf="!timeslot.orders.length">
+          No orders
+        </div>
+      </tab>
+    </tabset>
+  </div>
+</div>
+
+<div class="modal" bsModal #unassignModal="bs-modal" tabindex="-1"
+  role="dialog" aria-labelledby="dialog-static-name">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-body text-center">
+        <p>Do you want to confirm?</p>
+        <button type="button" class="btn btn-default" (click)="confirmUnassign()">Yes</button>
+        <button type="button" class="btn btn-primary" (click)="cancelUnassign()">No</button>
+      </div>
+    </div>
+  </div>
+</div>

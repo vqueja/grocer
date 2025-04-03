@@ -1,0 +1,26 @@
+@import "../../../../shared/scss/custom_themes/default/default";
+
+.cart-empty {
+  min-height: 500px;
+  padding-top: 85px;
+  text-align: center;
+  .empty-cart-icon {
+    height: 150px;
+    width: 150px;
+    margin: 0 auto;
+    background-image: url(/assets/omg-01.png);
+    background-size: 150px;
+  }
+  .empty-cart-message {
+    font-size: 20px;
+    color: #535766;
+    font-weight: 600;
+    line-height: 120px;
+    margin: 15px 0;
+  }
+  .empty-wishlist-link {
+    color: #526cd0;
+    font-size: 16px;
+    font-weight: 500;
+  }
+}

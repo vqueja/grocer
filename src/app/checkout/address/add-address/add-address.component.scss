@@ -1,0 +1,57 @@
+@import "../../../shared/scss/custom_themes/default/default";
+
+.form {
+	input.ng-invalid.ng-touched {
+	  border: 1px solid red;
+	}
+	select.ng-invalid.ng-touched {
+	  border: 1px solid red;
+	}
+	textarea {
+		resize: vertical; min-height: 80px;
+	}
+}
+
+.note {
+  color: #898989;
+  font-style: italic;
+}
+
+.check-billing {
+	cursor: pointer;
+}
+
+.btn-primary {
+	background-color: $pink;
+	border-color: $pink-dark;
+}
+
+.btn-primary:active{
+  background-color: $pink-dark;
+}
+
+div.well {
+  padding: 10px;
+  color: #444444;
+  background-color: #d9edf7;
+  .icon {
+    float: left;
+  }
+  .text {
+    padding-left: 20px;
+  }
+}
+// .form input {
+//   margin: 0 .25rem;
+//   min-width: 125px;
+//   border: 1px solid #eee;
+//   border-left: 3px solid;
+//   border-radius: 5px;
+//   transition: border-color .5s ease-out;
+// }
+// .form input:required {
+//   border-left-color: palegreen;
+// }
+// .form input:invalid {
+//   border-left-color: salmon;
+// }

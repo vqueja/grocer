@@ -1,0 +1,35 @@
+@import "../../../shared/scss/custom_themes/default/default";
+
+.breadcrumb {
+  a {
+    color: #666;
+  }
+}
+
+.csv-upload {
+  height: 100px;
+}
+
+input[type='input'] {
+  width: 100%;
+}
+
+select {
+  width: unset;
+  display: inline-block;
+}
+
+.loader {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  background-color: grey;
+  opacity: 0.5;
+  z-index: 10000;
+}
+
+.loader-text {
+  position: fixed;
+  top: 45%;
+  left: 45%;
+}

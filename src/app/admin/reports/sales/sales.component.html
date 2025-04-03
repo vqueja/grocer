@@ -1,0 +1,111 @@
+<div>
+  <div class="pageLabel">
+    <nav class="nav-breadcrumb" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item">Reports</li>
+        <li class="breadcrumb-item text-primary" aria-current="page">Sales Report</li>
+      </ol>
+    </nav>
+  </div>
+  <div class="commands">
+    <div class="margin-bottom-5">
+      <button type="button" class="btn btn-default btn-sm" (click)="showFilter = !showFilter">Change Filters&nbsp;<i class="glyphicon glyphicon-menu-down"></i></button>
+      &nbsp;|&nbsp;
+      <button type="button" class="btn btn-default btn-sm" (click)="refreshList()">Refresh List</button>
+    </div>
+    <div *ngIf="showFilter" class="filter well">
+      <form class="form-inline small">
+        <div class="closeFilter">
+          <a (click)="closeFilter()">CLOSE <i class="glyphicon glyphicon-remove"></i></a>
+        </div>
+        <div class="form-group">
+          <label>Date:</label>
+          <input type="text" placeholder="Completed Date Range" class="form-control btn-sm date-input"
+          #paymentDate="bsDaterangepicker" bsDaterangepicker [(ngModel)]="filterDate" name="filterDate">
+          <select *ngIf="isAdmin" class="form-control btn-sm" [(ngModel)]="filterPartner" name="store" (change)="setStoreFilter($event)">
+            <option value="0" disabled selected hidden>Store</option>
+            <option *ngFor="let store of stores" [value]="store.id">{{ store.name }}</option>
+          </select>
+          &nbsp;|&nbsp;
+          <button type="button" class="btn btn-default btn-sm" (click)="generateReportExcel()">Export to Excel</button>
+        </div>
+      </form>
+      <div class="text-right">
+        <button type="button" class="btn btn-default btn-sm" (click)="resetFilter()">Reset</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="applyFilter()">Apply</button>
+      </div>
+    </div>
+  </div>
+  <div class="large filter-text"><span class="large" [innerHTML]="filterText"></span></div>
+  <hr>
+  <div class="table-border">
+    <table id="tblReport" class="table table-hover table-striped small">
+      <thead>
+        <tr>
+          <th>Order Number</th>
+          <th>Customer Name</th>
+          <th>Number of Items</th>
+          <th>Date Completed</th>
+          <th>Delivery Date</th>
+          <th>Subtotal</th>
+          <th>Service Fee</th>
+          <th>Delivery Fee</th>
+          <th>Total</th>
+        </tr>
+      </thead>
+      <tbody *ngIf="!noData">
+        <tr *ngFor="let data of sales; let i = index">
+          <td>{{data.number}}</td>
+          <td>{{data.customer}}</td>
+          <td>{{data.finalTotalQuantity}}</td>
+          <td>{{data.dateCompleted | date:'MMM d, y hh:mm a'}}</td>
+          <td>{{data.datetime | date:'MMM d, y hh:mm a'}}</td>
+          <td>₱ {{data.finalItemTotal | number:'1.2-2'}}</td>
+          <td>₱ {{data.serviceFee | number:'1.2-2'}}</td>
+          <td>₱ {{data.deliveryFee | number:'1.2-2'}}</td>
+          <td>₱ {{data.total | number:'1.2-2'}}</td>
+        </tr>
+      </tbody>
+      <tbody *ngIf="noData">
+        <tr>
+          No Data Found!
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="table-totals">
+    <table class="table table-hover table-striped small">
+      <thead>
+        <tr>
+          <th>&nbsp;</th>
+          <th>&nbsp;</th>
+          <th>&nbsp;</th>
+          <th>Grand SubTotal</th>
+          <th>Grand Service Fee Total</th>
+          <th>Grand Delivery Fee Total</th>
+          <th>Grand Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>&nbsp;</td>
+          <td>₱ {{subTotals | number:'1.2-2'}}</td>
+          <td>₱ {{totalServiceFee | number:'1.2-2'}}</td>
+          <td>₱ {{totalDeliveryFee | number:'1.2-2'}}</td>
+          <td>₱ {{totalSales | number:'1.2-2'}}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row">
+    <div class="col-xs-6 col-6">
+      <pagination [totalItems]="totalItems" [(ngModel)]="currentPage" [itemsPerPage]="itemsPerPage" [rotate]="true"
+        [maxSize]="5" [boundaryLinks]="true" (pageChanged)="pageChanged($event)" (numPages)="numPages = $event"></pagination>
+    </div>
+    <div class="col-xs-6 col-6 text-right">
+      <small>Page {{ currentPage }} of {{ numPages }}, {{ totalItems }} total orders</small>
+    </div>
+  </div>
+</div>

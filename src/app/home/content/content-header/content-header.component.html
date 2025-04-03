@@ -1,0 +1,32 @@
+<div class="row breadcrumb-container">
+  <div class="col-md-8 col-xs-7">
+    <ol class="breadcrumb">
+      <li *ngFor="let breadcrumb of breadcrumbs; let i = index;">
+        <span *ngIf="i != breadcrumbs.length - 1; else elseBlock" class="breadcrumb-item"
+          (click)="selectBreadcrumb(breadcrumb)">
+          <span>{{breadcrumb}}</span>
+        </span>
+        <ng-template #elseBlock>
+          <b class="breadcrumb-item text-danger">{{breadcrumb}}</b>
+        </ng-template>
+      </li>
+    </ol>
+  </div>
+  <div class="col-md-4 col-xs-5 text-right nopaddingleft">
+    <div class="content">
+      <div dropdown class="sort-options">
+        <label dropdownToggle >{{currentSort}}&nbsp;<span class="caret"></span></label>
+        <ul *dropdownMenu role="menu" class="sort dropdown-menu">
+          <li *ngIf="currentSort != sortOptions[0]" data-sortkey=":popularity" (click)="sortItems(0)">{{sortOptions[0]}}</li>
+          <li *ngIf="currentSort != sortOptions[1]" data-sortkey=":low" (click)="sortItems(1)">{{sortOptions[1]}}</li>
+          <li *ngIf="currentSort != sortOptions[2]" data-sortkey=":high" (click)="sortItems(2)">{{sortOptions[2]}}</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+<div>
+  <ng-container *ngIf="bPromoExist">
+    <app-promotions></app-promotions>
+  </ng-container>
+</div>

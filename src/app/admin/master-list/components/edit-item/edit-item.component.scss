@@ -1,0 +1,117 @@
+.breadcrumb {
+  a {
+    color: #333;
+  }
+}
+
+.content {
+  max-width: 1200px;
+}
+
+.form-inline {
+  .form-group {
+    margin-bottom: 20px;
+    .error-message {
+      position: absolute;
+      top: 100%;
+      left: 150px;
+      line-height: 16px;
+
+      p {
+        font-size: 11px;
+        color: #ee5f73;
+        text-align: left;
+        margin-bottom: 0;
+        -webkit-transition-property: all;
+        transition-property: all;
+        -webkit-transition-duration: .5s;
+        transition-duration: .5s;
+        -webkit-transition-timing-function: cubic-bezier(0,1,.5,1);
+        transition-timing-function: cubic-bezier(0,1,.5,1);
+      }
+    }
+  }
+  .control-label {
+    width: 130px;
+  }
+  .width-300 {
+    width: 300px;
+  }
+  .min-width-200 {
+    min-width: 200px;
+  }
+  .form-group.item-image {
+    margin-bottom: 0;
+    div {
+      display: inline-block;
+      p {
+        display: inline-block;
+        width: 220px;
+        height: 220px;
+        border: 1px solid #ccc;
+        border-radius: 5px;
+        text-align: center;
+        padding: 5px;
+        .img-thumb {
+          display: inline-block;
+          height: 100%;
+          width: 100%;
+          object-fit: scale-down;
+          overflow: hidden;
+        }
+      }
+    }
+  }
+  .form-group.file-input {
+    margin-bottom: 0;
+    input[type='file'] {
+      width: 220px;
+    }
+  }
+}
+
+.table {
+  thead, tbody {
+    border: 1px solid #cccccc;
+  }
+}
+
+@media (max-width: 767px) {
+  .form-inline {
+    .form-group {
+      .error-message {
+        left: 15px;
+      }
+    }
+    .width-300 {
+      width: 100%;
+    }
+  }
+}
+
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+
+
+.input-md{
+  width: 350px;
+}
+.stores {
+  min-width: 200px;
+}
+.loader {
+    position:fixed;
+    height:100%;
+    width:100%;
+    background-color: grey;
+    opacity:0.5;
+    z-index: 9999;
+}
+.loader-text {
+    position:fixed;
+    top:45%;
+    left:45%;
+    font-size: 80px;
+    z-index: 10000;
+}

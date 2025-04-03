@@ -1,0 +1,30 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item text-primary" aria-current="page">Lists</li>
+  </ol>
+<!-- </nav>
+<div class="row">
+  <div class="col-md-12 form-inline">
+    <label class="form-control-static">Create new list:</label>
+    <div class="input-group">
+      <input type="text" class="form-control" placeholder="List Name" [formControl]="newList">
+      <span class="input-group-btn">
+        <button type="button" class="btn btn-primary" (click)="createNewList()">Save</button>
+      </span>
+    </div>
+  </div>
+</div>
+<hr> -->
+<div class="row">
+  <div *ngIf="(lists$ | async).length; else elseBlock">
+    <div *ngFor="let list of lists$ | async; let i = index"
+      class="list col-md-3 col-sm-4 col-xs-6">
+      <app-list-entry [userList]="list"></app-list-entry>
+    </div>
+  </div>
+  <ng-template #elseBlock>
+    <div class="cart-empty">
+      <div class="empty-cart-message">You currently don't have any list.</div>
+    </div>
+  </ng-template>
+</div>

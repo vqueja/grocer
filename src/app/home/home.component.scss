@@ -1,0 +1,12 @@
+@import "../shared/scss/custom_themes/default/default";
+
+.home-container {
+  margin-top: 60px;
+  padding: 0 15px;
+}
+
+@media screen and (max-width: 767px) {
+  .home-container {
+    margin-top: 0px;
+  }
+}

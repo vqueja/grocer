@@ -1,0 +1,87 @@
+@import "../../../../shared/scss/custom_themes/default/default";
+
+.wrapper {
+
+}
+
+.btn-primary {
+  background-color: $pink;
+  border-color: $pink-dark;
+}
+
+.order-total-summary {
+  position: fixed;
+  font-size: 16px;
+  max-width: 310px;
+  .small {
+    font-size: 90%;
+  }
+}
+
+.btn-primary:active{
+	background-color: $pink-dark;
+}
+
+
+@media (max-width: 991px) {
+  .order-total-summary {
+    position: static;
+    margin-right: 0;
+    padding: 15px;
+    max-width: unset;
+  }
+}
+
+.panel-default {
+  padding-top: 10px;
+  margin: 10px 0 0 0;
+}
+
+.panel-default p span {
+  color: red;
+}
+
+// .panel-default .btn {
+//   background-color: #ff5848;
+//   color: $white;
+//   border-color: none;
+//   text-transform: uppercase;
+// }
+
+.coupon input {
+  padding: 5px 14px;
+  border-radius: 5px;
+}
+
+.panel-default {
+  padding-top: 1em;
+}
+
+.panel-default p span {
+  color: red;
+}
+
+.line-through{
+  text-decoration: line-through;
+  font-size: 85%;
+  color: #555;
+}
+
+// .panel-default .btn {
+//   background-color: #ff5848;
+//   color: $white;
+//   border-radius: 0px;
+//   text-transform: uppercase;
+// }
+.box {
+  padding: 8px;
+}
+.coupon input {
+  padding: 5px 14px;
+ border-radius: 0px;
+
+}
+
+.checkout {
+  margin-top: 10px;
+}

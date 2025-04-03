@@ -1,0 +1,119 @@
+@import "../../../shared/scss/custom_themes/default/default";
+
+.nopaddingleft {
+  padding-left: 0;
+}
+
+.breadcrumb-container {
+  .breadcrumb {
+    background-color: $white;
+    text-transform: capitalize;
+    padding-left: 0;
+    padding-right: 0;
+    margin-bottom: 0px;
+    li {
+      cursor: pointer;
+      .breadcrumb-item span {
+        color: #777;
+        &:hover {
+          color: #333;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .breadcrumb-container {
+    margin-top: 0;
+    .breadcrumb {
+      font-size: 12px;
+    }
+  }
+}
+
+.content {
+  background-color: $white;
+  display: inline-block;
+  vertical-align: top;
+
+  .sort-options {
+    position: relative;
+    float: right;
+    text-align: right;
+    padding: 8px 0;
+    display: inline-block;
+    cursor: pointer;
+    label {
+      color: #777;
+      margin-bottom: 0;
+      font-weight: normal;
+      cursor: pointer;
+      &:hover {
+        color: #333;
+      }
+    }
+    ul.sort {
+      // display: none;
+      position: absolute;
+      top: 100%;
+      right: 0;
+      color: #282c3f;
+      padding: 0;
+      z-index: 10;
+      border: 1px solid #ccc;
+      border-radius: 4px;
+      background-color: $white;
+      width: 160px;
+      text-align: center;
+      left: unset;
+      label {
+        margin-left: 5px;
+        font-weight: 400;
+      }
+      label:first-child {
+        color: #3e4152;
+      }
+      li {
+        margin: 5px 0;
+        text-decoration: none;
+        cursor: pointer;
+        list-style-type: none;
+        padding: 5px 10px;
+        &:hover {
+          background-color: #ff2679;
+          color: $white;
+        }
+      }
+      // label {
+      //   font-weight: 400;
+      //   margin-left: 5px;
+      //   li:first-child {
+      //     margin-left: 0;
+      //   }
+      //   li:after {
+      //     content: none;
+      //   }
+      // }
+    }
+    // ul.sort:before, ul.sort:after {
+    //   content: "";
+    //   display: table;
+    // }
+  }
+  .options:before, .options:after {
+    content: "";
+    display: table;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  .content .sort-options {
+    font-size: 85%;
+    ul.sort {
+      font-size: 100%;
+      width: 140px;
+      min-width: unset;
+    }
+  }
+}

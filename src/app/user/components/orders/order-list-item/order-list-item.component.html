@@ -1,0 +1,40 @@
+<div class="panel panel-default">
+  <div class="panel-body">
+    <div class="col-md-5 col-sm-5 col-xs-12 col-pad-5">
+      <h4 [routerLink]="['detail', order.orderkey]" class="text-info">Order #{{order.number}}</h4>
+      <p class="text-muted small">Placed on {{order.dateOrdered | date:'EEE, MMM d, y'}}</p>
+      <p>
+        <span class="text-muted">Status:</span>
+        <strong class="badge letter-spacing-05px">{{order.status | uppercase}}</strong>
+      </p>
+      <p class="small">
+        <span class="text-muted">Total:</span>
+        &nbsp;₱{{order.total | number:'1.2-2'}}
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <span class="text-muted">Items:</span>
+        &nbsp;{{order.displayItemQty}}      </p>
+    </div>
+    <div class="col-md-7 col-sm-7 col-xs-12 col-pad-5">
+      <p>
+        <span class="text-muted">Store:</span>
+        &nbsp;{{order.store}}
+        <br>
+        <small>
+          <span class="text-muted">Deliver to:</span>
+          &nbsp;{{order.firstname}} {{order.lastname}}
+          <br>
+          <span class="text-muted">Address:</span>
+          &nbsp;{{order.shippingAddress01}},
+          <span *ngIf="order.shippingAddress02">{{order.shippingAddress02}},</span>
+          {{order.city}}, {{order.country}} {{order.postalcode}}
+        </small>
+      </p>
+      <p>
+        <a [routerLink]="['detail', order.orderkey]" class="text-info letter-spacing-05px">VIEW DETAILS</a>
+      </p>
+    </div>
+    <div class="col-md-12 col-sm-12 col-xs-12 col-pad-5 btn-container">
+      <button class="btn btn-primary letter-spacing-05px" (click)="reorder()">Order Again</button>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,118 @@
+<div *ngIf="orderSeller">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['/admin','order-assemble']">Orders</a></li>
+      <li class="breadcrumb-item text-primary" aria-current="page">View - Order #{{orderSeller.orderNumber}}</li>
+    </ol>
+  </nav>
+  <div class="margin-bottom-5">
+    <button *ngIf="(orderSeller.status | uppercase) == 'IN-TRANSIT'"
+      type="button" class="btn btn-danger btn-lg" (click)="completeOrder()">
+      Complete Order</button>
+    <button *ngIf="(orderSeller.status | uppercase) == 'IN-TRANSIT'"
+      type="button" class="btn btn-default btn-lg" (click)="returnModal.show()">
+      Return Order</button>
+    <button *ngIf="(orderSeller.status | uppercase) == 'RETURNED'"
+      type="button" class="btn btn-default btn-lg" (click)="returnComplete()">
+      Return Complete</button>
+  </div>
+  <div class="well small">
+    <b>Status: <span class="red">{{ orderSeller.status | uppercase }}</span></b>
+  </div>
+  <div class="panel panel-default ">
+    <div class="panel-heading small"><b>Payment Details</b></div>
+    <div class="panel-body">
+      Grand Total: ₱{{ orderSeller.total | number:'1.2-2' }} <br>
+      Paid: ₱{{ orderSeller.paymentTotal | number:'1.2-2' }} <br>
+      <strong [ngClass]="{ 'amount-due': orderSeller.adjustmentTotal > 0 }">
+        Amount Due: ₱{{ orderSeller.adjustmentTotal | number:'1.2-2' }}
+      </strong>
+      <span *ngIf="orderSeller.adjustmentTotal > 0" class="small reminder">
+        <br>
+        <i class="glyphicon glyphicon-star"></i>&nbsp;<i>Reminder: Cash on Delivery. Please collect this amount from recepient upon delivery.</i>
+      </span>
+    </div>
+  </div>
+  <div class="panel panel-default small">
+    <div class="panel-heading"><b>Delivery Address</b></div>
+    <div class="panel-body">
+      <address>
+        <strong>{{orderSeller.firstname}} {{orderSeller.lastname}}</strong><br>
+        {{orderSeller.shippingAddress01}}<br>
+        <ng-container *ngIf="orderSeller.shippingAddress02">
+          {{orderSeller.shippingAddress02}}<br>
+        </ng-container>
+        {{orderSeller.city}}, {{orderSeller.country}} {{orderSeller.postalcode}}<br>
+        <abbr title="Mobile Number">M:</abbr> {{orderSeller.phone}}
+        <ng-container *ngIf="orderSeller.landline">
+          <br><abbr title="Phone Number">P:</abbr> {{orderSeller.landline}}
+        </ng-container>
+      </address>
+      <hr>
+      <div>
+        <strong>Special instructions:</strong> {{orderSeller.specialInstructions ? orderSeller.specialInstructions : 'None'}}
+      </div>
+    </div>
+  </div>
+  <div class="panel panel-default small">
+    <div class="panel-heading"><b>Items</b></div>
+    <div class="panel-body">
+      <ng-container *ngIf="(orderSeller.status | uppercase) == 'PENDING' || (orderSeller.status | uppercase) == 'IN-PROGRESS'; else elseBlock">
+        <div *ngFor="let item of orderItems; let i = index;" class="row">
+          <p class="col-xs-9">
+            {{item.name}} <i class="small">(Quantity: {{ item.quantity }})</i>
+          </p>
+          <p class="col-xs-3 text-right">₱{{ (item.itemPrice * item.quantity) | number:'1.2-2'}}</p>
+        </div>
+      </ng-container>
+      <ng-template #elseBlock>
+        <div *ngFor="let item of orderItems; let i = index;" class="row">
+          <ng-container *ngIf="item.finalQuantity; else elseBlock2">
+            <p class="col-xs-9">
+              {{item.name}} <small>(Qty: {{ item.finalQuantity }})</small>
+            </p>
+            <p class="col-xs-3 text-right">₱{{ (item.finalPrice * item.finalQuantity) | number:'1.2-2'}}</p>
+           <ng-container *ngIf="item.replaced; let replaced">
+              <p class="col-xs-9 gray">
+                &nbsp;&nbsp;&#8627;&nbsp;<span class="small status">{{ item.replaced.status }}</span>
+                <i>{{ replaced.name }} <small>(Qty: {{ replaced.quantity }})</small></i>
+              </p>
+              <p class="col-xs-3 unavailable text-right">₱{{ (replaced.itemPrice * replaced.quantity) | number:'1.2-2'}}</p>
+            </ng-container>
+          </ng-container>
+          <ng-template #elseBlock2>
+            <p class="col-xs-9 gray">
+              <span class="small status">{{ item.status }}</span>
+              <i>{{item.name}} <small>(Qty: {{ item.quantity }})</small></i>
+            </p>
+            <p class="col-xs-3 unavailable text-right">₱{{ (item.itemPrice * item.quantity) | number:'1.2-2'}}</p>
+          </ng-template>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+</div>
+
+<div class="modal" bsModal #returnModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="returnModal.hide()">&times;</button>
+        <h4 class="modal-title">Are you sure?</h4>
+      </div>
+      <div class="modal-body">
+        <div class="form-group">
+          <label for="comment">Reason for return order:</label>
+          <textarea #returnReason class="form-control" rows="5"></textarea>
+          <div *ngIf="isReturnReason">
+            <p class="error-message text-danger">{{ 'Please enter your reason' }}</p>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="returnOrder(returnReason.value)">OK</button>
+        <button type="button" class="btn btn-default" (click)="returnModal.hide()">Close</button>
+      </div>
+    </div>
+  </div>
+</div>

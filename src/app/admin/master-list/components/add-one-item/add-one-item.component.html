@@ -1,0 +1,15 @@
+<div class="pageLabel">
+  <nav class="nav-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Admin Tools</li>
+      <li class="breadcrumb-item"><a [routerLink]="['/admin/manage-items']">Manage Items</a></li>
+      <li class="breadcrumb-item text-primary" aria-current="page">Add Item</li>
+    </ol>
+  </nav>
+</div>
+<div *ngIf="!isReviewDetails">
+  <app-item-details (onReviewClickEmit)="toggleShowReview()"></app-item-details>
+</div>
+<div *ngIf="isReviewDetails">
+     <app-review-item-details (onBackClickEmit)="toggleShowItemDetails()"></app-review-item-details>
+</div>

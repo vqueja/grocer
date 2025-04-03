@@ -1,0 +1,83 @@
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/admin/users']">Users</a></li>
+    <li class="breadcrumb-item text-primary" aria-current="page">Profile</li>
+  </ol>
+</nav>
+<hr>
+<form class="form-inline small" [formGroup]="profileForm">
+  <h3><strong>Profile</strong></h3>
+  <div class="row">
+    <div class="col-sm-12">
+      <label for="username">Username:</label>
+      <!-- <span *ngIf="userData" class="display-text">{{ userData.username }}</span> -->
+      <input type="text" formControlName="username" class="form-control">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <label for="name">Name:</label>
+      <input type="text" formControlName="name" class="form-control" placeholder="Name">
+      <div class="error-message" *ngIf="profileForm.get('name').errors && profileForm.get('name').touched">
+        <p>{{profileForm.get('name').errors.msg || 'Please enter your last name'}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <label for="email">Email:</label>
+      <input type="text" formControlName="email" class="form-control" placeholder="Email">
+      <div class="error-message" *ngIf="profileForm.get('email').errors && profileForm.get('email').touched">
+        <p>{{profileForm.get('email').errors.msg || 'Please enter a valid email address'}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <label for="role">Role:</label>
+      <!-- <span *ngIf="userData.role" class="display-text">{{ userData.role }}</span> -->
+      <input type="text" formControlName="role" class="form-control">
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <button class="btn btn-primary" (click)="profileSubmit()">Save Changes</button>
+    </div>
+  </div>
+</form>
+<hr>
+<form class="form-inline small" [formGroup]="passwordForm">
+  <h3><strong>Password</strong></h3>
+  <div class="row">
+    <div class="col-sm-12">
+      <label for="old_password">Old Password:</label>
+      <input type="password" formControlName="old_password" class="form-control" placeholder="Old Password">
+      <div class="error-message" *ngIf="passwordForm.get('old_password').errors && passwordForm.get('old_password').touched" >
+        <p>{{passwordForm.get('old_password').errors.msg || 'Please enter current password'}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <label for="new_password">New Password:</label>
+      <input type="password" formControlName="new_password" class="form-control" placeholder="New Password">
+      <div class="error-message" *ngIf="passwordForm.get('new_password').errors && passwordForm.get('new_password').touched" >
+        <p>{{passwordForm.get('new_password').errors.msg || 'Password must be at least 6 characters'}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <label for="confirm">Confirm Password:</label>
+      <input type="password" formControlName="confirm" class="form-control" placeholder="Confirm Password">
+      <div class="error-message" *ngIf="(passwordForm.get('confirm').errors || passwordForm.hasError('mismatchedPasswords')) && passwordForm.get('confirm').touched">
+        <p>{{'Password must match'}}</p>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <button class="btn btn-primary" (click)="passwordSubmit()">Save Password</button>
+    </div>
+  </div>
+</form>

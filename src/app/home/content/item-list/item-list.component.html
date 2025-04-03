@@ -1,0 +1,64 @@
+<div class="row-base" style="display: -webkit-flex">
+  <section class="item-display">
+    <ul class="results-base">
+      <p *ngIf="items.length === 0 && !partnerStore.requestItemFlag" class="noresult">
+        No results found. Please try another keyword or select another category.
+      </p>
+<!-- NOTE: Request Item slot
+      <li *ngIf="partnerStore.requestItemFlag" (click)="openItemRequest()"
+        class="product-base item-request col-md-2 col-sm-3 col-xs-6">
+        <div class="image">
+          <img class="img-responsive" [src]="storeLogo" (error)="onImageError($event)">
+        </div>
+        <div>
+          <button class="btn btn-block btn-default">Book Your Genie</button>
+        </div>
+      </li>
+-->
+      <li *ngFor="let item of items" class="product-base col-md-2 col-sm-3 col-xs-6" itemscope
+        itemtype="https://schema.org/Product">
+        <app-item-list-entry
+          [item]="item"
+          [cartItem]="getCartItem(item.id)"
+          (onOpenModalEmit)="openItemDialog($event)">
+        </app-item-list-entry>
+      </li>
+    </ul>
+  </section>
+</div>
+<br>
+<div *ngIf="this.items.length && (this.items.length % this.itemsPerPage == 0)" class="load-more">
+  <section class="scroll_div">
+    <button type="button" class="btn-scroll btn-primary" (click)="loadMoreItems()">
+      <span class="glyphicon glyphicon-th-list"></span>  Show more items
+    </button>
+  </section>
+</div>
+
+<modal #itemDetailsModal [closeOnOutsideClick]="false">
+  <!-- <ng-template #modalHeader><h2>HTML inside modal</h2></ng-template> -->
+  <ng-template #modalBody>
+    <app-item-details-dialog
+      [item]="selectedItem"
+      [categories]="categories"
+      [isAuthenticated] = "isAuthenticated$ | async"
+      [userLists]="userLists$ | async"
+      [cartItems]="cartItems"
+      [modalContainer]="itemDetailsModal"
+      [sortSettings]="sortSettings"
+      [partnerStore]="partnerStore"
+      (onCloseModalEmit)="closeItemDialog()"
+      (onClose)="closeItemDialog()">
+    </app-item-details-dialog>
+  </ng-template>
+</modal>
+
+<modal #itemRequestModal [closeOnOutsideClick]="false">
+  <ng-template #modalBody>
+    <app-item-request
+      [partnerStore]="partnerStore"
+      (onCloseModalEmit)="closeItemRequest()"
+      (onClose)="closeItemRequest()">
+    </app-item-request>
+  </ng-template>
+</modal>

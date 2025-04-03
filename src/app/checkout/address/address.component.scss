@@ -1,0 +1,48 @@
+@import "../../shared/scss/custom_themes/default/default";
+
+h3 {
+  color: #dddddd;
+  .num {
+    background: #dddddd;
+    color: #999999;
+    display: inline-block;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    border-radius: 40px;
+    padding: 10px;
+    font-size: 19px;
+    margin-right: 10px;
+  }
+  .num-sel {
+    background: #ff2679;
+    color: #ffffff;
+  }
+  .txt-sel {
+    color: #333333;
+  }
+  .txt {
+    display: inline-block;
+    width: 160px;
+  }
+}
+
+@media screen and (max-width: 767px) {
+  h3 {
+    .num {
+      width: 20px;
+      height: 20px;
+      padding: 3px;
+      font-size: 14px;
+      border-radius: 20px;
+      margin-right: unset;
+    }
+    .txt {
+      font-size: 14px;
+      width: unset;
+    }
+    .txt-sel, .num-sel {
+      font-weight: bold;
+    }
+  }
+}

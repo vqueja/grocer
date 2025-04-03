@@ -1,0 +1,166 @@
+<div class="modal" bsModal #confirmModal="bs-modal" tabindex="-1" role="dialog" aria-labelledby="dialog-static-name">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" aria-label="Close" (click)="confirmModal.hide()">&times;</button>
+        <h4 class="modal-title">Are you sure?</h4>
+      </div>
+      <div class="modal-body">
+        <p>
+          You are about to update the delivery time slots of
+          <strong>{{ partnerName }}</strong>
+        </p>
+        <p>Do you want to proceed?</p>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" (click)="saveTimeSlots()">Yes</button>
+        <button type="button" class="btn btn-default" (click)="confirmModal.hide()">No</button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="pageLabel">
+  <nav class="nav-breadcrumb" aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Admin Tools</li>
+      <li class="breadcrumb-item text-primary" aria-current="page">Manage Timeslots</li>
+    </ol>
+  </nav>
+</div>
+<div class="row">
+  <div class="col-md-12">
+    <select #partners *ngIf="partnerList.length" class="form-control" (change)="changePartner($event.target)">
+      <option
+        *ngFor="let partner of partnerList"
+        [value]="partner.id"
+        [selected]="partner.id === partnerId">{{ partner.name }}</option>
+    </select>
+    <button
+      type="button"
+      class="btn btn-default"
+      (click)="refresh()"
+      [disabled]="!timeSlotData.length && !timeSlotRawData.length">Refresh</button>
+  </div>
+</div>
+<hr>
+<!-- <h3 *ngIf="activeUser.partner_id === 1">
+  <ng-container [ngSwitch]="selectedPartner.type">
+    <div *ngSwitchCase="'seller'">Partner Seller/Store</div>
+    <div *ngSwitchCase="'buyer'">Partner Buyer</div>
+  </ng-container>
+</h3> -->
+<div>
+  <h4 *ngIf="selectedPartner.type === 'seller'">
+    <span class="text-muted">Store Availabilty:</span>
+    <a [routerLink]="['/admin/partners/edit', partnerId]">
+      {{ partnerData.availability ? 'OPEN' : 'CLOSE' }}
+    </a>
+  </h4>
+  <h4 class="text-muted">Max Orders per Delivery Slot:</h4>
+  <ng-container *ngIf="timeSlotData.length || timeSlotRawData.length; else elseNoData">
+    <ng-container [ngSwitch]="selectedPartner.type">
+      <table *ngSwitchCase="'buyer'" class="table table-hover table-striped table-bordered">
+        <thead>
+          <tr>
+            <th></th>
+            <th *ngFor="let timeslot of timeSlotData" colspan="2" class="text-center">
+              {{timeslot.date | date:'MMM dd'}}<br>
+              <span class="text-primary">{{timeslot.date | date: 'EEEE'}}</span>
+            </th>
+          </tr>
+          <tr>
+            <th></th>
+            <th class="text-center small">Booked</th><th class="text-center small">Max</th>
+            <th class="text-center small">Booked</th><th class="text-center small">Max</th>
+            <th class="text-center small">Booked</th><th class="text-center small">Max</th>
+            <th class="text-center small">Booked</th><th class="text-center small">Max</th>
+            <th class="text-center small">Booked</th><th class="text-center small">Max</th>
+            <th class="text-center small">Booked</th><th class="text-center small">Max</th>
+            <th class="text-center small">Booked</th><th class="text-center small">Max</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let slot of timeSlotRows; let row = index;">
+            <td class="text-right">{{ timeSlotData[0].range[row].range }}</td>
+            <ng-container *ngFor="let timeSlot of timeSlotData; let col = index">
+              <td class="text-center booked">{{ timeSlot.range[row].booked }}</td>
+              <td>
+                <input #max class="form-control" type="number" value="{{ timeSlot.range[row].max }}"
+                [ngClass]="{'open': timeSlot.range[row].max > 0, 'closed': !timeSlot.range[row].max}"
+                (blur)="updateValue($event, row, col)" (click)="$event.target.select()"/>
+              </td>
+            </ng-container>
+          </tr>
+        </tbody>
+      </table>
+      <table *ngSwitchCase="'seller'" class="table table-hover table-striped table-bordered">
+        <thead>
+          <tr>
+            <th class="text-center"></th>
+            <th *ngFor="let day of days" class="text-center">{{ day }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let slot of timeSlotRawData; let i = index;">
+            <td class="text-right">{{ slot.range }}</td>
+            <td class="text-center">
+              <input class="form-control" type="number" [value]="slot.d1max"
+                [ngClass]="{'open': slot.d1max > 0, 'closed': !slot.d1max}"
+                (blur)="updateSlot($event, i, 'd1max')" (click)="$event.target.select()">
+            </td>
+            <td class="text-center">
+              <input class="form-control" type="number" value="{{ slot.d2max }}"
+                [ngClass]="{'open': slot.d2max > 0, 'closed': !slot.d2max}"
+                (blur)="updateSlot($event, i, 'd2max')" (click)="$event.target.select()">
+            </td>
+            <td class="text-center">
+              <input class="form-control" type="number" value="{{ slot.d3max }}"
+                [ngClass]="{'open': slot.d3max > 0, 'closed': !slot.d3max}"
+                (blur)="updateSlot($event, i, 'd3max')" (click)="$event.target.select()">
+            </td>
+            <td class="text-center">
+              <input class="form-control" type="number" value="{{ slot.d4max }}"
+                [ngClass]="{'open': slot.d4max > 0, 'closed': !slot.d4max}"
+                (blur)="updateSlot($event, i, 'd4max')" (click)="$event.target.select()">
+            </td>
+            <td class="text-center">
+              <input class="form-control" type="number" value="{{ slot.d5max }}"
+                [ngClass]="{'open': slot.d5max > 0, 'closed': !slot.d5max}"
+                (blur)="updateSlot($event, i, 'd5max')" (click)="$event.target.select()">
+            </td>
+            <td class="text-center">
+              <input class="form-control" type="number" value="{{ slot.d6max }}"
+                [ngClass]="{'open': slot.d6max > 0, 'closed': !slot.d6max}"
+                (blur)="updateSlot($event, i, 'd6max')" (click)="$event.target.select()">
+            </td>
+            <td class="text-center">
+              <input class="form-control" type="number" value="{{ slot.d7max }}"
+                [ngClass]="{'open': slot.d7max > 0, 'closed': !slot.d7max}"
+                (blur)="updateSlot($event, i, 'd7max')" (click)="$event.target.select()">
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </ng-container>
+    <div class="text-right">
+      <button
+        type="button"
+        class="btn btn-primary"
+        (click)="confirmModal.show()"
+        [disabled]="!timeSlotData.length && !timeSlotRawData.length">Save</button>
+    </div>
+  </ng-container>
+  <ng-template #elseNoData>
+    <div class="row">
+      <div class="col-md-12 col-sm-12 col-xs-12 text-center">
+        <p>No Data</p>
+        <p>
+          <button
+            type="button"
+            class="btn btn-default btn-success"
+            (click)="createTimeSlots()">Create Timeslots</button>
+        </p>
+      </div>
+    </div>
+  </ng-template>
+</div>

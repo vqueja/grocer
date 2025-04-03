@@ -1,0 +1,36 @@
+<div *ngIf="!isShowStore && hostname === 'www.omg-mordor.com'" class="tmp-welcome">
+  <div class="text-center welcome">
+    <div class="col-md-3 col-sm-4">&nbsp;</div>
+    <div class="col-md-6 col-sm-4">
+      <div class="input-group">
+        <input type="password" [(ngModel)]="inputPassword" #ctrl="ngModel" required
+          class="input-lg form-control" placeholder="One does not simply walk into mordor"
+          autofocus="autofocus" (keypress)="checkPassword()">
+        <span class="input-group-btn">
+          <button class="btn btn-lg btn-success" (click)="checkPassword()">Alohomora</button>
+        </span>
+      </div>
+    </div>
+  </div>
+</div>
+<div *ngIf="isShowStore || hostname !== 'www.omg-mordor.com'" class="default">
+  <ng-container *ngIf="!isAdminRoute()">
+    <section>
+      <app-header [currentStep]="currentStep" [isHomeRoute]="isHomeRoute()" [partnerBuyer]="partnerBuyer | async"></app-header>
+      <app-banner-main *ngIf="isHomeRoute() && !isStoreRoute()"></app-banner-main>
+      <app-banner *ngIf="isStoreRoute() && !isHomeRoute()"></app-banner>
+      <app-notification></app-notification>
+      <app-popup></app-popup>
+      <main class="container">
+        <router-outlet></router-outlet>
+      </main>
+      <app-footer></app-footer>
+    </section>
+  </ng-container>
+
+  <ng-container *ngIf="isAdminRoute()">
+    <app-notification></app-notification>
+    <app-loading-indicator></app-loading-indicator>
+    <router-outlet></router-outlet>
+  </ng-container>
+</div>

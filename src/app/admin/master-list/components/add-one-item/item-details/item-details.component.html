@@ -1,0 +1,143 @@
+<div class="formContainer">
+  <div class="fieldContainer">
+    <form class="form-horizontal" [formGroup]="itemAddForm" (ngSubmit)="onSubmit()">
+      <fieldset class="fieldset">
+        <div *ngIf="isAdmin" class="form-group inputs">
+          <label class="col-md-3 control-label" for="store"></label>
+          <div class="col-md-6 input-element store">
+            <div class="input-group mb-3">
+              <select required formControlName="store" class="form-control btn-sm cat" id="store" name="store" (change)="storeChange($event)" required>
+                <option value="" disabled selected>Select a store</option>
+                <option *ngFor="let partner of partnerStoreList" [value]="partner.id">{{ partner.name }}</option>
+              </select>
+            </div>
+          </div>
+          <div *ngIf="itemAddForm.get('store').errors && itemAddForm.get('store').touched" >
+            <p class="error-message text-danger"><span class="error-icon text-danger">! </span>{{itemAddForm.get('store').errors.msg || 'Please select a store.'}}</p>
+          </div>
+        </div>
+        <div class="form-group inputs">
+          <label class="col-md-3 control-label"></label>
+          <div class="col-md-6 input-element name">
+            <input id="itemName" placeholder="Item Name" name="itemName" formControlName="itemName" class="form-control input-md" required type="text" >
+          </div>
+          <div *ngIf="itemAddForm.get('itemName').errors && itemAddForm.get('itemName').touched">
+            <p class="error-message text-danger"><span class="error-icon text-danger">! </span>{{itemAddForm.get('itemName').errors.msg || 'Please enter an item name.'}}</p>
+          </div>
+        </div>
+        <div class="form-group inputs">
+          <label class="col-md-3 control-label"></label>
+          <div class="col-md-6 input-element">
+            <input id="itemCode" placeholder="Item Code | Barcode" name="itemCode" formControlName="itemCode" class="form-control input-md" type="text" >
+          </div>
+        </div>
+        <div class="form-group inputs">
+          <label class="col-md-3 control-label"></label>
+          <div class="col-md-6 input-element">
+            <div class="input-group mb-3">
+              <input formControlName="price" placeholder="Item Price" id="price" name="price" class="form-control input-md" required type="text" >
+            </div>
+          </div>
+          <div *ngIf="itemAddForm.get('price').errors && itemAddForm.get('price').touched" >
+            <p class="error-message text-danger"><span class="error-icon text-danger">! </span>{{itemAddForm.get('price').errors.msg || 'Please enter a price for the item.'}}</p>
+          </div>
+        </div>
+        <div class="form-group inputs">
+          <label class="col-md-3 control-label"></label>
+          <div class="col-md-6 input-element">
+            <div *ngIf="!bCustomBrand; else elseBlock1" class="input-group mb-3">
+              <select  id="itemBrand" name="itemBrand" formControlName="itemBrand" class="form-control btn-sm sbrand" (change)="changeBrand($event)" required>
+                <option value="" disabled selected>Select your Brand</option>
+                <option *ngFor="let brand of brands" [value]="brand?.brand">{{ brand?.brand }}</option>
+              </select>
+              <div class="checkbox cbrand">
+                <input class="brandCheckBox" type="checkbox" id="customBrand" name="customBrand" (change)="customBrandChecked($event)" formControlName="customBrand">
+                <label class="control-label checkboxlabel" for="itemBrand"> Custom Brand</label>
+              </div>
+            </div>
+            <ng-template #elseBlock1>
+              <div class="input-group mb-3">
+                <input placeholder="Enter Item Brand" class="form-control input-md input-custom-brand" type="text" name="customBrandInput" formControlName="customBrandInput">
+                <div class="checkbox cbrand">
+                  <input class="brandCheckBox" type="checkbox" id="customBrand" name="customBrand" (change)="customBrandChecked($event)" formControlName="customBrand">
+                  <label class="control-label checkboxlabel" for="itemBrand"> Custom Brand</label>
+                </div>
+              </div>
+            </ng-template>
+          </div>
+        </div>
+        <div class="form-group inputs">
+          <label class="col-md-3 control-label" for="category1"></label>
+          <div class="col-md-6 input-element">
+            <div class="input-group mb-3">
+              <select required  formControlName="itemCategory1" class="form-control btn-sm cat" id="category1SelectGroup" name="category1" (change)="category1Change($event)">
+                <option value="" disabled selected>Select main category</option>
+                <option *ngFor="let cat1 of cat1List" [value]="cat1.id" selected>{{ cat1.name }}</option>
+              </select>
+            </div>
+          </div>
+          <div *ngIf="itemAddForm.get('itemCategory1').errors && itemAddForm.get('itemCategory1').touched" >
+            <p class="error-message text-danger"><span class="error-icon text-danger">! </span>{{itemAddForm.get('itemCategory1').errors.msg || 'Please select a category 1.'}}</p>
+          </div>
+        </div>
+        <div class="form-group inputs">
+          <label class="col-md-3 control-label" for="category1"></label>
+          <div class="col-md-6 input-element">
+            <div class="input-group mb-3">
+              <select required formControlName="itemCategory2" class="form-control btn-sm cat" id="category2SelectGroup" name="category2" (change)="category2Change($event)" [disabled]="bCat2Disabled">
+                <option value="" disabled selected>Select secondary category</option>
+                <option *ngFor="let cat2 of cat2List" [value]="cat2.id" selected>{{ cat2.name }}</option>
+              </select>
+            </div>
+          </div>
+          <div *ngIf="itemAddForm.get('itemCategory2').errors && itemAddForm.get('itemCategory2').touched" >
+            <p class="error-message text-danger"><span class="error-icon text-danger">! </span>{{itemAddForm.get('itemCategory2').errors.msg || 'Please select a category 2.'}}</p>
+          </div>
+        </div>
+        <div class="form-group inputs">
+          <label class="col-md-3 control-label" for="category1"></label>
+          <div class="col-md-6 input-element">
+            <div class="input-group mb-3">
+              <select formControlName="itemCategory3"  class="form-control btn-sm cat" id="category3SelectGroup" name="category3" [disabled]="bCat3Disabled">
+                <option value="" disabled selected>Select a third category</option>
+                <option *ngFor="let cat3 of cat3List" [value]="cat3.id">{{ cat3.name }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group inputs">
+          <label class="col-md-3 control-label" for="isWeighted"></label>
+          <div class="col-md-6 input-element">
+            <div class="input-group mb-3">
+              <select required formControlName="weighted" class="form-control btn-sm cat" id="isWeightedSelectGroup" name="isWeighted" (change)="isWeighted($event)">
+                <option value="" disabled selected>Select if weighted or not</option>
+                <option value=0>No</option>
+                <option value=1>Yes</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="form-group inputs">
+          <label class="col-md-3 control-label" for="enabled"></label>
+          <div class="col-md-6 input-element">
+            <div class="input-group mb-3">
+              <select required formControlName="enabled" class="form-control btn-sm cat" id="enabledSelectGroup" name="enabled" (change)="isEnabled($event)" >
+                <option value="" disabled selected>Select if enabled or not</option>
+                <option value=0>No</option>
+                <option value=1>Yes</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </fieldset>
+      <div class="proceed-btn">
+        <div class="col-sm-12">
+          <button class="btn btn-danger proceedBtn" type="submit">Proceed
+            <span class="glyphicon glyphicon glyphicon-chevron-right"></span>
+          </button>
+        </div>
+      </div>
+    </form>
+
+  </div>
+</div>

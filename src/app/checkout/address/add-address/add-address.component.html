@@ -1,0 +1,164 @@
+<form class="form" [formGroup]="addressForm" (ngSubmit)="onSubmit()" #formAddress="ngForm">
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 form-group">
+      <label for="firstname">First name</label>
+      <i>*</i>
+      <input type="text" id="firstname" formControlName="firstname"
+        class="form-control" placeholder="First Name" required>
+    </div>
+    <div class="col-xs-12 col-sm-6 form-group">
+      <label for="lastname">Last name</label>
+      <i>*</i>
+      <input type="text" id="lastname" formControlName="lastname"
+        class="form-control" placeholder="Last Name" required>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 form-group">
+      <label for="email">Email</label>
+      <i>*</i>
+      <input type="text" id="email" formControlName="email"
+        class="form-control" placeholder="Email" required>
+    </div>
+    <div class="col-xs-6 col-sm-4 form-group">
+      <label for="phone">Mobile Number</label>
+      <i>*</i>
+      <div class="input-group phone-input">
+        <span class="input-group-btn">
+          <button name="prefix" ngDefaultControl formControlName="prefix" type="button"
+            class="btn md-input form-control" data-toggle="dropdown" aria-expanded="false">
+            <span class="type-text">{{_selectedVal || "+63"}}</span>
+            <span class="caret"></span>
+          </button>
+         <ul class="dropdown-menu" role="menu">
+            <li *ngFor="let c of prefix" (click)="_selectedVal = c">
+              <a class="changeType">{{c}}</a>
+            </li>
+          </ul>
+        </span>
+        <input type="text" id="phone" formControlName="phone"
+          class="form-control" placeholder="09271234567" required/>
+      </div>
+    </div>
+    <div class="col-xs-6 col-sm-2 form-group">
+      <label for="landline">Landline No.</label>
+      <input type="text" id="landline" formControlName="landline"
+        class="form-control" placeholder="2610000" required>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="col-sm-12 form-group">
+      <label class="radio-inline">
+        <input type="radio" formControlName="addressType" name="addressType"
+          [value]="1" (change)="changeAddressType()">Personal Address
+      </label>
+      <label *ngIf="userData.partner_id > 2" class="radio-inline">
+        <input type="radio" formControlName="addressType" name="addressType"
+          [value]="2" (change)="changeAddressType()">Office Address
+      </label>
+      <label *ngIf="isPickUpOption" class="radio-inline">
+        <input type="radio" formControlName="addressType" name="addressType"
+          [value]="3" (change)="changeAddressType()">Easy Pick-Up
+      </label>
+    </div>
+    <div
+      *ngIf="addressForm.get('addressType').value == 3"
+      class="col-xs-12">
+      <div class="small well">
+        <div class="icon">
+          <i class="glyphicon glyphicon-info-sign"></i>
+        </div>
+        <div class="text">
+          With Easy Pick-Up option, you can simply drop by and claim your order on your selected 
+          timeslot at the pick-up point indicated below. Delivery fee is waived for Easy Pick-Up option.
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-xs-12 col-sm-12 form-group">
+      <label for="shippingAddress01">Address 1</label>
+      <i>*</i>
+      <input type="text" id="address1" formControlName="shippingAddress01"
+        class="form-control" placeholder="Street Address, P.O. Box" required>
+    </div>
+    <div *ngIf="addressForm.get('addressType').value == 1" class="col-xs-12  col-sm-12 form-group">
+      <label for="shippingAddress02">Address 2</label>
+      <input type="text" id="address2" formControlName="shippingAddress02"
+        class="form-control" placeholder="Apartment, suite, unit, building, floor, etc." optional>
+    </div>
+    <div class="col-xs-6 col-sm-5 form-group">
+      <label for="city">City/Municipality</label>
+      <i>*</i>
+      <input type="text" id="city" formControlName="city" class="form-control"
+        placeholder="City/Municipality" required>
+    </div>
+    <div class="col-xs-6 col-sm-2 form-group">
+      <label for="postalcode">Zip Code</label>
+      <i>*</i>
+      <input type="text" id="zipcode" formControlName="postalcode" class="form-control"
+        placeholder="Zip Code" required>
+    </div>
+    <div class="col-xs-12 col-sm-5 form-group">
+      <label for="country">Country</label>
+      <i>*</i>
+      <select class="form-control" id="country" formControlName="country">
+        <option value="Philippines">Philippines</option>
+        <i>*</i>
+        <!-- <option *ngFor="let choice of countr">{{ctry}}</option> -->
+      </select>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm-12">
+      <p>
+        <small class="note"><b>*</b>&nbsp;(required)</small>
+      </p>
+    </div>
+  </div>
+  <div *ngIf="addressForm.get('addressType').value == 1" class="row">
+    <div class="col-sm-12 bg-info form-group">
+      <span (click)="showBillingAddr()" class="check-billing">
+        <input class="check-billing" type="checkbox" formControlName="isBilling">
+        <label class="check-billing">Bill to a different address</label>
+      </span>
+    </div>
+    <ng-container *ngIf="checkBilling">
+      <div class="col-sm-12 form-group">
+        <label for="billingAddress01">Address 1</label>
+        <input type="text" formControlName="billingAddress01"
+          class="form-control" placeholder="Street Address, P.O. Box" required>
+      </div>
+      <div class="col-sm-12 form-group">
+        <label for="billingAddress02">Address 2</label>
+        <input type="text" formControlName="billingAddress02"
+          class="form-control" placeholder="Apartment, suite, unit, building, floor, etc." optional>
+      </div>
+      <div class="col-xs-6 col-sm-5 form-group">
+        <label for="billCity">City/Municipality</label>
+        <input type="text" formControlName="billCity"
+          class="form-control" placeholder="City/Municipality" required>
+      </div>
+      <div class="col-xs-6 col-sm-2 form-group">
+        <label for="billPostalcode">Zip Code</label>
+        <input type="text" formControlName="billPostalcode"
+          class="form-control" placeholder="Zip Code" required>
+      </div>
+      <div class="col-sm-5 form-group">
+        <label for="billCountry">Country</label>
+        <select class="form-control" formControlName="billCountry">
+          <option value="Philippines">Philippines</option>
+          <!-- <option *ngFor="let choice of countr">{{ctry}}</option> -->
+        </select>
+      </div>
+    </ng-container>
+  </div>
+   <div class="row pull-right">
+    <div class="col-sm-12">
+      <button class="btn btn-primary">Next
+        <span class="glyphicon glyphicon glyphicon-chevron-right"></span>
+      </button>
+    </div>
+  </div>
+</form>

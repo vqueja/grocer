@@ -1,0 +1,61 @@
+<div class="notify-container in" *ngIf="loading.hasError">
+  <div class="notify-error notify-content">
+    <div class="notify-error-message">
+      <span class="notify-icon">!</span>
+      <p class="notify-icon-text">{{loading.hasMsg}}</p>
+    </div>
+  </div>
+</div>
+
+<div class="notify-container in" *ngIf="loading.isSuccess">
+  <div class="notify-success notify-content">
+    <div class="notify-error-message">
+      <p class="notify-icon-text">{{loading.hasMsg}}</p>
+    </div>
+  </div>
+</div>
+
+<div class="notify-container in" *ngIf="loading.thankYou">
+  <div class="alert-content notify-content">
+    <div class="alert alert-success alert-dismissable dark-success-txt">
+        <strong><i class="glyphicon glyphicon-ok"></i></strong>&nbsp;
+        {{loading.hasMsg}}
+    </div>
+  </div>
+</div>
+
+<div class="alert-container in" *ngIf="loading.success">
+  <div class="alert-content">
+    <div class="alert alert-success alert-dismissable dark-success-txt">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong><i class="glyphicon glyphicon-ok"></i></strong>&nbsp;{{loading.message}}
+    </div>
+  </div>
+</div>
+
+<div class="alert-container in" *ngIf="loading.info">
+  <div class="alert-content">
+    <div class="alert alert-info alert-dismissable dark-info-txt">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong><i class="glyphicon glyphicon-info-sign"></i></strong>&nbsp;{{loading.message}}
+    </div>
+  </div>
+</div>
+
+<div class="alert-container in" *ngIf="loading.warning">
+  <div class="alert-content">
+    <div class="alert alert-warning alert-dismissable dark-warning-txt">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong><i class="glyphicon glyphicon-exclamation-sign"></i></strong>&nbsp;{{loading.message}}
+    </div>
+  </div>
+</div>
+
+<div class="alert-container in" *ngIf="loading.error">
+  <div class="alert-content">
+    <div class="alert alert-danger alert-dismissable dark-error-txt">
+      <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+      <strong><i class="glyphicon glyphicon-remove"></i></strong>&nbsp;{{loading.message}}
+    </div>
+  </div>
+</div>

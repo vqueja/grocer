@@ -1,0 +1,141 @@
+<section class="header">
+  <ol class="breadcrumb small">
+    <li>Request Item</li>
+  </ol>
+  <a href="javascript:void(0)" class="closeModal" (click)="openConfirm()">
+    <span class="glyphicon glyphicon-remove"></span>
+  </a>
+</section>
+<section class="catalog">
+  <div class="selected-img">
+    <img #selectedImg class="img-responsive" [src]="storeLogo" (error)="onImageError($event)">
+  </div>
+  <div *ngIf="catalog.length" class="slider">
+    <ul>
+      <li *ngFor="let image of catalog">
+        <img [src]="image" class="slider-img" loading="lazy" (click)="selectImg(image)" (error)="onImageError($event)">
+      </li>
+    </ul>
+  </div>
+</section>
+<hr>
+<section>
+  <form class="item-form" [formGroup]="itemRequestForm">
+    <div class="row">
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+          Item Name&nbsp;<span class="small">(required)</span><br>
+          <span class="small text-muted">Enter the name of the item you want. You can use the item name on the catalogue (if available).</span>
+          <input type="text" formControlName="name" class="form-control" placeholder="Item Name"> 
+          <div class="error-message" *ngIf="itemRequestForm.get('name').errors && itemRequestForm.get('name').touched">
+            <p>{{'Please enter name of the item'}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+          Item Description<br>
+          <span class="small text-muted">Describe the item you want your shopper to get. Let them know the size, color, or other details here</span>
+          <textarea formControlName="description" class="form-control" placeholder="Size, Color, Style, etc"></textarea>
+          <div class="error-message" *ngIf="itemRequestForm.get('description').errors && itemRequestForm.get('name').touched">
+            <p>{{'Maximum 250 characters'}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-5 col-md-6">
+        <div class="form-group">
+          Quantity&nbsp;<span class="small">(required)</span><br>
+          <span class="small text-muted">How many of this item would you like to get</span>
+          <input type="number" formControlName="quantity" class="form-control" placeholder="0" min="1" max="9999" step="1">  
+          <div class="error-message" *ngIf="itemRequestForm.get('quantity').errors && itemRequestForm.get('quantity').touched">
+            <p>Please enter a number [1-9999]</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-7 col-md-6 padding-left-0">
+        <div class="form-group">
+          Price Range&nbsp;<span class="small">(required)</span><br>
+          <span class="small text-muted">This will allow your shopper to narrow down the choices</span>
+          <select formControlName="priceRange" class="form-control" (change)="selectPriceRange()"
+            [ngClass]="{ 'form-group-half' : itemRequestForm.get('priceRange').value === 'Specific Price'}">>
+            <option value="" default hidden>Select Range</option>
+            <option value="Less than 100">Less than 100</option>
+            <option value="100-300">100-300</option>
+            <option value="300-500">300-500</option>
+            <option value="500-800">500-800</option>
+            <option value="800-1,000">800-1,000</option>
+            <option value="1,000-1,500">1,000-1,500</option>
+            <option value="1,500-2,000">1,500-2,000</option>
+            <option value="2,000-3,000">2,000-3,000</option>
+            <option value="3,000-5,000">3,000-5,000</option>
+            <option value="3,000-5,000">3,000-5,000</option>
+            <option value="5,000-10,000">5,000-10,000</option>
+            <option value="Above 10,000">Above 10,000</option>
+            <option value="Specific Price">Specific Price</option>
+          </select>
+          <div class="error-message" *ngIf="itemRequestForm.get('priceRange').errors && itemRequestForm.get('priceRange').touched">
+            <p>Please select a price range</p>
+          </div>
+          <input type="number" formControlName="priceSpecific" class="form-control display-none"
+            placeholder="0" min="1" step="1"
+            [ngClass]="{ 'form-group-half' : itemRequestForm.get('priceRange').value === 'Specific Price'}">
+          <div class="error-message" *ngIf="itemRequestForm.get('priceSpecific').errors && itemRequestForm.get('priceSpecific').touched">
+            <p>Please enter a price</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+          Instructions<br>
+          <span class="small text-muted">Let your shopper know of any special instructions</span>
+          <textarea formControlName="instructions" class="form-control" placeholder="Instructions"></textarea>
+          <div class="error-message" *ngIf="itemRequestForm.get('instructions').errors && itemRequestForm.get('name').touched">
+            <p>{{'Maximum 250 characters'}}</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-xs-12 col-sm-12 col-md-12">
+        <div class="form-group">
+          <span>Photo</span><br>
+          <span class="small text-muted">Upload a photo of the item (Max file size: 1MB, File type: JPG)</span>
+          <input #fileUpload formControlName="file" (change)="loadImage()" accept=".jpg"
+            type="file" class="form-control" placeholder="Filename">
+          <div class="error-message" *ngIf="itemRequestForm.hasError('exceedMaxFileSize') && itemRequestForm.get('file').touched">
+            <p>File size exceeds 1MB</p>
+          </div>
+          <div class="error-message" *ngIf="itemRequestForm.hasError('incorrectFileType') && itemRequestForm.get('file').touched">
+            <p>Incorrect file type</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <div class="image-container">
+    <img #imagePreview (error)="onImageError($event)" />
+  </div>
+  <div class="button-container row">
+    <div class="col-sm-12">
+      <button *ngIf="!requestItem" class="btn btn-default" (click)="addToCart()">Save and Add New Item</button>
+      <button *ngIf="requestItem" class="btn btn-default" (click)="updateItem()">Save Changes</button>
+      <button *ngIf="requestItem" class="btn btn-default" (click)="deleteItem()">Remove Item</button>
+      <button class="btn btn-default" (click)="openConfirm(true)">Done</button>
+      <!-- <button class="btn btn-default" (click)="test = true">Previous Item</button> -->
+      <!-- <button class="btn btn-default" (click)="nextItem()">Next Item</button> -->
+    </div>
+  </div>
+</section>
+
+<div #confirmModal *ngIf="isOpenConfirm" class="confirm-container">
+  <div class="confirm-content">
+    <div class="confirm-header">
+      <strong>Review Request</strong>
+    </div>
+    <div class="confirm-body">
+      <p>{{confirmMessage}}</p>
+      <p class="text-center">
+        <button class="btn btn-default" (click)="isOpenConfirm = false">Review</button>
+        <button class="btn btn-default" (click)="onCloseModal(true)">Discard</button>
+      </p>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,166 @@
+@import "../../../../shared/scss/custom_themes/default/default";
+
+.breadcrumb {
+  a {
+    color: #666;
+  }
+}
+
+.order-info {
+  p {
+    margin-bottom: 0;
+  }
+}
+
+.item-list {
+  padding: 10px;
+  position: relative;
+  & > div {
+    overflow: auto;
+    min-height: 85px;
+  }
+  .changed {
+    color: #777;
+    text-decoration: line-through;
+  }
+  .unavailable {
+    color: #777;
+    img {
+      opacity: 0.5;
+    }
+  }
+  .border {
+    border-bottom: 1px dotted #ccc;
+  }
+  .unavailable-text {
+    font-size: 10px;
+    color: red;
+    text-transform: uppercase;
+    font-weight: bold;
+  }
+  .item-img-container {
+    float: left;
+    margin-right: 8px;
+    width: 80px;
+    height: 80px;
+    text-align: center;
+    line-height: 80px;
+
+    .item-img {
+      max-width: 80px;
+      max-height: 80px;
+      vertical-align: middle;
+      display: inline-block;
+    }
+  }
+}
+
+.btn {
+  margin-bottom: 5px;
+}
+
+.padding-left-0 {
+  padding-left: 0;
+}
+
+.padding-right-0 {
+  padding-right: 0;
+}
+
+.form-inline-120px {
+  width: 120px;
+  display: inline-block;
+}
+
+.text-20px {
+  font-size: 20px;
+}
+
+.discrepancy.well {
+  color: #ffffff;
+  background-color: #dc3545;
+  padding: 10px;
+  ul {
+    padding-inline-start: 20px;
+    margin-top: 5px;
+    margin-bottom: 5px;
+  }
+}
+
+.total-summary {
+  float: right;
+  width: 100%;
+  max-width: 400px;
+  padding-right: 20px;
+  padding-bottom: 20px;
+}
+
+.print-list {
+  display: none;
+  .check-box {
+    display: inline-block;
+    border: 1px solid #333;
+    width: 10px;
+    height: 10px;
+  }
+  .indent {
+    margin-left: 25px;
+  }
+}
+
+hr {
+  margin: 10px 0;
+}
+
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+  ul.dropdown-menu {
+    font-size: 85%;
+    left: unset;
+    min-width: 200px;
+    right: 0;
+    background-color: #f0f0f0;
+    li {
+      padding: 5px 10px;
+      cursor: pointer;
+      &:hover {
+        background-color: #ff0565;
+        color: #ffffff;
+      }
+      &.disabled {
+        cursor: not-allowed;
+        color: #777;
+        &:hover {
+          background-color: unset;
+        }
+      }
+    }
+  }
+}
+
+input[type='number'] {
+  -moz-appearance:textfield;
+}
+/* Webkit browsers like Safari and Chrome */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+
+
+@media print {
+  .order-details {
+    display: none;
+  }
+  .print-list {
+    display: block;
+    .glyphicon:before {
+      font-weight: 300;
+      display: inline;
+    }
+
+  }
+}

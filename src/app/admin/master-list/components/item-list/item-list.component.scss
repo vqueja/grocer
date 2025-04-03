@@ -1,0 +1,106 @@
+@import "../../../../shared/scss/custom_themes/default/default";
+
+a {
+  color: #333333;
+}
+
+.margin-bottom-5 {
+  margin-bottom: 5px;
+}
+
+.filter-text {
+  margin-left: 5px;
+}
+
+hr {
+  margin: 10px 0;
+}
+
+.form-inline {
+  .form-control {
+    font-size: 12px;
+    max-width: 150px;
+    margin: 0 5px 5px 0;
+  }
+}
+
+@media (max-width: 767px) {
+  .form-inline {
+    .form-control {
+      max-width: unset;
+      margin: 0;
+    }
+  }
+}
+
+.table-border {
+  border: 1px solid #ccc;
+  margin-bottom: 10px;
+  min-height: 562px;
+  width: 100%;
+  -webkit-overflow-scrolling: touch;
+  overflow-x: auto;
+  .table {
+    margin-bottom: 0;
+  }
+  .table > tbody > tr > td {
+    vertical-align: middle;
+    padding: 3px 8px;
+  }
+  .partner-name {
+    cursor: pointer;
+    &:hover span {
+      text-decoration: underline;
+    }
+  }
+  .line-through {
+    text-decoration: line-through;
+    font-size: 95%;
+  }
+}
+
+.well.filter {
+  position: relative;
+  margin-top: 5px;
+  padding: 10px;
+  .form-group {
+    margin-bottom: 3px;
+    .date-input {
+      min-width: 160px;
+    }
+  }
+  .closeFilter {
+    float: right;
+    a {
+      color: #555;
+      cursor: default;
+      &:hover {
+        color: #aaa;
+        text-decoration: none;
+      }
+    }
+  }
+}
+
+.actions {
+  position: relative;
+  display: inline-block;
+  ul.dropdown-menu {
+    width: 200px;
+    left: unset;
+    right: 0;
+    background-color: #f0f0f0;
+    li {
+      padding: 5px 10px;
+      cursor: pointer;
+      &:hover {
+        background-color: #ff0565;
+        color: #ffffff;
+      }
+    }
+  }
+}
+
+:host ::ng-deep ul.pagination {
+  margin: 5px 0;
+}

@@ -1,0 +1,125 @@
+/********************************/
+/*            eventTimer           */
+/********************************/
+.promo_overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 300;
+  background-color: rgba(0,0,0,0.5);
+}
+
+.promoDetails {
+  position: fixed;
+  left: 50%;
+  top: 50%;
+  -webkit-transform: translate(-50%,-50%);
+  transform: translate(-50%,-50%);
+  overflow: visible;
+  max-height: 100%;
+  max-width: 100%;
+  width: 350px;
+  height: 550px;
+  background-color: white;
+  border-radius: 15px;
+  // background: url('/home/devteam/workspace/shop/src/assets/con.png');
+}
+
+.main_info{
+  position: relative;
+  background-color: #ff66a1;
+  width: 335px;
+  height: 310px;
+  left: 7px;
+  top: 2%;
+  border-radius: 15px;
+}
+
+h1 {
+   position: absolute;
+   top: 351px;
+   left: 87px;
+   width: 100%;
+   font-size: 16px;
+   font-family: sans-serif;
+}
+
+h2 {
+   position: absolute;
+   top: 56px;
+   left: 4px;
+   color: white;
+   width: 100%;
+   font-family: sans-serif;
+}
+
+.details {
+  text-align: center;
+}
+
+.duration {
+    position: absolute;
+    width: 259px;
+    height: 32px;
+    top: 291px;
+    left: 38px;
+    border-radius: 15px;
+    background: #ff1a71;
+    font-size: 20px;
+    font-family: sans-serif;
+    color: white;
+    text-align: center;
+}
+// .mid_info{
+//   position: relative;
+//   background-color: #ff0565;;
+//   width: 285px;
+//   height: 220px;
+//   left: 7px;
+//   top: 20%;
+//   border-radius: 15px;
+// }
+
+.eventTimer {
+  position: fixed;
+  width: 329px;
+  left: 12px;
+  top: 424px;
+  display: inline-block;
+  font-weight: 100;
+  text-align: center;
+  font-size: 23px;
+  color: white;
+  font-family: sans-serif;
+}
+
+.eventTimer > div{
+	padding: 10px;
+	border-radius: 3px;
+	background: #ffb3d0;
+	display: inline-block;
+}
+
+.eventTimer div > span{
+	padding: 15px;
+	border-radius: 3px;
+	background: #ff1a71;
+	display: inline-block;
+}
+
+.smalltext{
+	padding-top: 5px;
+	font-size: 16px;
+}
+
+.close-btn{
+	position: absolute;
+  border-radius: 35px;
+  top: 2px;
+  right: 2px;
+	border: 0;
+  z-index: 20;
+	background-color: #15b769;
+}

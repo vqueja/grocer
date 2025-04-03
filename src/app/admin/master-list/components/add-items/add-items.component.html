@@ -1,0 +1,20 @@
+<div #loader class="loader" [hidden]="bItemsAdded" id="loader">
+    <span class="loader-text">Loading....</span>
+</div>
+<div>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item">Admin Tools</li>
+      <li class="breadcrumb-item"><a [routerLink]="['/admin/manage-items']">Manage Items</a></li>
+      <li class="breadcrumb-item text-primary" aria-current="page">Add (CSV)</li>
+    </ol>
+  </nav>
+
+  <div class="csv-upload">
+    <input #csvInput type="file" id="myFile" accept=".csv" (change)="enableAddBtn(csvInput)">
+  </div>
+  <div>
+    <button class="btn btn-danger" (click)="convertFile(csvInput)" [disabled]="bHasFile">Add Items</button>
+    <button class="btn btn-danger" [routerLink]="['/admin/manage-items']">Cancel</button>
+  </div>
+</div>

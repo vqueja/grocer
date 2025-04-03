@@ -1,0 +1,42 @@
+@import "../../../../shared/scss/custom_themes/default/default";
+
+h4 {
+  margin: 0;
+}
+
+.panel-body {
+  padding: 15px 10px;
+  .col-pad-5 {
+    padding: 0 5px;
+  }
+}
+
+.margin-bottom-0 {
+  margin-bottom: 0;
+}
+
+.letter-spacing-05px {
+  letter-spacing: 0.5px;
+}
+
+.btn {
+  width: 200px;
+}
+
+.badge {
+  font-weight: normal;
+  letter-spacing: 1px;
+}
+
+@media screen and (max-width: 767px) {
+  .btn-container {
+    padding: 0;
+    margin: 0 -15px -15px -15px;
+    .btn {
+      display: block;
+      width: calc(100% + 30px);
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
+  }
+}

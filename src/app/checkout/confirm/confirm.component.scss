@@ -1,0 +1,72 @@
+@import "../../shared/scss/custom_themes/default/default";
+
+.order-list {
+  max-height: 250px;
+  overflow-y: scroll;
+}
+.panel {
+  div {
+    color: #666666;
+  }
+}
+.btn-primary{
+  background-color: $pink;
+  border-color: $pink-dark;
+}
+.btn-primary:active{
+  background-color: $pink-dark;
+  border-color: $pink;
+}
+h5 {
+  margin-bottom: 0px;
+  font-weight: normal;
+}
+h4 {
+  font-weight: 500;
+}
+hr {
+  margin: 10px 0;
+}
+.disclaimer-container {
+  margin-bottom: 10px;
+  font-style: italic;
+  .disclaimer .glyphicon {
+    top: 3px;
+  }
+  label {
+    margin-bottom: 0;
+  }
+}
+.form-inline .btn {
+  margin-bottom: 10px;
+}
+.list-name {
+  display: inline-block;
+}
+.well {
+  margin-top: 20px;
+  padding: 14px 19px;
+  color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  i {
+    font-size: 30px;
+    vertical-align: middle;
+  }
+  span {
+    vertical-align: middle;
+    display: inline-block;
+    width: 85%;
+    padding-left: 10px;
+  }
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+}
+@media screen and (max-width: 767px) {
+  .list-name {
+    width: 190px;
+    vertical-align: middle;
+  }
+}

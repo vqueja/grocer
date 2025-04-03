@@ -1,0 +1,103 @@
+<div class="panel panel-default col-md-12">
+  <div class="col-md-12">
+    <strong>Shipping Address</strong>
+    <small>
+      <div>{{shipAddress.firstname}} {{shipAddress.lastname}}</div>
+      <div>{{shipAddress.shippingAddress01}}</div>
+      <div *ngIf="shipAddress.shippingAddress02">{{shipAddress.shippingAddress02}}</div>
+      <div>{{shipAddress.city}} {{shipAddress.country}}</div>
+      <div>Postal Code: {{shipAddress.postalcode}}</div>
+      <div>Mobile Number: {{shipAddress.phone}}</div>
+      <div>Email: {{shipAddress.email}}</div>
+    </small>
+    <hr>
+  </div>
+  <div class="col-md-12" *ngIf="billAddress.billingAddress01">
+    <strong>Billing Address</strong>
+    <small>
+      <div>{{billAddress.billingAddress01}}</div>
+      <div *ngIf="billAddress.billingAddress02">{{billAddress.billingAddress02}}</div>
+      <div>{{billAddress.billCity}} {{billAddress.billCountry}}</div>
+      <div>Postal Code: {{billAddress.billPostalcode}}</div>
+    </small>
+    <hr>
+  </div>
+  <div class="col-md-12">
+    <strong>Delivery Schedule</strong>
+    <small>
+      <div>{{deliveryDate.date | date:'fullDate'}} at {{getTimeSlotLabel(deliveryDate.timeslotId)}}</div>
+    </small>
+    <hr>
+  </div>
+  <div class="col-md-12">
+    <strong>Order Summary</strong>
+    <div class="order-list">
+      <small>
+      <div *ngFor="let cartItem of cartItems">
+        <div>
+          <div class="pull-left long-text">{{cartItem.item.name}}</div>
+          &nbsp;(x{{cartItem.quantity}})
+          <div class="pull-right">
+            <span>₱ {{cartItem.total | number:'1.2-2'}}</span>
+          </div>
+        </div>
+      </div>
+      </small>
+    </div>
+    <hr>
+  </div>
+  <div class="col-md-12">
+    <h5>Sub Total
+      <div class="pull-right">
+        <span>₱ {{cartTotal | number:'1.2-2'}}</span>
+      </div>
+    </h5>
+  </div>
+  <div class="col-md-12">
+    <h5>
+      Service Fee
+      <div class="pull-right">
+        <span [ngClass]="{ 'line-through' : promoSFee < serviceFees }">₱ {{serviceFees | number:'1.2-2'}}</span>
+        <span *ngIf="promoSFee < serviceFees" class="text-red">₱ {{promoSFee | number:'1.2-2'}}</span>
+      </div>
+    </h5>
+  </div>
+  <div class="col-md-12">
+    <h5>
+      Delivery Fee
+      <div class="pull-right">
+        <span [ngClass]="{ 'line-through' : promoDFee < deliveryFees }">₱ {{deliveryFees | number:'1.2-2'}}</span>
+        <span *ngIf="promoDFee < deliveryFees" class="text-red">₱ {{promoDFee | number:'1.2-2'}}</span>
+      </div>
+    </h5>
+    <hr>
+  </div>
+  <div class="col-md-12" *ngIf="discount > 0">
+    <h5>Discounts
+      <div class="pull-right">
+        <strong><span class="text-success"> - ₱ {{discount | number:'1.2-2'}}</span></strong>
+      </div>
+    </h5>
+  </div>
+  <div class="col-md-12">
+    <h4>Grand Total
+      <div class="pull-right">
+        <strong><span class="text-primary">₱ {{orderTotal | number:'1.2-2'}}</span></strong>
+      </div>
+    </h4>
+  </div>
+  <div class="col-md-12" *ngIf="paidAmount > 0">
+    <h5>Amount Paid
+      <div class="pull-right">
+        <strong><span class="text-success"> ₱ {{(paidAmount ? paidAmount : 0) | number:'1.2-2'}}</span></strong>
+      </div>
+    </h5>
+  </div>
+  <div class="col-md-12">
+    <h4 class="focus">Amount Due
+      <div class="pull-right">
+        <strong><span class="text-primary">₱ {{amountDue | number:'1.2-2'}}</span></strong>
+      </div>
+    </h4>
+  </div>
+</div>

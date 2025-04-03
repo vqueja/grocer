@@ -1,0 +1,198 @@
+<div *ngIf="order">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a [routerLink]="['/user','orders']">Orders</a></li>
+      <li class="breadcrumb-item text-primary" aria-current="page">#{{order.number}}</li>
+    </ol>
+  </nav>
+  <div class="progress-status">
+    <ol  *ngIf="order.status === 'complete'" class="tracker" data-tracker-steps="4">
+      <li class="tracker-done">Received</li><li class="tracker-done">Assembled</li><li class="tracker-done">On The Way</li><li class="tracker-done">Delivered</li>
+    </ol>
+    <ol  *ngIf="order.status === 'in-transit'" class="tracker" data-tracker-steps="4">
+      <li class="tracker-done">Received</li><li class="tracker-done">Assembled</li><li class="tracker-done">On The Way</li><li class="tracker-todo">Delivered</li>
+    </ol>
+    <ol  *ngIf="order.status === 'pending'" class="tracker" data-tracker-steps="4">
+      <li class="tracker-done">Received</li><li class="tracker-todo">Assembled</li><li class="tracker-todo">On The Way</li><li class="tracker-todo">Delivered</li>
+    </ol>
+    <ol  *ngIf="order.status === 'in-progress'" class="tracker" data-tracker-steps="4">
+      <li class="tracker-done">Received</li><li class="tracker-todo">Assembled</li><li class="tracker-todo">On The Way</li><li class="tracker-todo">Delivered</li>
+    </ol>
+    <ol  *ngIf="order.status === 'assembled'" class="tracker" data-tracker-steps="4">
+      <li class="tracker-done">Received</li><li class="tracker-done">Assembled</li><li class="tracker-todo">On The Way</li><li class="tracker-todo">Delivered</li>
+    </ol>
+  </div>
+  <h5>DETAILS</h5>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12 col-pad-5">
+          <h4 class="text-info">Order #{{order.number}}</h4>
+          <p>
+            <span class="text-muted">Status:</span>
+            <span class="badge">{{order.status | uppercase}}</span>
+          </p>
+        </div>
+        <div class="col-md-8 col-sm-6 col-xs-12 col-pad-5 col-pad-right-15">
+          <p>
+            <span class="text-muted">Store:</span>
+            {{order.store}}
+          </p>
+          <p class="small">
+            <span class="text-muted">Order Date:</span>
+            {{order.dateOrdered | date:'fullDate'}}
+          </p>
+          <p *ngIf="order.status !== 'complete' && deliveryInfo && deliveryInfo.day" class="small">
+            <span class="text-muted">Delivery Date:</span>
+            <span class="text-primary">{{deliveryInfo.day | date:'fullDate'}}</span>
+            at
+            <span class="text-primary">{{deliveryInfo.hours}}</span>
+          </p>
+          <p *ngIf="order.status === 'complete'" class="small">
+            <span class="text-muted">Delivered Date:</span>
+            <span>{{order.dateDelivered | date:'fullDate'}}</span>
+          </p>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-4 col-sm-12 col-xs-12 col-pad-5">
+          <h5>ADDRESS</h5>
+          <address>
+            {{order.firstname}} {{order.lastname}}<br>
+            <small>
+              {{order.shippingAddress01}}<br>
+              <ng-container *ngIf="order.shippingAddress02">
+                {{order.shippingAddress02}}<br>
+              </ng-container>
+              {{order.city}}, {{order.country}} {{order.postalcode}}<br>
+              <span class="text-muted">Mobile No.:</span> {{order.phone}}
+              <ng-container *ngIf="order.landline">
+                <br>
+                <span class="text-muted">Landline No.:</span> {{order.landline}}
+              </ng-container>
+              <br><span class="text-muted">Email:</span> {{order.email}}
+            </small>
+          </address>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12 col-pad-5">
+          <h5>ORDER SUMMARY</h5>
+          <dl class="dl-flex">
+            <dd class="small">
+              <span class="text-muted">Item(s) Subtotal:</span>
+              <span>₱{{order.displayItemTotal | number:'1.2-2'}}</span>
+            </dd>
+            <dd class="small">
+              <span class="text-muted">Service Fee:</span>
+              <span>₱{{order.serviceFee | number:'1.2-2'}}</span>
+            </dd>
+            <dd class="small">
+              <span class="text-muted">Delivery Fee:</span>
+              <span>₱{{order.deliveryFee | number:'1.2-2'}}</span>
+            </dd>
+            <dd *ngIf="order.discountTotal" class="small">
+              <span class="text-muted">Discount:</span>
+              <span class="text-success">&#8211; ₱{{order.discountTotal | number:'1.2-2'}}</span>
+            </dd>
+            <dd>
+              <span class="text-muted">Total:</span>
+              <span class="text-primary">₱{{order.grandTotal | number:'1.2-2'}}</span>
+            </dd>
+          </dl>
+        </div>
+        <div class="col-md-4 col-sm-6 col-xs-12 col-pad-5">
+          <h5>PAYMENT BREAKDOWN</h5>
+          <dl class="small dl-flex">
+            <dd *ngFor="let payment of order.payments">
+              <span class="text-muted">{{payment.type}}:</span>
+              <span>₱{{payment.amount | number:'1.2-2'}}</span>
+            </dd>
+            <br>
+            <dd *ngIf="isCash && order.status=='pending'">
+              <span class="text-muted">Amount Due:</span>
+              <span>
+                <span class="small text-muted">(Fund Transfer)</span>
+                <span class="text-primary">₱{{order.amountDue | number:'1.2-2'}}</span>
+              </span>
+            </dd>
+          </dl>
+        </div>
+        <div class="col-md-12 col-sm-12 col-xs-12 col-pad-5 btn-container">
+          <button class="btn btn-primary" (click)="reorder()">Order Again</button>
+          <button *ngIf="bHasFeedback" class="btn btn-default" (click)="toggleFeedBack()">Feedback</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <h5>ITEMS</h5>
+  <hr>
+  <div class="row item-container">
+    <div *ngFor="let item of orderItems; let i = index" class="col-md-6 col-sm-12 col-xs-12 item-block">
+      <div [ngClass]="(item.status === 'replaced' || item.status === 'unavailable') ? 'disable-item' : 'order-item'">
+        <div class="item-img">
+          <div class="img-container">
+            <img class="img-responsive" [src]="getItemImageUrl(item.imageKey)" (error)="onImageError($event)">
+          </div>
+        </div>
+        <div class="item-details">
+          <p class="item-name">
+            {{item.name}}
+            <span *ngIf="item.status === 'replaced' || item.status === 'unavailable'" class="item-status"><br>{{ item.status | uppercase }}</span>
+          </p>
+          <p class="item-info">
+            <span>
+              <span class="item-info-label">Price:</span>
+              &nbsp;₱{{item.displayPrice | number:'1.2'}}
+            </span>
+            <span class="flex-mid">
+              <span class="item-info-label">Qty:</span>
+              &nbsp;{{item.displayQty}}
+            </span>
+            <span>
+              <span class="item-info-label">T:</span>
+              &nbsp;₱{{item.displayTotal | number:'1.2'}}
+            </span>
+          </p>
+        </div>
+        <div class="clear-both"></div>
+      </div>
+      <div *ngIf="item.replacement" class="order-item replaced-item bg-danger">
+        <div class="item-img">
+          <div class="img-container">
+            <img class="img-responsive" [src]="getItemImageUrl(item.replacement.imageKey)" (error)="onImageError($event)">
+          </div>
+        </div>
+        <div class="item-details">
+          <p class="item-name">
+            {{item.replacement.name}}
+          </p>
+          <p class="item-info">
+            <span>
+              <span class="item-info-label">Price:</span>
+              &nbsp;₱{{item.replacement.displayPrice | number:'1.2'}}
+            </span>
+            <span class="flex-mid">
+              <span class="item-info-label">Qty:</span>
+              &nbsp;{{item.replacement.displayQty}}
+            </span>
+            <span>
+              <span class="item-info-label">T:</span>
+              &nbsp;₱{{item.replacement.displayTotal | number:'1.2'}}
+            </span>
+          </p>
+        </div>
+        <div class="clear-both"></div>
+      </div>
+      <hr>
+    </div>
+  </div>
+</div>
+<div>
+  <ng-container *ngIf="showFeedBackTemplate">
+    <app-order-star-rating
+      (closeRatingEmit)="toggleFeedBack(false)"
+      (hideFeedBackBtnEmit)="hideFeedBackBtn()"
+      [orderId]="order.id"
+      [orderkey]="order.orderkey">
+    </app-order-star-rating>
+  </ng-container>
+</div>

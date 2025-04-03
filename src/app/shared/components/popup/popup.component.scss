@@ -1,0 +1,140 @@
+.embed-responsive {
+  padding-bottom: 60%;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+}
+@media screen and (max-width: 991px) {
+  .embed-responsive {
+    padding-bottom: 100%;
+  }
+}
+@media screen and (max-width: 767px) {
+  .embed-responsive {
+    padding-bottom: 100%;
+  }
+}
+@media screen and (max-width: 575px) {
+  .embed-responsive {
+    padding-bottom: 140%;
+  }
+}
+@media screen and (orientation:portrait) and (min-width: 768px) {
+  .embed-responsive {
+    padding-bottom: 120%;
+  }
+}
+@media screen and (orientation:portrait) and (min-width: 1200px) {
+  .embed-responsive {
+    padding-bottom: 120%;
+  }
+}
+.modal-body-header {
+  height: 25px;
+  position: relative;
+  .close {
+    position: absolute;
+    right: -5px;
+    top: -10px;
+    z-index: 10;
+    font-size: 40px;
+  }
+}
+.checkbox-container {
+  .checkbox {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0;
+  }
+  .text {
+    display: inline-block;
+    text-align: left;
+  }
+  strong {
+    letter-spacing: 0.5px;
+  }
+}
+@media screen and (max-width: 575px) {
+  .checkbox-container {
+    .checkbox label {
+      padding-left: 0;
+    }
+    .text {
+      font-size: 80%;
+      width: 80%;
+      strong {
+        letter-spacing: 0;
+      }
+    }
+  }
+}
+
+
+// NOTE: -- CUSTOM CHECKBOX AND RADIO - START
+// source: https://bootsnipp.com/snippets/featured/animated-radios-amp-checkboxes-nojs
+.checkbox label:after,
+.radio label:after {
+    content: '';
+    display: table;
+    clear: both;
+}
+
+.checkbox .cr,
+.radio .cr {
+  position: relative;
+  display: inline-block;
+  border: 1px solid #a9a9a9;
+  border-radius: .25em;
+  width: 1.3em;
+  height: 1.3em;
+  float: left;
+  margin-right: .5em;
+}
+
+.radio .cr {
+  border-radius: 50%;
+}
+
+.checkbox .cr .cr-icon,
+.radio .cr .cr-icon {
+  position: absolute;
+  font-size: .8em;
+  line-height: 0;
+  top: 50%;
+  left: 20%;
+}
+
+.radio .cr .cr-icon {
+  margin-left: 0.04em;
+}
+
+.checkbox label input[type="checkbox"],
+.radio label input[type="radio"] {
+  display: none;
+}
+
+.checkbox label input[type="checkbox"] + .cr > .cr-icon,
+.radio label input[type="radio"] + .cr > .cr-icon {
+  transform: scale(3) rotateZ(-20deg);
+  opacity: 0;
+  transition: all .3s ease-in;
+}
+
+.checkbox label input[type="checkbox"]:checked + .cr > .cr-icon,
+.radio label input[type="radio"]:checked + .cr > .cr-icon {
+  transform: scale(1) rotateZ(0deg);
+  opacity: 1;
+}
+
+.checkbox label input[type="checkbox"]:disabled + .cr,
+.radio label input[type="radio"]:disabled + .cr {
+  opacity: .5;
+}
+
+.checkbox label img, .radio label img {
+  height: 22px;
+  &.logo {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+}
+// -- CUSTOM CHECKBOX AND RADIO - END

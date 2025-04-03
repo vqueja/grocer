@@ -1,0 +1,17 @@
+@import "../../../shared/scss/custom_themes/default/default";
+
+input.ng-invalid.ng-touched {
+  border: 1px solid red;
+}
+
+
+.breadcrumb {
+  a {
+    color: #666;
+  }
+}
+
+.dropdown-menu{
+  min-width: 100%;
+  text-align: center;
+}

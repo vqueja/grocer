@@ -1,0 +1,27 @@
+<div #loader class="loader" [hidden]="bPBUAdded" id="loader">
+    <span class="loader-text">Loading....</span>
+</div>
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a [routerLink]="['/admin/employees']">Employees</a></li>
+    <li class="breadcrumb-item text-primary" aria-current="page">Add (CSV)</li>
+  </ol>
+</nav>
+
+<div class="csv-upload">
+  <p>
+    <input #csvInput type="file" id="myFile" accept=".csv" (change)="enableAddBtn(csvInput)">
+  </p>
+  <p *ngIf="activeUser.partner_id == 1">
+    <label>Add Users to:</label>
+    <select class="form-control" (change)="selectPartner($event.target.value)">
+      <option *ngFor="let partner of partnerList"
+        [value]="partner.id"
+        [selected]="partner.id === activeUser.partner_id">{{ partner.name }}</option>
+    </select>
+  </p>
+</div>
+<div>
+  <button class="btn btn-danger" (click)="convertFile(csvInput)" [disabled]="bHasFile">Create Users</button>
+  <button class="btn btn-danger" [routerLink]="['/admin/employees']">Cancel</button>
+</div>

@@ -1,0 +1,96 @@
+<div>
+  <div class="pageLabel">
+    <nav class="nav-breadcrumb" aria-label="breadcrumb">
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item text-primary" aria-current="page">Logs</li>
+      </ol>
+    </nav>
+  </div>
+  <div class="commands">
+    <div class="margin-bottom-5">
+      <button type="button" class="btn btn-default btn-sm" (click)="showFilter = !showFilter">Change Filters&nbsp;<i class="glyphicon glyphicon-menu-down"></i></button>
+      &nbsp;|&nbsp;
+      <button type="button" class="btn btn-default btn-sm" (click)="applyFilter()">Refresh List</button>
+    </div>
+    <div class="small filter-text text-">Filters: <span [innerHTML]="filterText"></span></div>
+    <div *ngIf="showFilter" class="filter well">
+      <form class="form-inline small">
+        <div class="closeFilter">
+          <a (click)="showFilter = false">CLOSE <i class="glyphicon glyphicon-remove"></i></a>
+        </div>
+        <div class="form-group">
+          <label>Type:</label>
+          <select class="form-control btn-sm" [(ngModel)]="filters.type" name="type">
+            <option value="0" disabled selected hidden>Type</option>
+            <option *ngFor="let type of typeList" [value]="type">{{ type }}</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Action:</label>
+          <input type="text" placeholder="Action" class="form-control btn-sm" [(ngModel)]="filters.action" name="action">
+        </div>
+        <div class="form-group">
+          <label>User ID:</label>
+          <input type="text" placeholder="User ID" class="form-control btn-sm" [(ngModel)]="filters.userId" name="userId">
+        </div>
+        <div class="form-group">
+          <label>Date:</label>
+          <input type="text" placeholder="Date Range" class="form-control btn-sm date-input"
+            #dateOrder="bsDaterangepicker" bsDaterangepicker [(ngModel)]="filters.date" name="date">
+        </div>
+      </form>
+      <div class="text-right">
+        <button type="button" class="btn btn-default btn-sm" (click)="clearFilter()">Clear</button>
+        <button type="button" class="btn btn-primary btn-sm" (click)="applyFilter()">Apply</button>
+      </div>
+    </div>
+  </div>
+  <hr>
+  <div class="table-border">
+    <table class="table table-hover table-striped small">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Type</th>
+          <th>Action</th>
+          <th>By</th>
+          <th>Details</th>
+          <th>URL</th>
+          <th>Path</th>
+          <th>User ID</th>
+          <th>Role ID</th>
+          <th>Date</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let log of logs;">
+          <td>{{ log.id }}</td>
+          <td>{{ log.type }}</td>
+          <td>{{ log.action }}</td>
+          <td>{{ log.actor }}</td>
+          <td>{{ log.message }}</td>
+          <td>{{ log.url }}</td>
+          <td>{{ log.path }}</td>
+          <td>{{ log.user_id }}</td>
+          <td>{{ log.role_id }}</td>
+          <td>{{ log.date }}</td>
+        </tr>
+        <tr *ngIf="logs && !logs.length">
+          <td colspan="9" class="text-center">No logs</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="row">
+    <div class="col-xs-6 col-6">
+      <pagination [totalItems]="totalItems" [(ngModel)]="currentPage"
+        [itemsPerPage]="itemsPerPage" [rotate]="true"
+        [maxSize]="5" [boundaryLinks]="true"
+        (pageChanged)="pageChanged($event)" (numPages)="numPages = $event">
+      </pagination>
+    </div>
+    <div class="col-xs-6 col-6 text-right">
+      <small>Page {{ currentPage }} of {{ numPages }}, {{ totalItems }} total logs</small>
+    </div>
+  </div>
+</div>
